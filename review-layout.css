@@ -1,0 +1,41 @@
+/* Approved GitHub review requests #1–#6, 2026-10-02.
+   The compact contact dock is deliberately not restyled here. */
+.store.store-split{display:block;min-height:0}
+.store-split .store-copy{max-width:760px;margin-bottom:38px;gap:18px}
+.store-spaces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.store-space{margin:0;min-width:0}
+.store-space .store-space-image{height:360px;width:100%;overflow:hidden}
+.store-space-image img{width:100%;height:100%;object-fit:cover;display:block}
+.store-space figcaption{padding-top:20px}
+.store-space figcaption>div{display:flex;align-items:center;gap:12px}
+.store-floor{display:inline-flex;align-items:center;justify-content:center;min-width:43px;min-height:31px;border:1px solid #bfbfbf;border-radius:7px;font-size:12px}
+.store-space h3{font-size:23px;line-height:1.4}
+.store-space figcaption p{font-size:15px;color:#606060;margin-top:9px}
+.review-captures{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:32px}
+.review-capture{margin:0;min-width:0}
+.review-capture-preview{display:flex;align-items:center;justify-content:center;width:100%;height:430px;padding:22px;background:#fff;border:1px solid #d9d9d9;border-radius:16px;overflow:hidden;text-align:center}
+.review-capture-preview:disabled{opacity:1;cursor:default}
+.capture-placeholder{display:flex;flex-direction:column;gap:12px;align-items:center;color:#606060;font-size:15px}
+.capture-number{font-family:var(--display-font);font-size:38px;color:#aaa;line-height:1.2;margin-bottom:10px}
+.capture-placeholder small{font-size:12px;line-height:1.9}
+.review-capture-preview img{display:block;width:100%;height:100%;object-fit:contain}
+.review-capture figcaption{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;font-size:15px}
+.capture-status{font-size:12px;color:#777}
+.capture-dialog{width:900px;max-width:calc(100% - 28px);max-height:calc(100dvh - 28px);padding:24px;border:0;border-radius:16px;background:#f8f8f8;overflow:auto}
+.capture-dialog::backdrop{background:#0008;backdrop-filter:blur(3px)}
+.capture-dialog-head{position:sticky;top:-24px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 0 20px;background:#f8f8f8}
+.capture-dialog-head h2{font-size:20px;line-height:1.4}
+#capture-original img{display:block;width:auto;max-width:100%;height:auto;margin:auto}
+.events-heading{padding-bottom:42px;display:flex;flex-direction:column;gap:18px;min-height:0}
+.events-heading h1{font-size:64px;line-height:1.25}
+.events-heading>p:not(.eyebrow){font-size:17px;color:#606060}
+.event-tabs{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.event-tabs a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border:1px solid #bfbfbf;border-radius:12px;font-size:14px;line-height:1.6}
+.event-tabs a[aria-current="page"]{background:#111;color:#fff;border-color:#111}
+.events-back{padding:42px 64px 64px;border-top:1px solid #ccc}
+.booking .booking-parking{display:inline-flex;gap:18px;min-height:76px;padding:14px 24px;background:#03c75a;color:#07351c;border-color:#03c75a;text-align:left;font-weight:500;line-height:1.65}
+.booking-parking strong{font-size:20px;font-weight:700}
+.parking-naver{display:flex;align-items:center;justify-content:center;width:36px;height:36px;flex-shrink:0;border-radius:9px;background:#fff;color:#03b753;font:bold 29px/1 Arial,sans-serif}
+.booking .booking-parking:hover{background:#16d66b}
+@media(max-width:1100px){.store-space .store-space-image{height:300px}.review-captures{gap:18px}.review-capture-preview{height:370px;padding:18px}}
+@media(max-width:760px){.store-spaces{grid-template-columns:1fr;gap:32px}.store-split .store-copy{margin-bottom:30px}.store-space .store-space-image{height:280px}.store-space h3{font-size:21px}.store-space figcaption p{font-size:14px}.review-captures{grid-template-columns:1fr;gap:30px}.review-capture-preview{height:390px}.events-heading h1{font-size:46px}.events-heading{padding-bottom:32px}.events-heading>p:not(.eyebrow){font-size:15px}.event-tabs{gap:8px}.event-tabs a{font-size:12px;padding:9px 14px}.events-back{padding:30px 24px 48px}.events-back .btn{width:100%}.booking .booking-parking{min-height:70px;gap:14px;padding:12px 18px;font-size:13px}.booking-parking strong{font-size:18px}.capture-dialog{padding:18px}.capture-dialog-head{top:-18px}.capture-dialog-head h2{font-size:17px}}
