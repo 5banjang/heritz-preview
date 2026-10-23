@@ -16,7 +16,7 @@ dialog{padding:0;border:0;color:#111;max-width:none;max-height:none}dialog::back
 .store-nav a{padding-bottom:16px;white-space:nowrap}.store-nav a.selected{font-weight:700;text-decoration:underline;text-underline-offset:4px}
 .store-detail h1{font-size:48px;line-height:58px;margin-top:32px}
 .store-detail h2{font-size:23px;line-height:32px;margin:28px 0 32px}
-.store-photo-button{padding:0;display:block;width:100%;height:620px;overflow:hidden}
+.store-photo-button{padding:0;display:block;width:100%;height:auto;aspect-ratio:1152/620;overflow:hidden}
 .store-photo-button .photo{height:100%;width:100%;border-radius:0}
 .store-photo-controls{display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-size:15px;font-weight:700;color:#666}
 .store-photo-controls button{padding:4px 0;font-weight:700}
@@ -24,21 +24,67 @@ dialog{padding:0;border:0;color:#111;max-width:none;max-height:none}dialog::back
 .store-info>div{display:flex;gap:24px;padding:16px 0;align-items:flex-start}
 .store-info dt{width:120px;flex:none;font-size:15px;font-weight:700;color:#666}
 .store-info dd{margin:0;font-size:16px;font-weight:500;color:#606060;line-height:24px}
-@media(max-width:1279px){.store-detail{padding:32px 40px 64px}.store-photo-button,.store-photo-pending{height:auto;aspect-ratio:720/540}.site-switch{padding:0 40px}}
-@media(max-width:799px){.site-switch{padding:0 24px;gap:12px}.store-detail{padding:24px 24px 56px}.store-nav{overflow-x:auto;justify-content:flex-start;gap:24px}.store-detail h1{font-size:40px;line-height:50px}.store-detail h2{font-size:21px;margin:20px 0 24px}.store-photo-button,.store-photo-pending{aspect-ratio:327/410}.store-info>div{gap:12px}.store-info dt{width:82px}.store-info dd{font-size:14px}}
+@media(max-width:1279px){.store-detail{padding:40px 32px 64px}.store-photo-button,.store-photo-pending{height:auto;aspect-ratio:736/420}.site-switch{padding:0 40px}}
+@media(max-width:799px){.site-switch{padding:0 24px;gap:12px}.store-detail{padding:40px 24px 64px}.store-nav{overflow-x:auto;justify-content:flex-start;gap:24px}.store-detail h1{font-size:40px;line-height:50px}.store-detail h2{font-size:21px;margin:20px 0 24px}.store-photo-button,.store-photo-pending{aspect-ratio:327/240}.store-info>div{gap:12px}.store-info dt{width:82px}.store-info dd{font-size:14px}}
 
 
 /* ARCHIVE navigation, Lookbook and Celebrity: Figma responsive structures */
 .archive-section-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 112px;align-items:center;min-height:52px;border-bottom:1px solid #bfbfbf;gap:16px;font-size:14px;color:#606060}
 .archive-section-nav strong{font-family:Inter,sans-serif}.archive-section-nav .selected{font-weight:700;text-decoration:underline;text-underline-offset:5px}
-.archive-special{padding:40px 64px 64px}.archive-special>h1{font-size:48px;line-height:1.5;margin:40px 0}
-.look-list{display:flex;flex-direction:column;gap:48px}.look-list>a{display:grid;grid-template-columns:minmax(0,744px) minmax(0,1fr);gap:24px;min-height:510px}.look-list>a>div:last-child{padding-top:55px}.look-list span,.look-fixed p{font-size:16px;color:#616161}.look-list h2,.look-fixed h2{font-family:var(--serif);font-size:36px;line-height:1.5}
-.archive-awaiting{display:flex;align-items:center;justify-content:center;min-height:300px;background:#dedede;color:#666;font-size:14px;text-align:center}
-.look-list .archive-awaiting{height:510px}.look-detail{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:24px;min-height:650px}.look-fixed{position:sticky;top:140px;align-self:start}.look-fixed a{display:block;margin-top:30px}
-.celebrity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.celebrity-grid .archive-awaiting{aspect-ratio:368/460}.celebrity-grid article p{margin-top:12px;font-size:15px}
-.archive-pagination{display:flex;align-items:center;justify-content:center;gap:24px;padding:40px}.archive-pagination a[aria-current]{font-weight:700;color:#111;text-decoration:underline}
-@media(max-width:1279px){.archive-special{padding:32px 40px 64px}.look-list>a{grid-template-columns:minmax(0,2fr) minmax(0,1fr);min-height:322px}.look-list .archive-awaiting{height:322px;min-height:0}.archive-section-nav{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:799px){.archive-special{padding:24px 24px 56px}.archive-special>h1{font-size:38px;margin:28px 0}.archive-section-nav{gap:12px;overflow-x:auto;display:flex;justify-content:space-between;white-space:nowrap;font-size:12px}.archive-section-nav strong{display:none}.look-list>a{grid-template-columns:1fr;gap:12px}.look-list>a>div:last-child{padding-top:0}.look-list .archive-awaiting{height:auto;aspect-ratio:327/250}.look-list h2{font-size:28px}.celebrity-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.celebrity-grid .archive-awaiting{min-height:0}.look-detail{grid-template-columns:1fr}.look-fixed{position:sticky;top:0;background:#eaeaeaf2;padding:12px 0}}
+@media(max-width:1279px){.archive-main .archive-section-nav{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:799px){.archive-main .archive-section-nav{gap:12px;overflow-x:auto;display:flex;justify-content:space-between;white-space:nowrap;font-size:12px}.archive-main .archive-section-nav strong{display:none}}
+/* Photo-only Figma exports retain the designed crop; layout stays semantic HTML. */
+.archive-special{padding:40px 64px 64px;font-family:'Pretendard Variable',var(--sans)}
+.archive-special>.archive-section-nav{grid-template-columns:repeat(3,minmax(0,1fr)) 112px;gap:0;height:52px;min-height:0;font-family:'Inter',var(--sans)}
+.archive-special>.archive-section-nav a:last-child{font-family:'Pretendard Variable',var(--sans)}
+.archive-special>h1{font-size:48px;line-height:1.5;margin:40px 0}
+.archive-photo{display:block;width:100%;height:auto;object-fit:cover}
+.look-list{display:flex;flex-direction:column;gap:48px}
+.look-list>a,.look-detail{display:grid;grid-template-columns:minmax(0,31fr) minmax(0,16fr);gap:24px}
+.look-list .archive-photo,.look-photos .archive-photo{aspect-ratio:744/510;max-width:none;width:100%;height:auto}
+.look-copy{padding-top:55px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.look-copy p{font-size:16px;line-height:24px;color:#616161;font-weight:500}
+.look-copy h2{font-family:var(--serif);font-size:36px;line-height:1.5;letter-spacing:-.01em;color:#000}
+.look-photos{display:flex;flex-direction:column;gap:24px;min-width:0}
+.look-fixed{position:sticky;top:24px;align-self:start}
+.look-back{display:inline-block;margin-top:40px;font-size:16px;line-height:24px;color:#606060}
+.celebrity-heading{display:flex;flex-direction:column;gap:14px;margin:40px 0}
+.celebrity-heading h1{font-size:64px;line-height:80px;letter-spacing:0}
+.celebrity-heading h2{font-size:24px;line-height:36px}
+.celebrity-heading>p{font-size:17px;line-height:28px;color:#5c5c5c;font-weight:500}
+.archive-celebrity>.archive-section-nav{align-items:start}
+.celebrity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.celebrity-grid article{min-width:0}
+.celebrity-grid .archive-photo{aspect-ratio:4/5}
+.celebrity-caption{display:flex;flex-direction:column;gap:4px;margin-top:12px;text-align:center;font-size:20px;line-height:29px;font-weight:700;white-space:pre-wrap}
+.archive-pagination{display:flex;align-items:center;justify-content:center;gap:24px;margin:40px 0;font-family:'Inter',var(--sans);font-size:15px;line-height:24px}
+.archive-pagination a{padding:10px 14px}
+.archive-pagination a[aria-current]{font-weight:500;text-decoration:underline;text-underline-offset:3px}
+.celebrity-bottom{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.celebrity-bottom>p{font-size:15px;line-height:26px;color:#5c5c5c}
+@media(max-width:1279px){
+ .archive-special{padding:40px 32px 64px}
+ .archive-special>.archive-section-nav{grid-template-columns:repeat(3,minmax(0,1fr)) 100px}
+ .archive-special>h1{font-size:40px}
+ .look-list>a,.look-detail{grid-template-columns:minmax(0,235fr) minmax(0,121fr)}
+ .look-list .archive-photo,.look-photos .archive-photo{aspect-ratio:470/322}
+ .look-copy{padding-top:16px}.look-copy h2{font-size:31px}
+ .celebrity-heading h1{font-size:52px;line-height:1.2}.celebrity-heading h2{font-size:17px}
+ .celebrity-grid{gap:16px}.celebrity-caption{margin-top:8px;font-size:18px;line-height:24px}
+}
+@media(max-width:799px){
+ .archive-special{padding:40px 24px 64px}
+ .archive-special>.archive-section-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 76px;height:44px;gap:0;font-size:11px;line-height:18px;white-space:normal;overflow:visible}
+ .archive-special>.archive-section-nav strong{display:block}
+ .archive-special>h1{font-size:32px;margin:24px 0}
+ .look-list{gap:24px}.look-list>a,.look-detail{grid-template-columns:minmax(0,208fr) minmax(0,107fr);gap:12px}
+ .look-list .archive-photo,.look-photos .archive-photo{aspect-ratio:208/142}
+ .look-copy{padding-top:8px}.look-copy h2{font-size:16px}.look-romance h2{font-size:13px}
+ .look-photos{gap:12px}.look-back{font-size:13px;margin-top:24px}
+ .celebrity-heading{margin:24px 0}.celebrity-heading h1{font-size:34px}.celebrity-heading h2{font-size:15px}
+ .celebrity-grid{gap:8px}.celebrity-caption{margin-top:6px;font-size:8px;line-height:18px}
+ .archive-pagination{margin:24px 0}.celebrity-bottom{align-items:flex-start;flex-direction:column}
+}
 
 
 /* EVENT / Figma store + package tabs and responsive articles */

@@ -1,4 +1,5 @@
 import { DESIGN } from './design-data.js';
+import { ARCHIVE } from './archive-data.js';
 
 const RESERVATION = 'https://naver.me/G7ZOAG1j';
 const CONSULTATION = 'https://pf.kakao.com/_ljgUxj/chat';
@@ -41,8 +42,8 @@ function header(dark = false) {
   return `<header class="site-header ${dark ? 'dark' : ''}"><a class="brand" href="#/" aria-label="헤리츠테일러 메인">HERITZ TAILOR</a><nav class="desktop-nav" aria-label="주 메뉴">${NAVIGATION.map(([name, href]) => `<a href="${href}">${name}</a>`).join('')}</nav><button type="button" id="open-menu" class="menu-button" aria-label="전체 메뉴 열기" aria-haspopup="dialog" aria-controls="menu-dialog">☰</button></header>`;
 }
 
-function footer(archive = false) {
-  return `<footer class="site-footer"><a class="brand" href="#/">HERITZ TAILOR</a><p>${archive ? 'ARCHIVE / CUSTOMER GALLERY' : 'Tailor House · Rental Center · Seoul'}</p></footer>`;
+function footer(archive = false, archiveLabel = 'CUSTOMER GALLERY') {
+  return `<footer class="site-footer"><a class="brand" href="#/">HERITZ TAILOR</a><p>${archive ? 'ARCHIVE / ' + archiveLabel : 'Tailor House · Rental Center · Seoul'}</p></footer>`;
 }
 
 function contact() {
@@ -92,18 +93,32 @@ function tabs(page, active) {
   return `<nav class="tabs ${page}-tabs" aria-label="${page === 'archive' ? '고객 사진' : '이벤트'} 분류">${options.map(([key,label]) => `<a class="tab ${key===active ? 'active' : ''}" href="#/${page}/${key}" ${key===active ? 'aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
 }
 
-const LOOKBOOK_NAMES=['DAYLIGHT','THE BLOOM','TIMELESS','THE ROMANCE','LOOKBOOK 05'];
 function archiveNav(active){
  const menu=[['lookbook','Look book'],['celebrity','Celebrity'],['all','고객 갤러리']];
  return '<nav class="archive-section-nav" aria-label="ARCHIVE 하위 메뉴"><strong>ARCHIVE</strong>'+menu.map(([id,title])=>'<a href="#/archive/'+id+'" class="'+(active===id?'selected':'')+'" '+(active===id?'aria-current="page"':'')+'>'+title+'</a>').join('')+'</nav>';
 }
-function archiveSpecialPage(kind,number){
- const isLook=kind==='lookbook', detail=isLook && number>0;
- const name=isLook?'LOOKBOOK':'CELEBRITY';
- const page=Math.min(isLook?5:3,Math.max(1,number||1));
- const CELEBRITY_FIRST_PAGE=[["배우 김범","블랙 피크드"],["배우 윤경호","더 블랙"],["배우 지승현","블랙 노치드"],["배우 차학연","브런디"],["코미디언 신동엽","블랙 벨벳"],["배우 김원빈","화이트 트위드"],["빅스 켄","바이스"],["아나운서 김정근","노그"],["아나운서 전현무","도슨"],["ZE:A 동준","다크곤"]];
- const body=isLook ? (detail?'<section class="look-detail"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div class="look-fixed"><p>LOOK '+page+'</p><h2>'+LOOKBOOK_NAMES[page-1]+'</h2><a href="#/archive/lookbook">← 목록으로 돌아가기</a></div></section>': '<div class="look-list">'+LOOKBOOK_NAMES.map((title,i)=>'<a href="#/archive/lookbook/'+(i+1)+'"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div><span>LOOK '+(i+1)+'</span><h2>'+title+'</h2></div></a>').join('')+'</div>') : '<div class="celebrity-grid">'+Array.from({length:18},(_,i)=>'<article><div class="archive-awaiting">원본 이미지 적용 대기</div><p>'+ (page===1 && CELEBRITY_FIRST_PAGE[i] ? escape(CELEBRITY_FIRST_PAGE[i][0])+' · '+escape(CELEBRITY_FIRST_PAGE[i][1]) : '셀럽명·제품명 원본 확인 필요') +'</p></article>').join('')+'</div><nav class="archive-pagination" aria-label="Celebrity 페이지">'+[1,2,3].map(n=>'<a '+(n===page?'aria-current="page"':'')+' href="#/archive/celebrity/'+n+'">'+n+'</a>').join('')+'</nav>';
- return header()+'<main id="main" class="archive-special">'+archiveNav(kind)+'<h1 class="serif">'+name+'</h1>'+body+'</main>'+footer(true)+contact();
+function archivePhoto(data, alt, priority = false) {
+ return `<img class="archive-photo" src="${escape(data.src)}" alt="${escape(alt)}" width="${data.width}" height="${data.height}" loading="${priority ? 'eager' : 'lazy'}" decoding="async" ${priority ? 'fetchpriority="high"' : ''} data-figma-node="${escape(data.nodeId)}">`;
+}
+function lookCopy(look, index, fixed = false) {
+ return `<div class="look-copy ${fixed ? 'look-fixed' : ''} ${index === 3 ? 'look-romance' : ''}"><p>LOOK ${index + 1}</p><h2>${escape(look.title)}</h2></div>`;
+}
+function archiveSpecialPage(kind, number) {
+ const isLook = kind === 'lookbook';
+ const page = Math.min(isLook ? ARCHIVE.lookbooks.length : ARCHIVE.celebrity.length, Math.max(1, Math.floor(number || 1)));
+ let body;
+ if (isLook) {
+  if (number > 0) {
+   const look = ARCHIVE.lookbooks[page - 1];
+   body = `<section class="look-detail" aria-label="${escape(look.title)}"><div class="look-photos">${look.photos.map((p,i) => archivePhoto(p, `${look.title} 사진 ${i + 1}`, i === 0)).join('')}</div>${lookCopy(look, page - 1, true)}</section><a class="look-back" href="#/archive/lookbook">← LOOKBOOK 목록</a>`;
+  } else {
+   body = `<div class="look-list">${ARCHIVE.lookbooks.map((look,i) => `<a href="#/archive/lookbook/${i+1}" aria-label="LOOK ${i+1} ${escape(look.title)} 상세 보기">${archivePhoto(look.photos[0], look.title, i === 0)}${lookCopy(look, i)}</a>`).join('')}</div>`;
+  }
+ } else {
+  body = `<div class="celebrity-grid">${ARCHIVE.celebrity[page-1].map((p,i) => `<article>${archivePhoto(p, p.caption.map(s => s.trim()).join(' · '), i < 3)}<div class="celebrity-caption">${p.caption.map(line => `<p>${escape(line)}</p>`).join('')}</div></article>`).join('')}</div><nav class="archive-pagination" aria-label="Celebrity 페이지">${ARCHIVE.celebrity.map((_,i) => `<a ${i+1 === page ? 'aria-current="page"' : ''} href="#/archive/celebrity/${i+1}">${i+1}</a>`).join('')}</nav><div class="celebrity-bottom"><p>헤리츠테일러와 함께한 협찬 스타일입니다.</p><a class="button secondary" href="#/">메인으로 돌아가기 →</a></div>`;
+ }
+ const heading = isLook ? '<h1 class="serif">LOOKBOOK</h1>' : '<div class="celebrity-heading"><h1 class="serif">CELEBRITY</h1><h2>협찬 갤러리</h2><p>헤리츠테일러와 함께한 셀럽들의 스타일을 만나보세요.</p></div>';
+ return header() + `<main id="main" class="archive-special archive-${kind}">${archiveNav(kind)}${heading}${body}</main>` + footer(true, isLook ? 'LOOKBOOK' : 'CELEBRITY') + contact();
 }
 function archivePage(category) {
   gallery = DESIGN[category];
