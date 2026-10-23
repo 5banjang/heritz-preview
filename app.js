@@ -6,7 +6,7 @@ const LOCATION = 'https://map.naver.com/p/entry/place/36523919';
 const NAVIGATION = [
   ['ABOUT', '#/main/experience'], ['TAILORING', '#/main/experience'],
   ['RENTAL', '#/main/rental'], ['ARCHIVE', '#/archive/all'],
-  ['EVENT', '#/event/all'], ['STORE', '#/main/store']
+  ['EVENT', '#/event/all'], ['STORE', '#/store/cheongdam']
 ];
 const app = document.querySelector('#app');
 const menu = document.querySelector('#menu-dialog');
@@ -57,7 +57,7 @@ function mainPage() {
     ['SELECT', '원단·디자인 또는 렌탈 수트를 선택합니다.'],
     ['FINAL', '최종 피팅 후 예식 준비를 마무리합니다.']
   ];
-  return `${header(true)}<main id="main">
+  return `<div class="site-switch"><span>현재 맞춤 홈페이지</span><span aria-hidden="true">|</span><a href="#/main/rental">렌탈 컬렉션 보기 →</a></div>${header(true)}<main id="main">
     <section class="hero" aria-labelledby="hero-title">${photo(main[0], '헤리츠테일러 웨딩 수트를 입은 신랑과 신부', 'hero-photo', true, true)}<div class="hero-content"><p class="eyebrow">HERITZ TAILOR · WEDDING SUIT</p><h1 id="hero-title">Crafted for your moment</h1><p class="hero-description">맞춤예복부터 렌탈까지,<br class="mobile-break"> 한 공간에서 완성하는 웨딩 수트</p><a class="button hero-button" href="#/main/rental">RENTAL COLLECTION</a></div></section>
     <section class="section moments" id="moments" aria-labelledby="moments-title"><p class="eyebrow">ARCHIVE / CUSTOMER GALLERY</p><h2 class="serif" id="moments-title">HERITZ MOMENTS</h2><p class="section-description">헤리츠테일러를 입고 완성한, 고객님의 스튜디오 촬영과 결혼식.</p><div class="four-grid moment-grid">${main.slice(1,5).map((p,i) => `<a class="photo-link" href="#/archive/${i%2 === 0 ? 'studio' : 'ceremony'}" aria-label="${i%2 === 0 ? '스튜디오 촬영' : '결혼식 본식'} 고객 사진 보기">${photo(p, i%2 === 0 ? '스튜디오 촬영 고객 착용사진' : '결혼식 본식 고객 착용사진', '', false, true)}</a>`).join('')}</div><div class="section-bottom"><p>스튜디오 촬영 · 결혼식 본식</p><a class="button gallery-button" href="#/archive/all">고객 착용사진 전체 보기 &nbsp; →</a></div></section>
     <section class="section rental" id="rental" aria-labelledby="rental-title"><h2 class="serif" id="rental-title">A suit for every silhouette</h2><p class="section-description">스타일과 체형에 따라 선택할 수 있는 렌탈 컬렉션</p><div class="four-grid rental-grid">${main.slice(5,9).map((p,i) => photo(p, ['블랙 렌탈 수트','블루 렌탈 수트','그레이 렌탈 수트','버건디 렌탈 수트'][i], '', false, true)).join('')}</div></section>
@@ -67,6 +67,23 @@ function mainPage() {
   </main>${footer()}${contact()}`;
 }
 
+const STORE_NAMES=[['cheongdam','청담 본점'],['rental-center','청담 렌탈센터'],['suwon','수원'],['hapjeong','합정'],['ilsan','일산']];
+const STORE_PHOTOS={'cheongdam':[DESIGN.main[13]],'rental-center':[DESIGN.main[14]]};
+let storePhotoIndex=0;
+function storePage(slug) {
+ const name=STORE_NAMES.find(x=>x[0]===slug)?.[1] || '청담 본점';
+ const photos=STORE_PHOTOS[slug]||[];
+ storePhotoIndex=0;
+ const info=slug==='cheongdam'?[['위치','서울 강남구 압구정로72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 11:00~20:00 / 토요일~일요일 10:00~20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능']]:[];
+ return `${header()}<main id="main" class="store-detail"><nav class="store-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label])=>`<a href="#/store/${id}" class="${slug===id?'selected':''}" ${slug===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav><h1 class="serif">STORE</h1><h2>${name}</h2>${photos.length?`<section class="store-slideshow" aria-label="매장 사진"><button type="button" class="store-photo-button" data-store-next aria-label="다음 사진">${photo(photos[0],name+' 매장 사진')}</button><div class="store-photo-controls"><button data-store-prev type="button">← 이전</button><span data-store-count>1 / ${photos.length}</span><button data-store-next type="button">다음 →</button></div></section>`:`<div class="store-photo-pending" role="status">피그마 원본 사진 연결 준비 중</div>`}<dl class="store-info">${info.map(([key,value])=>`<div><dt>${key}</dt><dd>${value}</dd></div>`).join('')}</dl></main>${footer()}${contact()}`;
+}
+function cycleStorePhoto(delta) {
+ const store=STORE_PHOTOS[parseRoute().selection]||[];
+ if (!store.length) return;
+ storePhotoIndex=(storePhotoIndex+delta+store.length)%store.length;
+ document.querySelector('.store-photo-button').innerHTML=photo(store[storePhotoIndex],'매장 사진 '+(storePhotoIndex+1));
+ document.querySelector('[data-store-count]').textContent=`${storePhotoIndex+1} / ${store.length}`;
+}
 function tabs(page, active) {
   const options = page === 'archive' ? [['all','전체'],['studio','스튜디오 촬영'],['ceremony','본식']] : [['all','전체 이벤트'],['groom','신랑 패키지'],['family','가족 패키지']];
   return `<nav class="tabs ${page}-tabs" aria-label="${page === 'archive' ? '고객 사진' : '이벤트'} 분류">${options.map(([key,label]) => `<a class="tab ${key===active ? 'active' : ''}" href="#/${page}/${key}" ${key===active ? 'aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
@@ -91,6 +108,7 @@ function eventPage(category) {
 
 function parseRoute(hash = location.hash) {
   const [,page='main',selection='all'] = hash.replace(/^#/, '').split('/');
+  if (page==='store') return {page,selection:STORE_NAMES.some(x=>x[0]===selection)?selection:'cheongdam'};
   if (page==='archive') return {page, selection:['all','studio','ceremony'].includes(selection) ? selection : 'all'};
   if (page==='event') return {page, selection:['all','groom','family'].includes(selection) ? selection : 'all'};
   return {page:'main', selection:['experience','rental','store','booking','moments'].includes(selection) ? selection : ''};
@@ -125,6 +143,8 @@ function displayPhoto(index) {
 
 document.querySelector('#menu-navigation').innerHTML=NAVIGATION.map(([label,href]) => `<a href="${href}">${label}<span aria-hidden="true">↗</span></a>`).join('');
 document.addEventListener('click',event => {
+  if(event.target.closest('[data-store-prev]')){cycleStorePhoto(-1);return;}
+  if(event.target.closest('[data-store-next]')){cycleStorePhoto(1);return;}
   const opener=event.target.closest('#open-menu');
   if(opener){menu.showModal();return;}
   const closer=event.target.closest('[data-close]');
