@@ -115,15 +115,36 @@ function packageCard(kind) {
   return `<section class="package-section ${kind}" aria-label="${label} 패키지">${groom ? visual+copy : copy+visual}</section>`;
 }
 
-function eventPage(category) {
-  return `${header()}<main id="main" class="event-main"><section class="event-heading"><p class="eyebrow">HERITZ EVENT</p><h1 class="serif">EVENT</h1><p>이벤트별 구성과 혜택을 확인하세요.</p>${tabs('event',category)}</section>${category!=='family' ? packageCard('groom') : ''}${category!=='groom' ? packageCard('family') : ''}<div class="event-bottom"><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></main>${footer()}${contact()}`;
+const EVENT_POSTS=[
+ {id:1,title:'[진행중] 9월~12월 후기 이벤트',date:'2026.10.20'},
+ {id:2,title:'[결혼준비ZERO프로젝트] 파트너쉽 모집',date:'2026.10.19'},
+ {id:3,title:'[진행중] 웨딩 스냅 이벤트',date:'2026.10.18'},
+ {id:4,title:'[진행중] 청담점 지인소개 이벤트',date:'2026.10.17'}
+];
+function eventTabs(active){
+ return '<nav class="event-category-tabs" aria-label="이벤트 종류">'+[['store','매장 이벤트'],['package','패키지 이벤트']].map(([slug,label])=>'<a href="#/event/'+slug+'" class="'+(active===slug?'active':'')+'" '+(active===slug?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav>';
+}
+function eventPage(category,articleId=0) {
+ const packageType=['groom','family'].includes(category)?category:'';
+ const isPackage=category==='package'||!!packageType;
+ const post=EVENT_POSTS.find(p=>p.id===articleId);
+ const heading='<section class="event-heading"><p class="eyebrow">HERITZ EVENT</p><h1 class="serif">EVENT</h1><p>이벤트별 구성과 혜택을 확인하세요.</p>'+eventTabs(isPackage?'package':'store')+'</section>';
+ let content='';
+ if(post&&!isPackage){
+  content='<article class="event-article"><p class="eyebrow">매장 이벤트</p><h2>'+escape(post.title)+'</h2><time>'+post.date+'</time><div class="event-original-pending">피그마 상세 콘텐츠 원본 이미지 적용 대기</div><a href="#/event/store" class="event-return">← 목록으로 돌아가기</a><section class="event-recent"><h3>최신글</h3>'+EVENT_POSTS.filter(p=>p.id!==post.id).map(p=>'<a href="#/event/store/'+p.id+'">'+escape(p.title)+'</a>').join('')+'</section></article>';
+ } else if(isPackage) {
+  content=(packageType!=='family'?packageCard('groom'):'')+(packageType!=='groom'?packageCard('family'):'');
+ } else {
+  content='<section class="event-post-section"><p class="event-sort">최신글순 ↓</p><div class="event-post-grid">'+EVENT_POSTS.map(p=>'<a class="event-post-card" href="#/event/store/'+p.id+'"><div class="event-original-pending">피그마 원본 이벤트 이미지 적용 대기</div><h2>'+escape(p.title)+'</h2><time>'+p.date+'</time></a>').join('')+'</div></section>';
+ }
+ return header()+'<main id="main" class="event-main">'+heading+content+'<div class="event-bottom"><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></main>'+footer()+contact();
 }
 
 function parseRoute(hash = location.hash) {
   const [,page='main',selection='all'] = hash.replace(/^#/, '').split('/');
   if (page==='store') return {page,selection:STORE_NAMES.some(x=>x[0]===selection)?selection:'cheongdam'};
   if (page==='archive') return {page, selection:['all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'all', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
-  if (page==='event') return {page, selection:['all','groom','family'].includes(selection) ? selection : 'all'};
+  if (page==='event') return {page, selection:['all','store','package','groom','family'].includes(selection) ? selection : 'store', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
   return {page:'main', selection:['experience','rental','store','booking','moments'].includes(selection) ? selection : ''};
 }
 
@@ -132,7 +153,7 @@ function render() {
   if (menu.open) menu.close();
   if (photoDialog.open) photoDialog.close();
   if (currentPage!==route.page || route.page!=='main') {
-    app.innerHTML=route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection) : route.page==='store' ? storePage(route.selection) : mainPage();
+    app.innerHTML=route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection,route.number) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
   }
   document.title=route.page==='archive' ? 'ARCHIVE | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : route.page==='store' ? '매장 안내 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
