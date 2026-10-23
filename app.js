@@ -119,10 +119,10 @@ function render() {
   if (menu.open) menu.close();
   if (photoDialog.open) photoDialog.close();
   if (currentPage!==route.page || route.page!=='main') {
-    app.innerHTML=route.page==='archive' ? archivePage(route.selection) : route.page==='event' ? eventPage(route.selection) : mainPage();
+    app.innerHTML=route.page==='archive' ? archivePage(route.selection) : route.page==='event' ? eventPage(route.selection) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
   }
-  document.title=route.page==='archive' ? '고객 갤러리 | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
+  document.title=route.page==='archive' ? '고객 갤러리 | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : route.page==='store' ? '매장 안내 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
   requestAnimationFrame(() => {
     if(route.page==='main' && route.selection) document.getElementById(route.selection)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
     else window.scrollTo({top:0,behavior:'instant'});
