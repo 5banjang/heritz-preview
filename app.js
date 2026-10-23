@@ -98,7 +98,7 @@ function archiveNav(active){
  return '<nav class="archive-section-nav" aria-label="ARCHIVE 하위 메뉴"><strong>ARCHIVE</strong>'+menu.map(([id,title])=>'<a href="#/archive/'+id+'" class="'+(active===id?'selected':'')+'" '+(active===id?'aria-current="page"':'')+'>'+title+'</a>').join('')+'</nav>';
 }
 function archivePhoto(data, alt, priority = false) {
- return `<img class="archive-photo" src="${escape(data.src)}" alt="${escape(alt)}" width="${data.width}" height="${data.height}" loading="${priority ? 'eager' : 'lazy'}" decoding="async" ${priority ? 'fetchpriority="high"' : ''} data-figma-node="${escape(data.nodeId)}">`;
+ return `<img class="archive-photo" src="${escape(data.src)}?v=9915ea1" alt="${escape(alt)}" width="${data.width}" height="${data.height}" loading="${priority ? 'eager' : 'lazy'}" decoding="async" ${priority ? 'fetchpriority="high"' : ''} data-figma-node="${escape(data.nodeId)}">`;
 }
 function lookCopy(look, index, fixed = false) {
  return `<div class="look-copy ${fixed ? 'look-fixed' : ''} ${index === 3 ? 'look-romance' : ''}"><p>LOOK ${index + 1}</p><h2>${escape(look.title)}</h2></div>`;
