@@ -53,3 +53,7 @@ dialog{padding:0;border:0;color:#111;max-width:none;max-height:none}dialog::back
 .event-return{display:inline-block;margin:12px 0 40px;font-weight:700}.event-recent{border-top:1px solid #bbb;padding-top:32px}.event-recent h3{font-size:20px;margin-bottom:20px}.event-recent a{display:block;padding:14px 0;border-bottom:1px solid #ccc;font-size:15px}
 @media(max-width:1279px){.event-post-section{padding:32px 40px 64px}.event-post-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:799px){.event-post-section{padding:24px 24px 56px}.event-post-grid{gap:24px}.event-post-card h2{font-size:13px}.event-post-card .event-original-pending{font-size:11px;padding:8px;min-height:0}.event-category-tabs a{font-size:14px;min-height:44px}.event-article{padding:32px 24px 56px}.event-article>h2{font-size:23px}.event-article>.event-original-pending{min-height:300px}}
+
+/* STORE original photos: 1–7 per location */
+.store-original-photo{width:100%;height:100%;overflow:hidden}
+.store-original-photo>img{width:100%;height:100%;object-fit:cover;display:block;position:static}
