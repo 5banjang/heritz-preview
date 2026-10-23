@@ -89,9 +89,21 @@ function tabs(page, active) {
   return `<nav class="tabs ${page}-tabs" aria-label="${page === 'archive' ? '고객 사진' : '이벤트'} 분류">${options.map(([key,label]) => `<a class="tab ${key===active ? 'active' : ''}" href="#/${page}/${key}" ${key===active ? 'aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
 }
 
+const LOOKBOOK_NAMES=['DAYLIGHT','THE BLOOM','LOOK 3','LOOK 4','LOOK 5'];
+function archiveNav(active){
+ const menu=[['lookbook','Look book'],['celebrity','Celebrity'],['all','고객 갤러리']];
+ return '<nav class="archive-section-nav" aria-label="ARCHIVE 하위 메뉴"><strong>ARCHIVE</strong>'+menu.map(([id,title])=>'<a href="#/archive/'+id+'" class="'+(active===id?'selected':'')+'" '+(active===id?'aria-current="page"':'')+'>'+title+'</a>').join('')+'</nav>';
+}
+function archiveSpecialPage(kind,number){
+ const isLook=kind==='lookbook', detail=isLook && number>0;
+ const name=isLook?'LOOKBOOK':'CELEBRITY';
+ const page=Math.min(3,Math.max(1,number||1));
+ const body=isLook ? (detail?'<section class="look-detail"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div class="look-fixed"><p>LOOK '+page+'</p><h2>'+LOOKBOOK_NAMES[page-1]+'</h2><a href="#/archive/lookbook">← 목록으로 돌아가기</a></div></section>': '<div class="look-list">'+LOOKBOOK_NAMES.map((title,i)=>'<a href="#/archive/lookbook/'+(i+1)+'"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div><span>LOOK '+(i+1)+'</span><h2>'+title+'</h2></div></a>').join('')+'</div>') : '<div class="celebrity-grid">'+Array.from({length:18},(_,i)=>'<article><div class="archive-awaiting">원본 이미지 적용 대기</div><p>Celebrity '+((page-1)*18+i+1)+'</p></article>').join('')+'</div><nav class="archive-pagination" aria-label="Celebrity 페이지">'+[1,2,3].map(n=>'<a '+(n===page?'aria-current="page"':'')+' href="#/archive/celebrity/'+n+'">'+n+'</a>').join('')+'</nav>';
+ return header()+'<main id="main" class="archive-special">'+archiveNav(kind)+'<h1 class="serif">'+name+'</h1>'+body+'</main>'+footer(true)+contact();
+}
 function archivePage(category) {
   gallery = DESIGN[category];
-  return `${header()}<main id="main" class="archive-main"><div class="archive-subnav"><span>ARCHIVE</span><span>Look book</span><span>Celebrity</span><span class="selected">고객 갤러리</span></div><section class="archive-content" aria-labelledby="archive-title"><div class="archive-heading"><h1 class="serif" id="archive-title">HERITZ MOMENTS</h1><h2>고객 갤러리</h2><p>스튜디오 촬영부터 결혼식까지, 헤리츠테일러와 함께한 고객님의 소중한 순간을 만나보세요.</p></div><div class="gallery-controls">${tabs('archive',category)}<p>사진을 선택해 크게 보세요.</p></div><div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`)}<span class="customer-caption"><strong>${label}</strong><span aria-hidden="true">↗</span></span></button>`;}).join('')}</div><div class="gallery-bottom"><p>소중한 순간을 함께해 주신 고객님들께 감사드립니다.</p><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></section></main>${footer(true)}${contact()}`;
+  return `${header()}<main id="main" class="archive-main">${archiveNav("all")}<section class="archive-content" aria-labelledby="archive-title"><div class="archive-heading"><h1 class="serif" id="archive-title">HERITZ MOMENTS</h1><h2>고객 갤러리</h2><p>스튜디오 촬영부터 결혼식까지, 헤리츠테일러와 함께한 고객님의 소중한 순간을 만나보세요.</p></div><div class="gallery-controls">${tabs('archive',category)}<p>사진을 선택해 크게 보세요.</p></div><div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`)}<span class="customer-caption"><strong>${label}</strong><span aria-hidden="true">↗</span></span></button>`;}).join('')}</div><div class="gallery-bottom"><p>소중한 순간을 함께해 주신 고객님들께 감사드립니다.</p><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></section></main>${footer(true)}${contact()}`;
 }
 
 function packageCard(kind) {
@@ -109,7 +121,7 @@ function eventPage(category) {
 function parseRoute(hash = location.hash) {
   const [,page='main',selection='all'] = hash.replace(/^#/, '').split('/');
   if (page==='store') return {page,selection:STORE_NAMES.some(x=>x[0]===selection)?selection:'cheongdam'};
-  if (page==='archive') return {page, selection:['all','studio','ceremony'].includes(selection) ? selection : 'all'};
+  if (page==='archive') return {page, selection:['all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'all', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
   if (page==='event') return {page, selection:['all','groom','family'].includes(selection) ? selection : 'all'};
   return {page:'main', selection:['experience','rental','store','booking','moments'].includes(selection) ? selection : ''};
 }
@@ -119,10 +131,10 @@ function render() {
   if (menu.open) menu.close();
   if (photoDialog.open) photoDialog.close();
   if (currentPage!==route.page || route.page!=='main') {
-    app.innerHTML=route.page==='archive' ? archivePage(route.selection) : route.page==='event' ? eventPage(route.selection) : route.page==='store' ? storePage(route.selection) : mainPage();
+    app.innerHTML=route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
   }
-  document.title=route.page==='archive' ? '고객 갤러리 | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : route.page==='store' ? '매장 안내 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
+  document.title=route.page==='archive' ? 'ARCHIVE | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : route.page==='store' ? '매장 안내 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
   requestAnimationFrame(() => {
     if(route.page==='main' && route.selection) document.getElementById(route.selection)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
     else window.scrollTo({top:0,behavior:'instant'});
