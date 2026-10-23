@@ -89,7 +89,7 @@ function tabs(page, active) {
   return `<nav class="tabs ${page}-tabs" aria-label="${page === 'archive' ? '고객 사진' : '이벤트'} 분류">${options.map(([key,label]) => `<a class="tab ${key===active ? 'active' : ''}" href="#/${page}/${key}" ${key===active ? 'aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
 }
 
-const LOOKBOOK_NAMES=['DAYLIGHT','THE BLOOM','LOOK 3','LOOK 4','LOOK 5'];
+const LOOKBOOK_NAMES=['DAYLIGHT','THE BLOOM','TIMELESS','THE ROMANCE','LOOKBOOK 05'];
 function archiveNav(active){
  const menu=[['lookbook','Look book'],['celebrity','Celebrity'],['all','고객 갤러리']];
  return '<nav class="archive-section-nav" aria-label="ARCHIVE 하위 메뉴"><strong>ARCHIVE</strong>'+menu.map(([id,title])=>'<a href="#/archive/'+id+'" class="'+(active===id?'selected':'')+'" '+(active===id?'aria-current="page"':'')+'>'+title+'</a>').join('')+'</nav>';
@@ -97,7 +97,8 @@ function archiveNav(active){
 function archiveSpecialPage(kind,number){
  const isLook=kind==='lookbook', detail=isLook && number>0;
  const name=isLook?'LOOKBOOK':'CELEBRITY';
- const page=Math.min(3,Math.max(1,number||1));
+ const page=Math.min(isLook?5:3,Math.max(1,number||1));
+ const CELEBRITY_FIRST_PAGE=[["배우 김범","블랙 피크드"],["배우 윤경호","더 블랙"],["배우 지승현","블랙 노치드"],["배우 차학연","브런디"],["코미디언 신동엽","블랙 벨벳"],["배우 김원빈","화이트 트위드"],["빅스 켄","바이스"],["아나운서 김정근","노그"],["아나운서 전현무","도슨"],["ZE:A 동준","다크곤"]];
  const body=isLook ? (detail?'<section class="look-detail"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div class="look-fixed"><p>LOOK '+page+'</p><h2>'+LOOKBOOK_NAMES[page-1]+'</h2><a href="#/archive/lookbook">← 목록으로 돌아가기</a></div></section>': '<div class="look-list">'+LOOKBOOK_NAMES.map((title,i)=>'<a href="#/archive/lookbook/'+(i+1)+'"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div><span>LOOK '+(i+1)+'</span><h2>'+title+'</h2></div></a>').join('')+'</div>') : '<div class="celebrity-grid">'+Array.from({length:18},(_,i)=>'<article><div class="archive-awaiting">원본 이미지 적용 대기</div><p>Celebrity '+((page-1)*18+i+1)+'</p></article>').join('')+'</div><nav class="archive-pagination" aria-label="Celebrity 페이지">'+[1,2,3].map(n=>'<a '+(n===page?'aria-current="page"':'')+' href="#/archive/celebrity/'+n+'">'+n+'</a>').join('')+'</nav>';
  return header()+'<main id="main" class="archive-special">'+archiveNav(kind)+'<h1 class="serif">'+name+'</h1>'+body+'</main>'+footer(true)+contact();
 }
