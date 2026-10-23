@@ -6,7 +6,7 @@ const LOCATION = 'https://map.naver.com/p/entry/place/36523919';
 const NAVIGATION = [
   ['ABOUT', '#/main/experience'], ['TAILORING', '#/main/experience'],
   ['RENTAL', '#/main/rental'], ['ARCHIVE', '#/archive/all'],
-  ['EVENT', '#/event/all'], ['STORE', '#/main/store']
+  ['EVENT', '#/event/all'], ['STORE', '#/store/cheongdam']
 ];
 const app = document.querySelector('#app');
 const menu = document.querySelector('#menu-dialog');
@@ -57,7 +57,7 @@ function mainPage() {
     ['SELECT', '원단·디자인 또는 렌탈 수트를 선택합니다.'],
     ['FINAL', '최종 피팅 후 예식 준비를 마무리합니다.']
   ];
-  return `${header(true)}<main id="main">
+  return `<div class="site-switch"><span>현재 맞춤 홈페이지</span><span aria-hidden="true">|</span><a href="#/main/rental">렌탈 컬렉션 보기 →</a></div>${header(true)}<main id="main">
     <section class="hero" aria-labelledby="hero-title">${photo(main[0], '헤리츠테일러 웨딩 수트를 입은 신랑과 신부', 'hero-photo', true, true)}<div class="hero-content"><p class="eyebrow">HERITZ TAILOR · WEDDING SUIT</p><h1 id="hero-title">Crafted for your moment</h1><p class="hero-description">맞춤예복부터 렌탈까지,<br class="mobile-break"> 한 공간에서 완성하는 웨딩 수트</p><a class="button hero-button" href="#/main/rental">RENTAL COLLECTION</a></div></section>
     <section class="section moments" id="moments" aria-labelledby="moments-title"><p class="eyebrow">ARCHIVE / CUSTOMER GALLERY</p><h2 class="serif" id="moments-title">HERITZ MOMENTS</h2><p class="section-description">헤리츠테일러를 입고 완성한, 고객님의 스튜디오 촬영과 결혼식.</p><div class="four-grid moment-grid">${main.slice(1,5).map((p,i) => `<a class="photo-link" href="#/archive/${i%2 === 0 ? 'studio' : 'ceremony'}" aria-label="${i%2 === 0 ? '스튜디오 촬영' : '결혼식 본식'} 고객 사진 보기">${photo(p, i%2 === 0 ? '스튜디오 촬영 고객 착용사진' : '결혼식 본식 고객 착용사진', '', false, true)}</a>`).join('')}</div><div class="section-bottom"><p>스튜디오 촬영 · 결혼식 본식</p><a class="button gallery-button" href="#/archive/all">고객 착용사진 전체 보기 &nbsp; →</a></div></section>
     <section class="section rental" id="rental" aria-labelledby="rental-title"><h2 class="serif" id="rental-title">A suit for every silhouette</h2><p class="section-description">스타일과 체형에 따라 선택할 수 있는 렌탈 컬렉션</p><div class="four-grid rental-grid">${main.slice(5,9).map((p,i) => photo(p, ['블랙 렌탈 수트','블루 렌탈 수트','그레이 렌탈 수트','버건디 렌탈 수트'][i], '', false, true)).join('')}</div></section>
@@ -67,14 +67,44 @@ function mainPage() {
   </main>${footer()}${contact()}`;
 }
 
+const STORE_NAMES=[['cheongdam','청담 본점'],['rental-center','청담 렌탈센터'],['suwon','수원'],['hapjeong','합정'],['ilsan','일산']];
+const STORE_PHOTOS={'cheongdam':[DESIGN.main[13]],'rental-center':[DESIGN.main[14]]};
+let storePhotoIndex=0;
+function storePage(slug) {
+ const name=STORE_NAMES.find(x=>x[0]===slug)?.[1] || '청담 본점';
+ const photos=STORE_PHOTOS[slug]||[];
+ storePhotoIndex=0;
+ const info=slug==='cheongdam'?[['위치','서울 강남구 압구정로72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 11:00~20:00 / 토요일~일요일 10:00~20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능']]:[];
+ return `${header()}<main id="main" class="store-detail"><nav class="store-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label])=>`<a href="#/store/${id}" class="${slug===id?'selected':''}" ${slug===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav><h1 class="serif">STORE</h1><h2>${name}</h2>${photos.length?`<section class="store-slideshow" aria-label="매장 사진"><button type="button" class="store-photo-button" data-store-next aria-label="다음 사진">${photo(photos[0],name+' 매장 사진')}</button><div class="store-photo-controls"><button data-store-prev type="button">← 이전</button><span data-store-count>1 / ${photos.length}</span><button data-store-next type="button">다음 →</button></div></section>`:`<div class="store-photo-pending" role="status">피그마 원본 사진 연결 준비 중</div>`}<dl class="store-info">${info.map(([key,value])=>`<div><dt>${key}</dt><dd>${value}</dd></div>`).join('')}</dl></main>${footer()}${contact()}`;
+}
+function cycleStorePhoto(delta) {
+ const store=STORE_PHOTOS[parseRoute().selection]||[];
+ if (!store.length) return;
+ storePhotoIndex=(storePhotoIndex+delta+store.length)%store.length;
+ document.querySelector('.store-photo-button').innerHTML=photo(store[storePhotoIndex],'매장 사진 '+(storePhotoIndex+1));
+ document.querySelector('[data-store-count]').textContent=`${storePhotoIndex+1} / ${store.length}`;
+}
 function tabs(page, active) {
   const options = page === 'archive' ? [['all','전체'],['studio','스튜디오 촬영'],['ceremony','본식']] : [['all','전체 이벤트'],['groom','신랑 패키지'],['family','가족 패키지']];
   return `<nav class="tabs ${page}-tabs" aria-label="${page === 'archive' ? '고객 사진' : '이벤트'} 분류">${options.map(([key,label]) => `<a class="tab ${key===active ? 'active' : ''}" href="#/${page}/${key}" ${key===active ? 'aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
 }
 
+const LOOKBOOK_NAMES=['DAYLIGHT','THE BLOOM','TIMELESS','THE ROMANCE','LOOKBOOK 05'];
+function archiveNav(active){
+ const menu=[['lookbook','Look book'],['celebrity','Celebrity'],['all','고객 갤러리']];
+ return '<nav class="archive-section-nav" aria-label="ARCHIVE 하위 메뉴"><strong>ARCHIVE</strong>'+menu.map(([id,title])=>'<a href="#/archive/'+id+'" class="'+(active===id?'selected':'')+'" '+(active===id?'aria-current="page"':'')+'>'+title+'</a>').join('')+'</nav>';
+}
+function archiveSpecialPage(kind,number){
+ const isLook=kind==='lookbook', detail=isLook && number>0;
+ const name=isLook?'LOOKBOOK':'CELEBRITY';
+ const page=Math.min(isLook?5:3,Math.max(1,number||1));
+ const CELEBRITY_FIRST_PAGE=[["배우 김범","블랙 피크드"],["배우 윤경호","더 블랙"],["배우 지승현","블랙 노치드"],["배우 차학연","브런디"],["코미디언 신동엽","블랙 벨벳"],["배우 김원빈","화이트 트위드"],["빅스 켄","바이스"],["아나운서 김정근","노그"],["아나운서 전현무","도슨"],["ZE:A 동준","다크곤"]];
+ const body=isLook ? (detail?'<section class="look-detail"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div class="look-fixed"><p>LOOK '+page+'</p><h2>'+LOOKBOOK_NAMES[page-1]+'</h2><a href="#/archive/lookbook">← 목록으로 돌아가기</a></div></section>': '<div class="look-list">'+LOOKBOOK_NAMES.map((title,i)=>'<a href="#/archive/lookbook/'+(i+1)+'"><div class="archive-awaiting">피그마 원본 이미지 적용 대기</div><div><span>LOOK '+(i+1)+'</span><h2>'+title+'</h2></div></a>').join('')+'</div>') : '<div class="celebrity-grid">'+Array.from({length:18},(_,i)=>'<article><div class="archive-awaiting">원본 이미지 적용 대기</div><p>'+ (page===1 && CELEBRITY_FIRST_PAGE[i] ? escape(CELEBRITY_FIRST_PAGE[i][0])+' · '+escape(CELEBRITY_FIRST_PAGE[i][1]) : '셀럽명·제품명 원본 확인 필요') +'</p></article>').join('')+'</div><nav class="archive-pagination" aria-label="Celebrity 페이지">'+[1,2,3].map(n=>'<a '+(n===page?'aria-current="page"':'')+' href="#/archive/celebrity/'+n+'">'+n+'</a>').join('')+'</nav>';
+ return header()+'<main id="main" class="archive-special">'+archiveNav(kind)+'<h1 class="serif">'+name+'</h1>'+body+'</main>'+footer(true)+contact();
+}
 function archivePage(category) {
   gallery = DESIGN[category];
-  return `${header()}<main id="main" class="archive-main"><div class="archive-subnav"><span>ARCHIVE</span><span>Look book</span><span>Celebrity</span><span class="selected">고객 갤러리</span></div><section class="archive-content" aria-labelledby="archive-title"><div class="archive-heading"><h1 class="serif" id="archive-title">HERITZ MOMENTS</h1><h2>고객 갤러리</h2><p>스튜디오 촬영부터 결혼식까지, 헤리츠테일러와 함께한 고객님의 소중한 순간을 만나보세요.</p></div><div class="gallery-controls">${tabs('archive',category)}<p>사진을 선택해 크게 보세요.</p></div><div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`)}<span class="customer-caption"><strong>${label}</strong><span aria-hidden="true">↗</span></span></button>`;}).join('')}</div><div class="gallery-bottom"><p>소중한 순간을 함께해 주신 고객님들께 감사드립니다.</p><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></section></main>${footer(true)}${contact()}`;
+  return `${header()}<main id="main" class="archive-main">${archiveNav("all")}<section class="archive-content" aria-labelledby="archive-title"><div class="archive-heading"><h1 class="serif" id="archive-title">HERITZ MOMENTS</h1><h2>고객 갤러리</h2><p>스튜디오 촬영부터 결혼식까지, 헤리츠테일러와 함께한 고객님의 소중한 순간을 만나보세요.</p></div><div class="gallery-controls">${tabs('archive',category)}<p>사진을 선택해 크게 보세요.</p></div><div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`)}<span class="customer-caption"><strong>${label}</strong><span aria-hidden="true">↗</span></span></button>`;}).join('')}</div><div class="gallery-bottom"><p>소중한 순간을 함께해 주신 고객님들께 감사드립니다.</p><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></section></main>${footer(true)}${contact()}`;
 }
 
 function packageCard(kind) {
@@ -85,14 +115,36 @@ function packageCard(kind) {
   return `<section class="package-section ${kind}" aria-label="${label} 패키지">${groom ? visual+copy : copy+visual}</section>`;
 }
 
-function eventPage(category) {
-  return `${header()}<main id="main" class="event-main"><section class="event-heading"><p class="eyebrow">HERITZ EVENT</p><h1 class="serif">EVENT</h1><p>이벤트별 구성과 혜택을 확인하세요.</p>${tabs('event',category)}</section>${category!=='family' ? packageCard('groom') : ''}${category!=='groom' ? packageCard('family') : ''}<div class="event-bottom"><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></main>${footer()}${contact()}`;
+const EVENT_POSTS=[
+ {id:1,title:'[진행중] 9월~12월 후기 이벤트',date:'2026.10.20'},
+ {id:2,title:'[결혼준비ZERO프로젝트] 파트너쉽 모집',date:'2026.10.19'},
+ {id:3,title:'[진행중] 웨딩 스냅 이벤트',date:'2026.10.18'},
+ {id:4,title:'[진행중] 청담점 지인소개 이벤트',date:'2026.10.17'}
+];
+function eventTabs(active){
+ return '<nav class="event-category-tabs" aria-label="이벤트 종류">'+[['store','매장 이벤트'],['package','패키지 이벤트']].map(([slug,label])=>'<a href="#/event/'+slug+'" class="'+(active===slug?'active':'')+'" '+(active===slug?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav>';
+}
+function eventPage(category,articleId=0) {
+ const packageType=['groom','family'].includes(category)?category:'';
+ const isPackage=category==='package'||!!packageType;
+ const post=EVENT_POSTS.find(p=>p.id===articleId);
+ const heading='<section class="event-heading"><p class="eyebrow">HERITZ EVENT</p><h1 class="serif">EVENT</h1><p>이벤트별 구성과 혜택을 확인하세요.</p>'+eventTabs(isPackage?'package':'store')+'</section>';
+ let content='';
+ if(post&&!isPackage){
+  content='<article class="event-article"><p class="eyebrow">매장 이벤트</p><h2>'+escape(post.title)+'</h2><time>'+post.date+'</time><div class="event-original-pending">피그마 상세 콘텐츠 원본 이미지 적용 대기</div><a href="#/event/store" class="event-return">← 목록으로 돌아가기</a><section class="event-recent"><h3>최신글</h3>'+EVENT_POSTS.filter(p=>p.id!==post.id).map(p=>'<a href="#/event/store/'+p.id+'">'+escape(p.title)+'</a>').join('')+'</section></article>';
+ } else if(isPackage) {
+  content=(packageType!=='family'?packageCard('groom'):'')+(packageType!=='groom'?packageCard('family'):'');
+ } else {
+  content='<section class="event-post-section"><p class="event-sort">최신글순 ↓</p><div class="event-post-grid">'+EVENT_POSTS.map(p=>'<a class="event-post-card" href="#/event/store/'+p.id+'"><div class="event-original-pending">피그마 원본 이벤트 이미지 적용 대기</div><h2>'+escape(p.title)+'</h2><time>'+p.date+'</time></a>').join('')+'</div></section>';
+ }
+ return header()+'<main id="main" class="event-main">'+heading+content+'<div class="event-bottom"><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></main>'+footer()+contact();
 }
 
 function parseRoute(hash = location.hash) {
   const [,page='main',selection='all'] = hash.replace(/^#/, '').split('/');
-  if (page==='archive') return {page, selection:['all','studio','ceremony'].includes(selection) ? selection : 'all'};
-  if (page==='event') return {page, selection:['all','groom','family'].includes(selection) ? selection : 'all'};
+  if (page==='store') return {page,selection:STORE_NAMES.some(x=>x[0]===selection)?selection:'cheongdam'};
+  if (page==='archive') return {page, selection:['all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'all', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
+  if (page==='event') return {page, selection:['all','store','package','groom','family'].includes(selection) ? selection : 'store', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
   return {page:'main', selection:['experience','rental','store','booking','moments'].includes(selection) ? selection : ''};
 }
 
@@ -101,10 +153,10 @@ function render() {
   if (menu.open) menu.close();
   if (photoDialog.open) photoDialog.close();
   if (currentPage!==route.page || route.page!=='main') {
-    app.innerHTML=route.page==='archive' ? archivePage(route.selection) : route.page==='event' ? eventPage(route.selection) : mainPage();
+    app.innerHTML=route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection,route.number) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
   }
-  document.title=route.page==='archive' ? '고객 갤러리 | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
+  document.title=route.page==='archive' ? 'ARCHIVE | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : route.page==='store' ? '매장 안내 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
   requestAnimationFrame(() => {
     if(route.page==='main' && route.selection) document.getElementById(route.selection)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
     else window.scrollTo({top:0,behavior:'instant'});
@@ -125,6 +177,8 @@ function displayPhoto(index) {
 
 document.querySelector('#menu-navigation').innerHTML=NAVIGATION.map(([label,href]) => `<a href="${href}">${label}<span aria-hidden="true">↗</span></a>`).join('');
 document.addEventListener('click',event => {
+  if(event.target.closest('[data-store-prev]')){cycleStorePhoto(-1);return;}
+  if(event.target.closest('[data-store-next]')){cycleStorePhoto(1);return;}
   const opener=event.target.closest('#open-menu');
   if(opener){menu.showModal();return;}
   const closer=event.target.closest('[data-close]');
