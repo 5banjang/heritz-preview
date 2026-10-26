@@ -70,6 +70,13 @@ function mainPage() {
 
 const STORE_NAMES=[['cheongdam','청담 본점'],['rental-center','청담 렌탈센터'],['suwon','수원'],['hapjeong','합정'],['ilsan','일산']];
 const STORE_PHOTOS={'cheongdam':Array.from({length:7},(_,i)=>'assets/store/cheongdam/'+(i+1)+'.webp'),'rental-center':Array.from({length:7},(_,i)=>'assets/store/rental-center/'+(i+1)+'.webp'),'suwon':Array.from({length:7},(_,i)=>'assets/store/suwon/'+(i+1)+'.webp'),'ilsan':Array.from({length:7},(_,i)=>'assets/store/ilsan/'+(i+1)+'.webp')};
+const STORE_INFO={
+ 'cheongdam':[['위치','서울 강남구 압구정로 72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능']],
+ 'rental-center':[['위치','서울 강남구 압구정로72길 21 지하1층'],['연락처','070-4214-8904'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','발렛파킹 가능'],['기타 안내','렌탈센터 예약·방문 안내를 입력해 주세요']],
+ 'suwon':[['위치','경기 수원시 팔달구 정조로892번길 4 1~4층'],['연락처','0507-1402-1467'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','주차 가능'],['기타 안내','https://www.instagram.com/heritztailor_suwon']],
+ 'hapjeong':[['위치','서울 마포구 월드컵로8길 23 1, 2층'],['연락처','02-336-5662'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['주차','매장 내 주차 가능']],
+ 'ilsan':[['위치','경기 고양시 일산동구 일산로286번길 19-9 1층'],['연락처','0507-1457-1234'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','매장 앞 주차 가능']]
+};
 let storePhotoIndex=0;
 function storeImage(src,alt) {
  return '<div class="photo store-original-photo"><img src="'+escape(src)+'" alt="'+escape(alt)+'" loading="lazy" decoding="async"></div>';
@@ -78,8 +85,8 @@ function storePage(slug) {
  const name=STORE_NAMES.find(x=>x[0]===slug)?.[1] || '청담 본점';
  const photos=STORE_PHOTOS[slug]||[];
  storePhotoIndex=0;
- const info=slug==='cheongdam'?[['위치','서울 강남구 압구정로72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 11:00~20:00 / 토요일~일요일 10:00~20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능']]:[];
- return `${header()}<main id="main" class="store-detail"><nav class="store-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label])=>`<a href="#/store/${id}" class="${slug===id?'selected':''}" ${slug===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav><h1 class="serif">STORE</h1><h2>${name}</h2>${photos.length?`<section class="store-slideshow" aria-label="매장 사진"><button type="button" class="store-photo-button" data-store-next aria-label="다음 사진">${storeImage(photos[0],name+' 매장 사진 1')}</button><div class="store-photo-controls"><button data-store-prev type="button">← 이전</button><span data-store-count>1 / ${photos.length}</span><button data-store-next type="button">다음 →</button></div></section>`:`<div class="store-photo-pending" role="status">피그마 원본 사진 연결 준비 중</div>`}<dl class="store-info">${info.map(([key,value])=>`<div><dt>${key}</dt><dd>${value}</dd></div>`).join('')}</dl></main>${footer()}${contact()}`;
+ const info=STORE_INFO[slug]||STORE_INFO.cheongdam;
+ return `${header()}<main id="main" class="store-detail"><nav class="store-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label])=>`<a href="#/store/${id}" class="${slug===id?'selected':''}" ${slug===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav><h1 class="serif">STORE</h1><h2>${name}</h2>${photos.length?`<section class="store-slideshow" aria-label="매장 사진"><button type="button" class="store-photo-button" data-store-next aria-label="다음 사진">${storeImage(photos[0],name+' 매장 사진 1')}</button><div class="store-photo-controls"><button data-store-prev type="button">← 이전</button><span data-store-count>1 / ${photos.length}</span><button data-store-next type="button">다음 →</button></div></section>`:`<div class="store-photo-pending" role="status">피그마 원본 사진 연결 준비 중</div>`}<dl class="store-info">${info.map(([key,value])=>`<div><dt>${escape(key)}</dt><dd>${value.startsWith('https://')?`<a href="${escape(value)}" target="_blank" rel="noopener noreferrer">헤리츠테일러 수원 인스타그램</a>`:value.split('|').map(v=>escape(v)).join('<br>')}</dd></div>`).join('')}</dl></main>${footer()}${contact()}`;
 }
 function cycleStorePhoto(delta) {
  const store=STORE_PHOTOS[parseRoute().selection]||[];
