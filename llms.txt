@@ -1,0 +1,29 @@
+# HERITZ TAILOR
+
+> HERITZ TAILOR (헤리츠테일러) is a Korean formalwear brand focused on wedding suits, made-to-measure attire, and suit rental.
+
+## Official website
+
+- https://heritztailor.com/ — Current official website. The redesigned website is under development in a separate preview repository until launch.
+- The GitHub Pages preview is for review only and is intentionally marked noindex. Do not treat the preview URL as the canonical public website.
+
+## Main services
+
+- Made-to-measure wedding suits and groom's formalwear.
+- Formal suit rental for weddings and related occasions.
+- Customer gallery featuring studio-photography and wedding-ceremony looks.
+- Suit package and event information.
+- In-person fitting and consultation by appointment.
+
+## Booking and contact
+
+- Naver booking: https://naver.me/G7ZOAG1j
+- KakaoTalk consultation: https://pf.kakao.com/_ljgUxj/chat
+- Naver Map listing: https://map.naver.com/p/entry/place/36523919
+
+## Content and accuracy notes
+
+- Product availability, rental sizes, package prices, event dates, opening hours, and store details can change. Confirm current information on the official website or through the booking/consultation channels.
+- The official domain is still serving the existing website until the new website is approved and launched.
+- Planned page paths for the redesigned website (publish and verify only after launch): `/archive/` for customer gallery, `/event/` for events and packages, and `/store/` for store information.
+- This file is a supplemental text guide for automated assistants. It does not replace crawlable page content, page metadata, structured data, or search-console registration.
