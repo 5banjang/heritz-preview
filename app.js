@@ -1,13 +1,17 @@
 import { DESIGN } from './design-data.js';
 import { ARCHIVE } from './archive-data.js';
 
+// GitHub Pages project path during preview; production custom domain uses the site root.
+const BASE_PATH = location.hostname === '5banjang.github.io' ? '/heritz-preview/' : '/';
+const sitePath = path => `${BASE_PATH}${String(path).replace(/^\/+/, '')}`;
+
 const RESERVATION = 'https://naver.me/G7ZOAG1j';
 const CONSULTATION = 'https://pf.kakao.com/_ljgUxj/chat';
 const LOCATION = 'https://map.naver.com/p/entry/place/36523919';
 const NAVIGATION = [
   ['ABOUT', '#/main/experience'], ['TAILORING', '#/main/experience'],
-  ['RENTAL', '#/main/rental'], ['ARCHIVE', '#/archive/all'],
-  ['EVENT', '#/event/all'], ['STORE', '#/store/cheongdam']
+  ['RENTAL', '#/main/rental'], ['ARCHIVE', sitePath('archive/')],
+  ['EVENT', sitePath('event/')], ['STORE', sitePath('store/')]
 ];
 const app = document.querySelector('#app');
 const menu = document.querySelector('#menu-dialog');
@@ -17,7 +21,7 @@ let photoIndex = 0;
 let currentPage = '';
 
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const assetURL = hash => `assets/${hash}.webp`;
+const assetURL = hash => sitePath(`assets/${hash}.webp`);
 
 function cropStyle(data) {
   if (data.mode !== 'CROP' || !data.transform) return '';
@@ -39,11 +43,11 @@ function external(url, label, classes = 'button') {
 }
 
 function header(dark = false) {
-  return `<header class="site-header ${dark ? 'dark' : ''}"><a class="brand" href="#/" aria-label="헤리츠테일러 메인">HERITZ TAILOR</a><nav class="desktop-nav" aria-label="주 메뉴">${NAVIGATION.map(([name, href]) => `<a href="${href}">${name}</a>`).join('')}</nav><button type="button" id="open-menu" class="menu-button" aria-label="전체 메뉴 열기" aria-haspopup="dialog" aria-controls="menu-dialog">☰</button></header>`;
+  return `<header class="site-header ${dark ? 'dark' : ''}"><a class="brand" href="${sitePath('')}" aria-label="헤리츠테일러 메인">HERITZ TAILOR</a><nav class="desktop-nav" aria-label="주 메뉴">${NAVIGATION.map(([name, href]) => `<a href="${href}">${name}</a>`).join('')}</nav><button type="button" id="open-menu" class="menu-button" aria-label="전체 메뉴 열기" aria-haspopup="dialog" aria-controls="menu-dialog">☰</button></header>`;
 }
 
 function footer(archive = false, archiveLabel = 'CUSTOMER GALLERY') {
-  return `<footer class="site-footer"><a class="brand" href="#/">HERITZ TAILOR</a><p>${archive ? 'ARCHIVE / ' + archiveLabel : 'Tailor House · Rental Center · Seoul'}</p></footer>`;
+  return `<footer class="site-footer"><a class="brand" href="${sitePath('')}">HERITZ TAILOR</a><p>${archive ? 'ARCHIVE / ' + archiveLabel : 'Tailor House · Rental Center · Seoul'}</p></footer>`;
 }
 
 function contact() {
@@ -79,7 +83,7 @@ const STORE_INFO={
 };
 let storePhotoIndex=0;
 function storeImage(src,alt) {
- return '<div class="photo store-original-photo"><img src="'+escape(src)+'" alt="'+escape(alt)+'" loading="lazy" decoding="async"></div>';
+ return '<div class="photo store-original-photo"><img src="'+escape(sitePath(src))+'" alt="'+escape(alt)+'" loading="lazy" decoding="async"></div>';
 }
 function storePage(slug) {
  const name=STORE_NAMES.find(x=>x[0]===slug)?.[1] || '청담 본점';
@@ -105,7 +109,7 @@ function archiveNav(active){
  return '<nav class="archive-section-nav" aria-label="ARCHIVE 하위 메뉴"><strong>ARCHIVE</strong>'+menu.map(([id,title])=>'<a href="#/archive/'+id+'" class="'+(active===id?'selected':'')+'" '+(active===id?'aria-current="page"':'')+'>'+title+'</a>').join('')+'</nav>';
 }
 function archivePhoto(data, alt, priority = false) {
- return `<img class="archive-photo" src="${escape(data.src)}?v=9915ea1" alt="${escape(alt)}" width="${data.width}" height="${data.height}" loading="${priority ? 'eager' : 'lazy'}" decoding="async" ${priority ? 'fetchpriority="high"' : ''} data-figma-node="${escape(data.nodeId)}">`;
+ return `<img class="archive-photo" src="${escape(sitePath(data.src))}?v=9915ea1" alt="${escape(alt)}" width="${data.width}" height="${data.height}" loading="${priority ? 'eager' : 'lazy'}" decoding="async" ${priority ? 'fetchpriority="high"' : ''} data-figma-node="${escape(data.nodeId)}">`;
 }
 function lookCopy(look, index, fixed = false) {
  return `<div class="look-copy ${fixed ? 'look-fixed' : ''} ${index === 3 ? 'look-romance' : ''}"><p>LOOK ${index + 1}</p><h2>${escape(look.title)}</h2></div>`;
@@ -166,6 +170,15 @@ function eventPage(category,articleId=0) {
 }
 
 function parseRoute(hash = location.hash) {
+  if (!hash) {
+    const relativePath = location.pathname.startsWith(BASE_PATH)
+      ? '/' + location.pathname.slice(BASE_PATH.length)
+      : location.pathname;
+    const cleanPath = relativePath.replace(/\/+$/, '') || '/';
+    if (cleanPath === '/archive' || cleanPath.startsWith('/archive/')) return {page:'archive', selection:'all', number:0};
+    if (cleanPath === '/event' || cleanPath.startsWith('/event/')) return {page:'event', selection:'all', number:0};
+    if (cleanPath === '/store' || cleanPath.startsWith('/store/')) return {page:'store', selection:'cheongdam'};
+  }
   const [,page='main',selection='all'] = hash.replace(/^#/, '').split('/');
   if (page==='store') return {page,selection:STORE_NAMES.some(x=>x[0]===selection)?selection:'cheongdam'};
   if (page==='archive') return {page, selection:['all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'all', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
