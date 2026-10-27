@@ -12,16 +12,13 @@ This document distinguishes information found on the current official website fr
 - Naver Map listing: https://map.naver.com/p/entry/place/36523919
 - Official domain: https://heritztailor.com/
 
+## Owner-confirmed business facts
+
+- **Main tailoring store address:** 서울특별시 강남구 압구정로72길 21, 2층.
+- The owner explicitly confirmed this is the correct customer-facing address for the main tailoring store. Use this address in the redesigned site's organization/local-business structured data.
+- Do not reuse the other addresses that appear in legacy footer/legal text as the main-store address.
+
 ## Confirmation required — do not guess
-
-### Address discrepancy
-
-The current official website displays more than one address:
-- Homepage content: 서울 강남구 압구정로72길 21, 2층.
-- Legal/footer text: 서울특별시 강남구 압구정로72길 25, 2층(청담동, 동양빌딩).
-- Older page footer: 서울시 강남구 청담동 96-15, 동양빌딩 1층.
-
-**Owner confirmation required:** the exact customer-facing address for the tailoring shop and whether the rental center has a separate address. Do not choose one based on inference.
 
 ### Opening hours
 
@@ -33,4 +30,4 @@ The current site mentions Cheongdam, a rental center, Suwon, Ilsan, and Hapjeong
 
 ## Structured-data recommendation
 
-Until address, hours, and branch status are confirmed, use only the consistent Organization-level facts already supported by the official website. Do not create separate local business entries, invent coordinates/postcodes, or publish conflicting addresses.
+The main-store address is now owner-confirmed and may be included in Organization and LocalBusiness structured data. Opening hours and the status/address of other branches remain unconfirmed: do not publish hours, invent coordinates/postcodes, or create separate local-business entries for unverified branches.
