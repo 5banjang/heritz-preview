@@ -26,16 +26,48 @@
 <link rel="stylesheet" href="../styles.css?v=figma-archive-9915ea1">
 <script type="application/ld+json">{
   "@context": "https://schema.org",
-  "@type": "ContactPage",
-  "name": "매장 위치 및 방문 안내 | HERITZ TAILOR",
-  "url": "https://5banjang.github.io/heritz-preview/store/",
-  "description": "헤리츠테일러 매장 위치, 연락처, 영업시간, 방문 예약 안내를 확인하세요. 네이버 예약과 지도 연결을 제공합니다.",
-  "about": {
-    "@type": "Organization",
-    "name": "HERITZ TAILOR",
-    "alternateName": "헤리츠테일러",
-    "url": "https://heritztailor.com/"
-  }
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "name": "매장 위치 및 방문 안내 | HERITZ TAILOR",
+      "url": "https://5banjang.github.io/heritz-preview/store/",
+      "description": "헤리츠테일러 매장 위치, 연락처, 방문 예약 안내를 확인하세요. 네이버 예약과 지도 연결을 제공합니다.",
+      "about": {"@id": "https://heritztailor.com/#organization"}
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://heritztailor.com/#organization",
+      "name": "HERITZ TAILOR",
+      "alternateName": "헤리츠테일러",
+      "url": "https://heritztailor.com/",
+      "telephone": "+82-2-511-9876",
+      "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "압구정로72길 21, 2층",
+      "addressLocality": "강남구",
+      "addressRegion": "서울특별시",
+      "addressCountry": "KR"
+    },
+      "sameAs": ["https://map.naver.com/p/entry/place/36523919"]
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://heritztailor.com/#cheongdam-main-store",
+      "name": "헤리츠테일러 청담 본점",
+      "alternateName": "HERITZ TAILOR",
+      "url": "https://heritztailor.com/",
+      "telephone": "+82-2-511-9876",
+      "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "압구정로72길 21, 2층",
+      "addressLocality": "강남구",
+      "addressRegion": "서울특별시",
+      "addressCountry": "KR"
+    },
+      "parentOrganization": {"@id": "https://heritztailor.com/#organization"},
+      "sameAs": ["https://map.naver.com/p/entry/place/36523919"]
+    }
+  ]
 }</script>
 </head>
 <body>
