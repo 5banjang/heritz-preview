@@ -186,6 +186,38 @@ function parseRoute(hash = location.hash) {
   return {page:'main', selection:['experience','rental','store','booking','moments'].includes(selection) ? selection : ''};
 }
 
+const SEO_METADATA = {
+  main: {title:'HERITZ TAILOR | 맞춤예복 & 렌탈', description:'헤리츠테일러의 웨딩 맞춤예복과 정장 렌탈 서비스를 만나보세요. 고객 착용사진, 패키지 안내, 매장 방문 예약을 확인할 수 있습니다.'},
+  archive: {
+    all: {title:'고객 갤러리 | HERITZ TAILOR', description:'헤리츠테일러의 웨딩 수트 고객 갤러리. 스튜디오 촬영과 결혼식 본식에서 맞춤예복과 렌탈 수트를 착용한 고객 사진을 확인하세요.'},
+    studio: {title:'스튜디오 촬영 갤러리 | HERITZ TAILOR', description:'헤리츠테일러의 수트를 착용한 고객들의 웨딩 스튜디오 촬영 사진을 확인하세요.'},
+    ceremony: {title:'결혼식 본식 갤러리 | HERITZ TAILOR', description:'결혼식 본식에서 헤리츠테일러 웨딩 수트를 착용한 고객들의 소중한 순간을 확인하세요.'},
+    lookbook: {title:'웨딩 수트 룩북 | HERITZ TAILOR', description:'헤리츠테일러가 제안하는 웨딩 수트 룩북과 스타일을 살펴보세요.'},
+    celebrity: {title:'셀럽 수트 스타일 | HERITZ TAILOR', description:'다양한 셀럽의 헤리츠테일러 수트 스타일과 렌탈 룩을 살펴보세요.'}
+  },
+  event: {title:'이벤트 및 패키지 안내 | HERITZ TAILOR', description:'헤리츠테일러의 맞춤예복과 정장 렌탈 이벤트 및 패키지 안내를 확인하세요.'},
+  store: {title:'매장 위치 및 방문 안내 | HERITZ TAILOR', description:'헤리츠테일러 매장 위치, 연락처, 영업시간과 네이버 예약을 통한 방문 안내를 확인하세요.'}
+};
+function setMeta(selector, value, attribute='content') {
+  let element=document.head.querySelector(selector);
+  if (!element) {
+    element=document.createElement('meta');
+    const match=selector.match(/^meta\[(name|property)="([^"]+)"\]$/);
+    if (match) element.setAttribute(match[1],match[2]);
+    document.head.appendChild(element);
+  }
+  element.setAttribute(attribute,value);
+}
+function updateSEO(route) {
+  const entry=route.page==='archive' ? SEO_METADATA.archive[route.selection] || SEO_METADATA.archive.all : SEO_METADATA[route.page] || SEO_METADATA.main;
+  document.title=entry.title;
+  setMeta('meta[name="description"]',entry.description);
+  setMeta('meta[property="og:title"]',entry.title);
+  setMeta('meta[property="og:description"]',entry.description);
+  setMeta('meta[name="twitter:title"]',entry.title);
+  setMeta('meta[name="twitter:description"]',entry.description);
+  setMeta('meta[property="og:url"]',location.href);
+}
 function render() {
   const route=parseRoute();
   if (menu.open) menu.close();
@@ -194,7 +226,7 @@ function render() {
     app.innerHTML=route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection,route.number) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
   }
-  document.title=route.page==='archive' ? 'ARCHIVE | HERITZ TAILOR' : route.page==='event' ? '이벤트 | HERITZ TAILOR' : route.page==='store' ? '매장 안내 | HERITZ TAILOR' : 'HERITZ TAILOR | 맞춤예복 & 렌탈';
+  updateSEO(route);
   requestAnimationFrame(() => {
     if(route.page==='main' && route.selection) document.getElementById(route.selection)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
     else window.scrollTo({top:0,behavior:'instant'});
