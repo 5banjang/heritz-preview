@@ -88,6 +88,36 @@ jobs:
           check_page "archive/" 'HERITZ MOMENTS'
           check_page "event/" 'HERITZ EVENT'
           check_page "store/" 'STORE'
+      - name: Validate production SEO launch templates
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          sitemap_path = Path('seo-launch/sitemap.xml')
+          root = ET.parse(sitemap_path).getroot()
+          namespace = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          assert root.tag == '{http://www.sitemaps.org/schemas/sitemap/0.9}urlset'
+          urls = [node.text for node in root.findall('s:url/s:loc', namespace)]
+          expected = {
+              'https://heritztailor.com/',
+              'https://heritztailor.com/archive/',
+              'https://heritztailor.com/event/',
+              'https://heritztailor.com/store/',
+          }
+          assert set(urls) == expected, f'Unexpected production sitemap URLs: {urls}'
+          assert len(urls) == len(set(urls)), 'Duplicate sitemap URLs'
+          assert all('github.io' not in url for url in urls), 'Preview URL must not enter production sitemap'
+          production_robots = Path('seo-launch/robots.txt').read_text()
+          assert 'Sitemap: https://heritztailor.com/sitemap.xml' in production_robots
+          preview_robots = Path('robots.txt').read_text()
+          assert 'Allow: /' in preview_robots and 'Sitemap:' not in preview_robots
+          assert 'noindex, nofollow' in Path('index.html').read_text()
+          facts = Path('seo-launch/business-facts.md').read_text()
+          assert 'Confirmation required' in facts and 'Do not guess' in facts
+          launch = Path('seo-launch/README.md').read_text()
+          assert 'No live DNS' in launch
+          print('Production sitemap XML, canonical route plan, launch robots and preview noindex boundary validated.')
+          PY
       - name: Browser smoke-test core navigation and images
         run: |
           npm install --no-save playwright
