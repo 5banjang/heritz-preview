@@ -113,7 +113,13 @@ jobs:
           assert 'Allow: /' in preview_robots and 'Sitemap:' not in preview_robots
           assert 'noindex, nofollow' in Path('index.html').read_text()
           facts = Path('seo-launch/business-facts.md').read_text()
-          assert 'confirmation required' in facts.lower() and 'do not guess' in facts.lower()
+          assert '압구정로72길 21, 2층' in facts, 'Owner-confirmed address missing from business facts'
+          home = Path('index.html').read_text()
+          store_page = Path('store/index.html').read_text()
+          assert '압구정로72길 21, 2층' in home, 'Confirmed address missing from homepage JSON-LD'
+          assert '압구정로72길 21, 2층' in store_page, 'Confirmed address missing from store JSON-LD'
+          assert 'https://heritztailor.com/#cheongdam-main-store' in store_page, 'LocalBusiness @id missing'
+          assert 'confirmation required' in facts.lower() and 'opening hours' in facts.lower(), 'Unconfirmed fields must remain flagged'
           launch = Path('seo-launch/README.md').read_text()
           assert 'No live DNS' in launch
           print('Production sitemap XML, canonical route plan, launch robots and preview noindex boundary validated.')
