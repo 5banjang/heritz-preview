@@ -125,8 +125,19 @@ jobs:
             await page.goto(base + 'store/', {waitUntil:'networkidle'});
             await page.waitForSelector('.store-detail');
             assert.ok(await page.locator('.store-info').count(), 'store information missing');
+            await page.setViewportSize({width:375,height:812});
+            await page.goto(base, {waitUntil:'networkidle'});
+            await page.waitForSelector('#hero-title');
+            let mobileLayout = await page.evaluate(() => ({width:window.innerWidth,scrollWidth:document.documentElement.scrollWidth}));
+            assert.ok(mobileLayout.scrollWidth <= mobileLayout.width + 1, 'mobile home has horizontal overflow: ' + JSON.stringify(mobileLayout));
+            assert.ok(await page.locator('.floating-contact a[href^="https://naver.me/"]').isVisible(), 'mobile Naver booking control missing');
+            assert.ok(await page.locator('.floating-contact a[href^="https://pf.kakao.com/"]').isVisible(), 'mobile Kakao consultation control missing');
+            await page.locator('.gallery-button').click();
+            await page.waitForURL('**/heritz-preview/archive/');
+            mobileLayout = await page.evaluate(() => ({width:window.innerWidth,scrollWidth:document.documentElement.scrollWidth}));
+            assert.ok(mobileLayout.scrollWidth <= mobileLayout.width + 1, 'mobile gallery has horizontal overflow: ' + JSON.stringify(mobileLayout));
             assert.equal(pageErrors.length, 0, 'JavaScript errors: ' + pageErrors.join('; '));
-            console.log('Browser smoke test passed: home render, gallery navigation, gallery image, menu, booking/contact links, events and store.');
+            console.log('Browser smoke test passed: desktop navigation, gallery image, menu, booking/contact links, events, store and mobile overflow.');
           } finally {
             await browser.close();
           }
