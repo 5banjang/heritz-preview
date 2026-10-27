@@ -19,11 +19,13 @@
 
 - Naver booking: https://naver.me/G7ZOAG1j
 - KakaoTalk consultation: https://pf.kakao.com/_ljgUxj/chat
+- Confirmed main-store address: 서울특별시 강남구 압구정로72길 21, 2층.
 - Naver Map listing: https://map.naver.com/p/entry/place/36523919
 
 ## Content and accuracy notes
 
-- Product availability, rental sizes, package prices, event dates, opening hours, and store details can change. Confirm current information on the official website or through the booking/consultation channels.
+- The main tailoring store address has been confirmed by the owner: 서울특별시 강남구 압구정로72길 21, 2층.
+- Product availability, rental sizes, package prices, event dates, opening hours, and other branch details can change. Confirm those details on the official website or through the booking/consultation channels.
 - The official domain is still serving the existing website until the new website is approved and launched.
 - Planned page paths for the redesigned website (publish and verify only after launch): `/archive/` for customer gallery, `/event/` for events and packages, and `/store/` for store information.
 - This file is a supplemental text guide for automated assistants. It does not replace crawlable page content, page metadata, structured data, or search-console registration.
