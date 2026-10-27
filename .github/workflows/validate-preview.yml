@@ -88,3 +88,46 @@ jobs:
           check_page "archive/" 'HERITZ MOMENTS'
           check_page "event/" 'HERITZ EVENT'
           check_page "store/" 'STORE'
+      - name: Browser smoke-test core navigation and images
+        run: |
+          npm install --no-save playwright
+          npx playwright install chromium
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { chromium } from 'playwright';
+          const base = 'https://5banjang.github.io/heritz-preview/';
+          const browser = await chromium.launch({headless:true});
+          const page = await browser.newPage({viewport:{width:1280,height:900}});
+          const pageErrors = [];
+          page.on('pageerror', error => pageErrors.push(error.message));
+          try {
+            await page.goto(base, {waitUntil:'networkidle'});
+            await page.waitForSelector('#hero-title');
+            assert.equal(await page.locator('#hero-title').innerText(), 'Crafted for your moment');
+            assert.ok(await page.locator('#app .site-header').count(), 'main header missing after JavaScript render');
+            assert.ok(await page.locator('#app .floating-contact a[href^="https://naver.me/"]').count(), 'Naver booking link missing');
+            assert.ok(await page.locator('#app .floating-contact a[href^="https://pf.kakao.com/"]').count(), 'Kakao consultation link missing');
+            const heroImage = await page.locator('.hero-photo img.crop-0').evaluate(img => ({complete:img.complete,width:img.naturalWidth}));
+            assert.ok(heroImage.complete && heroImage.width > 0, 'hero image failed to load');
+            await page.locator('.gallery-button').click();
+            await page.waitForURL('**/heritz-preview/archive/');
+            await page.waitForSelector('.customer-card');
+            assert.equal(await page.title(), '고객 갤러리 | HERITZ TAILOR');
+            assert.ok(await page.locator('.customer-card').count() >= 4, 'customer gallery cards missing');
+            const galleryImage = await page.locator('.customer-card img.crop-0').first().evaluate(img => ({complete:img.complete,width:img.naturalWidth}));
+            assert.ok(galleryImage.complete && galleryImage.width > 0, 'gallery image failed to load');
+            await page.locator('#open-menu').click();
+            assert.ok(await page.locator('#menu-dialog').evaluate(dialog => dialog.open), 'navigation dialog did not open');
+            assert.ok(await page.locator('#menu-navigation a').count() >= 5, 'navigation links missing');
+            await page.goto(base + 'event/', {waitUntil:'networkidle'});
+            await page.waitForSelector('.event-main');
+            assert.ok(await page.locator('.event-category-tabs a').count() >= 2, 'event category navigation missing');
+            await page.goto(base + 'store/', {waitUntil:'networkidle'});
+            await page.waitForSelector('.store-detail');
+            assert.ok(await page.locator('.store-info').count(), 'store information missing');
+            assert.equal(pageErrors.length, 0, 'JavaScript errors: ' + pageErrors.join('; '));
+            console.log('Browser smoke test passed: home render, gallery navigation, gallery image, menu, booking/contact links, events and store.');
+          } finally {
+            await browser.close();
+          }
+          NODE
