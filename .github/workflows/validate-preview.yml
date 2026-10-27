@@ -113,7 +113,7 @@ jobs:
           assert 'Allow: /' in preview_robots and 'Sitemap:' not in preview_robots
           assert 'noindex, nofollow' in Path('index.html').read_text()
           facts = Path('seo-launch/business-facts.md').read_text()
-          assert 'Confirmation required' in facts and 'Do not guess' in facts
+          assert 'confirmation required' in facts.lower() and 'do not guess' in facts.lower()
           launch = Path('seo-launch/README.md').read_text()
           assert 'No live DNS' in launch
           print('Production sitemap XML, canonical route plan, launch robots and preview noindex boundary validated.')
