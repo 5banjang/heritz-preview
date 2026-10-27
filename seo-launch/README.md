@@ -15,7 +15,7 @@ The redesign preview remains at GitHub Pages and must stay `noindex, nofollow`. 
 
 1. Confirm the redesign is approved and the production host will serve the routes listed in the sitemap.
 2. Confirm whether the new routes `/archive/`, `/event/`, and `/store/` are final.
-3. Confirm the correct customer-facing address, opening hours, and currently operating branches. The existing official website currently displays conflicting address details; see `business-facts.md`.
+3. The owner has confirmed the main tailoring store address as 서울특별시 강남구 압구정로72길 21, 2층. Confirm opening hours and which other branches are currently operating before publishing those details; see `business-facts.md`.
 4. Configure one-hop permanent redirects from retained legacy URLs where the new page is an equivalent replacement. Do not redirect unrelated pages to the homepage.
 5. Add one self-referencing canonical URL per production page and update Open Graph URLs/images to the production domain.
 6. Copy the production `robots.txt` and `sitemap.xml` to the **root of the production website**, not this folder.
