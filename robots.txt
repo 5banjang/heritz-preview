@@ -1,0 +1,5 @@
+# HERITZ TAILOR preview environment
+# Keep this preview crawlable so crawlers can read the noindex directives.
+# Do not publish a sitemap for this preview; create the production sitemap after the official domain is switched.
+User-agent: *
+Allow: /
