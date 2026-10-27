@@ -1,0 +1,5 @@
+# Production template — copy to the production website root only after launch approval.
+User-agent: *
+Allow: /
+
+Sitemap: https://heritztailor.com/sitemap.xml
