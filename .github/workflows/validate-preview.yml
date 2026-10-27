@@ -62,3 +62,29 @@ jobs:
           assert.ok(fs.existsSync('llms.txt'), 'llms.txt missing');
           console.log('JavaScript, metadata, JSON-LD, noindex, static home content and local assets validated.');
           NODE
+      - name: Smoke-test published GitHub Pages routes
+        run: |
+          set -eu
+          check_page() {
+            route="$1"
+            expected="$2"
+            url="https://5banjang.github.io/heritz-preview/${route}"
+            attempt=1
+            while [ "$attempt" -le 24 ]; do
+              status=$(curl -sSL -o /tmp/heritz-page.html -w "%{http_code}" "$url" || true)
+              if [ "$status" = "200" ] && grep -q "$expected" /tmp/heritz-page.html; then
+                grep -q 'noindex, nofollow' /tmp/heritz-page.html
+                echo "OK $url"
+                return 0
+              fi
+              echo "Waiting for published page: $url (HTTP ${status:-unknown}, attempt $attempt)"
+              attempt=$((attempt+1))
+              sleep 5
+            done
+            echo "Preview page did not pass smoke test: $url"
+            exit 1
+          }
+          check_page "" 'id="hero-title"'
+          check_page "archive/" 'HERITZ MOMENTS'
+          check_page "event/" 'HERITZ EVENT'
+          check_page "store/" 'STORE'
