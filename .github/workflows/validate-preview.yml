@@ -1,0 +1,49 @@
+name: Validate preview source
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --input-type=module --check < app.js
+          node --input-type=module --check < design-data.js
+          node --input-type=module --check < archive-data.js
+      - name: Validate SEO metadata and preview protection
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const pages = ['index.html', 'archive/index.html', 'event/index.html', 'store/index.html'];
+          for (const path of pages) {
+            const html = fs.readFileSync(path, 'utf8');
+            assert.match(html, /<html lang="ko">/, path + ': Korean language declaration missing');
+            assert.match(html, /<meta name="robots" content="noindex, nofollow">/, path + ': preview must stay noindex');
+            assert.match(html, /<meta name="description"/, path + ': meta description missing');
+            assert.match(html, /<meta property="og:title"/, path + ': Open Graph title missing');
+            const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+            assert.ok(blocks.length, path + ': JSON-LD missing');
+            for (const block of blocks) JSON.parse(block[1]);
+          }
+          const robots = fs.readFileSync('robots.txt', 'utf8');
+          assert.match(robots, /User-agent:\s*\*/);
+          assert.match(robots, /Allow:\s*\//);
+          assert.ok(fs.existsSync('llms.txt'), 'llms.txt missing');
+          console.log('SEO metadata, JSON-LD, preview noindex and helper files validated.');
+          NODE
