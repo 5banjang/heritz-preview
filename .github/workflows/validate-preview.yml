@@ -144,8 +144,14 @@ jobs:
             await page.waitForSelector('.customer-card');
             assert.equal(await page.title(), '고객 갤러리 | HERITZ TAILOR');
             assert.ok(await page.locator('.customer-card').count() >= 4, 'customer gallery cards missing');
-            const galleryImage = await page.locator('.customer-card img.crop-0').first().evaluate(img => ({complete:img.complete,width:img.naturalWidth}));
-            assert.ok(galleryImage.complete && galleryImage.width > 0, 'gallery image failed to load');
+            const firstGalleryImage = page.locator('.customer-card img.crop-0').first();
+            await firstGalleryImage.scrollIntoViewIfNeeded();
+            await page.waitForFunction(() => {
+              const img = document.querySelector('.customer-card img.crop-0');
+              return Boolean(img && img.complete && img.naturalWidth > 0);
+            });
+            const galleryImage = await firstGalleryImage.evaluate(img => ({complete:img.complete,width:img.naturalWidth}));
+            assert.ok(galleryImage.complete && galleryImage.width > 0, 'gallery image failed to load after entering viewport');
             await page.locator('#open-menu').click();
             assert.ok(await page.locator('#menu-dialog').evaluate(dialog => dialog.open), 'navigation dialog did not open');
             assert.ok(await page.locator('#menu-navigation a').count() >= 5, 'navigation links missing');
