@@ -216,7 +216,18 @@ function updateSEO(route) {
   setMeta('meta[property="og:description"]',entry.description);
   setMeta('meta[name="twitter:title"]',entry.title);
   setMeta('meta[name="twitter:description"]',entry.description);
-  setMeta('meta[property="og:url"]',location.href);
+  // Canonicalize the public landing URLs; hash navigation is not an independent indexed page.
+  const canonicalURL = route.page === 'archive'
+    ? sitePath('archive/')
+    : route.page === 'event'
+      ? sitePath('event/')
+      : route.page === 'store'
+        ? sitePath('store/')
+        : sitePath('');
+  const absoluteCanonical = new URL(canonicalURL, location.origin).href;
+  setMeta('meta[property="og:url"]', absoluteCanonical);
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) canonicalLink.href = absoluteCanonical;
 }
 function render() {
   const route=parseRoute();
