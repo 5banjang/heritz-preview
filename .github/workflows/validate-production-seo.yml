@@ -1,0 +1,50 @@
+name: Validate production SEO release
+
+on:
+  push:
+    branches:
+      - release/production-seo-20261103
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-production:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify production metadata without affecting preview
+        run: |
+          node --input-type=module --check < app.js
+          node --input-type=module --check < design-data.js
+          node --input-type=module --check < archive-data.js
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const site = 'https://heritztailor.com/';
+          const pages = {
+            'index.html': site,
+            'archive/index.html': site+'archive/',
+            'event/index.html': site+'event/',
+            'store/index.html': site+'store/'
+          };
+          for (const [file,url] of Object.entries(pages)) {
+            const html=fs.readFileSync(file,'utf8');
+            assert.ok(html.includes('<meta name="robots" content="index, follow">'), file+' indexability');
+            assert.ok(html.includes('<link rel="canonical" href="'+url+'">'), file+' canonical');
+            assert.ok(html.includes('property="og:url" content="'+url+'"'), file+' OG URL');
+            assert.ok(!html.includes('5banjang.github.io'), file+' preview URL');
+            assert.ok(!html.includes('noindex'), file+' noindex present');
+            for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) JSON.parse(match[1]);
+          }
+          const robots=fs.readFileSync('robots.txt','utf8');
+          assert.ok(robots.includes('Sitemap: https://heritztailor.com/sitemap.xml'),'production robots');
+          const sitemap=fs.readFileSync('sitemap.xml','utf8');
+          assert.ok(!sitemap.includes('github.io'), 'preview in sitemap');
+          for(const url of Object.values(pages)) assert.ok(sitemap.includes('<loc>'+url+'</loc>'), 'missing sitemap URL '+url);
+          console.log('Production SEO validation passed for 4 page URLs.');
+          NODE
