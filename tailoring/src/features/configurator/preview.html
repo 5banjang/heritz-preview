@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스타일 선택 · 검토용 샘플</title>
+<link rel="stylesheet" href="./configurator.css">
+<style>body { margin: 0; font-family: system-ui, sans-serif; } .configurator-test { padding: 16px 24px; }</style>
+<main id="sample"></main>
+<script type="module">
+  import { mount } from './index.mjs';
+  mount(document.querySelector('#sample'));
+  if (new URLSearchParams(location.search).has('selftest')) {
+    const result = document.createElement('p');
+    result.className = 'configurator-test';
+    document.body.prepend(result);
+    try {
+      const { runBrowserChecks } = await import('../../../tests/configurator-browser.test.mjs');
+      result.textContent = runBrowserChecks();
+    } catch (error) {
+      result.textContent = `FAIL: ${error.message}`;
+    }
+  }
+</script>
+</html>

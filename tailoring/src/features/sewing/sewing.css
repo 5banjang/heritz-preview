@@ -1,0 +1,33 @@
+.sewing { --sewing-ink:#161616; --sewing-muted:#666; --sewing-line:#d8d8d8; color:var(--sewing-ink); padding:clamp(20px,3vw,36px); line-height:1.8; background:#fff; border:1px solid var(--sewing-line); }
+.sewing { font-family:Arial, 'Pretendard', sans-serif; }
+.sewing * { box-sizing:border-box; }
+.sewing-header { max-width:750px; }
+.sewing-kicker { font-size:10px; letter-spacing:.18em; }
+.sewing-heading { font-size:clamp(28px,4vw,46px); font-weight:400; line-height:1.4; letter-spacing:-.04em; margin:20px 0; }
+.sewing-intro { font-size:14px; color:var(--sewing-muted); }
+.sewing-layout { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:clamp(24px,5vw,70px); margin-top:36px; }
+.sewing[data-selected="all"] .sewing-layout { grid-template-columns:minmax(0,1fr); }
+.sewing-visual { background:#fff; padding:22px; min-width:0; }
+.sewing-visual > .sewing-kicker { margin:0 0 24px; padding:14px 18px; background:#111; color:#fff; }
+.sewing[data-selected="all"] .sewing-visual { width:100%; max-width:760px; margin-inline:auto; }
+.sewing-drawing { max-width:540px; margin:auto; }
+.sewing-diagram { display:block; width:100%; height:auto; aspect-ratio:690 / 900; max-height:640px; overflow:hidden; }
+.sewing-caption { text-align:center; color:var(--sewing-muted); font-size:12px; }
+.sewing-points { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; }
+.sewing-point { min-height:44px; padding:10px 14px; font:inherit; font-size:12px; border:1px solid #b6b6b6; background:transparent; color:var(--sewing-ink); cursor:pointer; }
+.sewing-point[aria-pressed="true"] { background:#111; color:#fff; }
+.sewing :focus-visible { outline:3px solid #737373; outline-offset:4px; }
+.sewing-detail { align-self:start; padding:24px 0; min-width:0; }
+.sewing-detail[hidden] { display:none; }
+.sewing-detail-region { font-size:11px; letter-spacing:.08em; color:var(--sewing-muted); margin-bottom:24px; }
+.sewing-english { font:italic 22px Georgia,serif; color:var(--sewing-muted); margin:0; }
+.sewing-detail-title { font-size:clamp(25px,3vw,36px); font-weight:400; line-height:1.4; margin:12px 0 24px; }
+.sewing-description { font-size:16px; line-height:1.95; }
+.sewing-note { font-size:12px; color:var(--sewing-muted); border-top:1px solid var(--sewing-line); padding-top:22px; margin-top:26px; }
+.sewing-photo { margin:28px 0 0; }
+.sewing-photo-image { display:block; width:100%; height:auto; aspect-ratio:4 / 3; object-fit:cover; object-position:center; }
+.sewing-photo [hidden] { display:none; }
+.sewing-photo-empty { aspect-ratio:4 / 3; background:#fff; border:1px solid #ddd; }
+.sewing-photo figcaption { margin-top:10px; color:#666; font-size:12px; }
+@media(max-width:760px) { .sewing-layout { grid-template-columns:minmax(0,1fr); gap:12px; } .sewing-visual { padding:16px; } .sewing { padding:24px 16px; } }
+@media(forced-colors:active) { .sewing [aria-pressed="true"] { outline:2px solid Highlight; } }

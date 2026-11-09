@@ -9,7 +9,7 @@ const RESERVATION = 'https://naver.me/G7ZOAG1j';
 const CONSULTATION = 'https://pf.kakao.com/_ljgUxj/chat';
 const LOCATION = 'https://map.naver.com/p/entry/place/36523919';
 const NAVIGATION = [
-  ['ABOUT', '#/main/experience'], ['TAILORING', '#/main/experience'],
+  ['ABOUT', '#/main/experience'], ['TAILORING', sitePath('tailoring/')],
   ['RENTAL', '#/main/rental'], ['ARCHIVE', sitePath('archive/')],
   ['EVENT', sitePath('event/')], ['STORE', sitePath('store/')]
 ];
