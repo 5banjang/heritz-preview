@@ -1,0 +1,62 @@
+.visit-section {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 7vw, 7rem);
+  padding: clamp(24px, 3vw, 36px);
+  background: #ffffff;
+  color: #161616;
+  border: 1px solid #d8d8d8;
+  font-family: inherit;
+}
+.visit-section * { box-sizing: border-box; }
+.visit-intro, .visit-details { min-width: 0; }
+.visit-eyebrow { margin: 0 0 2rem; font-size: .75rem; letter-spacing: .2em; }
+.visit-title {
+  margin: 0;
+  font-family: Georgia, 'Pretendard', serif;
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -.035em;
+  white-space: pre-line;
+}
+.visit-description { max-width: 26rem; margin: 1.5rem 0 0; color: #5d5d5d; line-height: 1.8; }
+.visit-store-name { margin: 2rem 0 0; font-size: 1.1rem; letter-spacing: .05em; }
+.visit-phone { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.visit-map-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .75rem; color: #4c4c4c; font-size: .8rem; text-underline-offset: 4px; }
+.visit-phone:focus-visible, .visit-map-link:focus-visible { outline: 3px solid #646464; outline-offset: 5px; }
+.visit-details { align-self: end; }
+.visit-info { margin: 0; }
+.visit-row { display: grid; grid-template-columns: 5rem 1fr; gap: 1rem; padding: 1.4rem 0; border-bottom: 1px solid #cecece; }
+.visit-label { font-size: .875rem; line-height: 1.8; }
+.visit-value { margin: 0; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere; }
+.visit-booking { margin-top: 2.25rem; }
+.visit-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid #111111;
+  border-radius: 0;
+  background: #111111;
+  color: #ffffff;
+  font: inherit;
+  line-height: 1.5;
+  text-decoration: none;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.visit-action:hover { background: #333333; }
+.visit-action:focus-visible { outline: 3px solid #646464; outline-offset: 5px; }
+.visit-action:disabled { background: #fff; border-color: #d8d8d8; color: #666666; cursor: not-allowed; }
+.visit-note { margin: .85rem 0 0; color: #5d5d5d; font-size: .8rem; line-height: 1.7; }
+@media (max-width: 700px) {
+  .visit-section { grid-template-columns: 1fr; }
+  .visit-row { grid-template-columns: 4rem 1fr; }
+}
+@media (forced-colors: active) {
+  .visit-action:disabled { color: GrayText; border-color: GrayText; }
+}

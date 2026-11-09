@@ -1,0 +1,40 @@
+.measurement { --measurement-ink: #161616; --measurement-accent: #111111; box-sizing: border-box; padding: clamp(20px, 3vw, 36px); background: #ffffff; border: 1px solid #d8d8d8; color: var(--measurement-ink); font-family: Arial, 'Pretendard', 'Malgun Gothic', sans-serif; line-height: 1.7; }
+.measurement *, .measurement *::before, .measurement *::after { box-sizing: border-box; }
+.measurement-eyebrow { font-size: 12px; letter-spacing: .2em; color: var(--measurement-accent); }
+.measurement-title { margin: 16px 0; font-family: Georgia, 'Pretendard', serif; font-weight: 400; font-size: clamp(28px, 4vw, 52px); line-height: 1.3; letter-spacing: -.04em; }
+.measurement-lead { max-width: 660px; color: #5c5c5c; }
+.measurement-notice { padding: 16px 20px; border-left: 2px solid #111111; background: #fff; font-size: 13px; margin: 28px 0; }
+.measurement-notice p { margin: 5px 0 0; }
+.measurement-draft { font-weight: 600; }
+.measurement-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
+.measurement-guide { min-width: 0; background: #fff; padding: 16px; }
+.measurement-diagram { position: relative; width: 100%; max-width: 420px; aspect-ratio: 2 / 3; margin: 0 auto; color: #636363; }
+.measurement-drawing, .measurement-torso { display: block; width: 100%; height: 100%; }
+.measurement-hotspot { position: absolute; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; border: 1px solid #8f8f8f; background: #ffffff; color: #161616; cursor: pointer; font-size: 12px; }
+.measurement-hotspot[aria-pressed="true"] { background: var(--measurement-accent); border-color: var(--measurement-accent); color: white; box-shadow: 0 0 0 5px #56565618; }
+.measurement-caption { font-size: 12px; text-align: center; color: #5c5c5c; }
+.measurement-panel { padding-top: 36px; }
+.measurement-detail { min-height: 255px; border-top: 1px solid #d8d8d8; padding: 24px 0; }
+.measurement-counter { font-size: 12px; letter-spacing: .1em; color: var(--measurement-accent); margin: 0; }
+.measurement-detail-title { font-family: Georgia, 'Pretendard', serif; font-size: 32px; font-weight: 400; margin: 12px 0; }
+.measurement-description { font-size: 15px; max-width: 440px; }
+.measurement-detail-note { font-size: 12px; color: #676767; }
+.measurement-help { font-size: 12px; color: #5c5c5c; }
+.measurement-list { padding: 0; margin: 20px 0 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; }
+.measurement-list-button { font: inherit; font-size: 13px; text-align: left; width: 100%; min-height: 44px; padding: 8px; border: 0; border-bottom: 1px solid #d8d8d8; background: transparent; color: inherit; cursor: pointer; }
+.measurement-list-button[aria-pressed="true"] { background: #111111; color: #ffffff; font-weight: 700; border-bottom-color: var(--measurement-accent); }
+.measurement button:not([aria-pressed="true"]):hover { border-color: #2c2c2c; background: #fff; color: #2c2c2c; }
+.measurement button:focus-visible, .measurement summary:focus-visible { outline: 3px solid #5c5c5c; outline-offset: 3px; }
+.measurement-provenance { border-top: 1px solid #cdcdcd; margin-top: 32px; padding-top: 20px; font-size: 13px; }
+.measurement-provenance summary { cursor: pointer; min-height: 44px; }
+@media (max-width: 760px) { .measurement { padding: 32px 16px; } .measurement-layout { grid-template-columns: 1fr; gap: 8px; } .measurement-diagram { max-width: 360px; min-width: 0px; } .measurement-panel { padding-top: 8px; } .measurement-detail { min-height: 0; } }
+@media (prefers-reduced-motion: reduce) { .measurement *, .measurement *::before, .measurement *::after { scroll-behavior: auto; animation: none; transition: none; } }
+.measurement-torso { object-fit: contain; }
+.design-page .measurement-torso { filter: none; }
+@media (max-width: 760px) {
+  .design-feature-root .measurement { padding: 24px 0; }
+  .design-feature-root .measurement-guide { padding: 0; }
+  .design-feature-root .measurement-notice { margin-inline: 16px; }
+  .design-feature-root .measurement-panel { padding: 8px 16px 0; }
+  .design-feature-root .measurement-provenance { margin-inline: 16px; }
+}

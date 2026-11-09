@@ -1,0 +1,8 @@
+.design-header { flex-wrap:wrap; gap:12px 28px; }
+.integration-chapters { width:100%; font-size:12px; }
+.integration-site-nav [aria-current="page"] { border-bottom-color:currentColor; }
+.design-footer > nav { grid-column:1 / -1; justify-content:flex-start; }
+@media(max-width:760px) {
+  .integration-site-nav { width:100%; justify-content:flex-start; gap:0 18px; }
+  .integration-chapters { justify-content:flex-start; gap:0 18px; }
+}

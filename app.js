@@ -2,14 +2,14 @@ import { DESIGN } from './design-data.js';
 import { ARCHIVE } from './archive-data.js';
 
 // GitHub Pages project path during preview; production custom domain uses the site root.
-const BASE_PATH = location.hostname === '5banjang.github.io' ? '/heritz-preview/' : '/';
+const BASE_PATH = new URL('./', import.meta.url).pathname;
 const sitePath = path => `${BASE_PATH}${String(path).replace(/^\/+/, '')}`;
 
 const RESERVATION = 'https://naver.me/G7ZOAG1j';
 const CONSULTATION = 'https://pf.kakao.com/_ljgUxj/chat';
 const LOCATION = 'https://map.naver.com/p/entry/place/36523919';
 const NAVIGATION = [
-  ['ABOUT', '#/main/experience'], ['TAILORING', '#/main/experience'],
+  ['ABOUT', '#/main/experience'], ['TAILORING', sitePath('tailoring/')],
   ['RENTAL', '#/main/rental'], ['ARCHIVE', sitePath('archive/')],
   ['EVENT', sitePath('event/')], ['STORE', sitePath('store/')]
 ];
