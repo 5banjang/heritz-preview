@@ -51,7 +51,7 @@ body.design-page { margin: 0; background: var(--design-paper); color: var(--desi
 .design-chapter-heading { position:relative; isolation:isolate; overflow:hidden; }
 .design-chapter-heading::before { content:""; position:absolute; z-index:-1; inset:0 0 0 28%; background:url('../assets/effects/chapter-drafting.svg') right 42% / auto 160% no-repeat; opacity:.25; mask-image:linear-gradient(to right,transparent,#000 65%); pointer-events:none; }
 .design-chapter-heading .design-eyebrow { grid-column:1 / -1; margin:0; font:500 clamp(38px,7.2vw,104px)/1 'ivybodoni', Georgia, serif; letter-spacing:-.055em; color:#fff; overflow-wrap:anywhere; }
-.design-step-number { display:block; width:fit-content; margin-bottom:24px; padding:7px 11px; background:#fff; font:10px/1.4 var(--design-sans); letter-spacing:.16em; color:#111; }
+.design-step-number { display:block; width:fit-content; margin-bottom:24px; padding:7px 11px; background:#fff; font:500 12px/1.4 'ivybodoni', Georgia, serif; letter-spacing:.1em; color:#111; }
 
 .design-chapter-heading h2 { grid-column:1; padding-left:12%; font-size:clamp(27px,2.6vw,38px); line-height:1.5; letter-spacing:-.045em; font-weight:400; margin:0; word-break:keep-all; }
 .design-chapter-heading > p:last-child { grid-column:2; font-size:13px; color:#ccc; max-width:34em; margin:0; }
