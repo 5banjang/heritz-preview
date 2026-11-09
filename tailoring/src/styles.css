@@ -42,7 +42,7 @@ body.design-page { margin: 0; background: var(--design-paper); color: var(--desi
 .design-contents > p { margin:0 0 10px; font-size:10px; letter-spacing:.16em; color:#bdbdbd; }
 .design-contents a { display:grid; grid-template-columns:26px minmax(0,1fr) 20px; align-items:center; gap:12px; min-height:60px; padding:12px 0; border-bottom:1px solid #ffffff40; text-decoration:none; }
 .design-contents a > span:first-child, .design-contents a > span:last-child { font:10px var(--design-sans); color:#bdbdbd; }
-.design-contents a > span:nth-child(2) { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:4px 16px; font:italic 24px var(--design-serif); }
+.design-contents a > span:nth-child(2) { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:4px 16px; font:500 24px 'ivybodoni', Georgia, serif; }
 .design-contents small { font:11px/1.6 var(--design-sans); color:#bdbdbd; }
 .design-contents a:hover { border-bottom-color:#fff; }
 .design-chapter { --chapter-gutter:max(6vw,calc((100vw - 1280px)/2)); padding:0 var(--chapter-gutter) 128px; border-bottom:1px solid var(--design-rule); }
