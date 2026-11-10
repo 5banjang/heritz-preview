@@ -49,6 +49,7 @@
   text-align: center;
   overflow-wrap: anywhere;
 }
+.design-page a.visit-action { color: #ffffff; }
 .visit-action:hover { background: #333333; }
 .visit-action:focus-visible { outline: 3px solid #646464; outline-offset: 5px; }
 .visit-action:disabled { background: #fff; border-color: #d8d8d8; color: #666666; cursor: not-allowed; }

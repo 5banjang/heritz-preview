@@ -10,7 +10,7 @@ export async function mountFeature(name) {
   const root = document.getElementById(name);
   if (!root) return;
   try {
-    const feature = await import(`./features/${name}/index.mjs`);
+    const feature = await import(`./features/${name}/index.mjs${name === 'sewing' ? '?v=pick-stitch-20261110' : ''}`);
     if (disposed) return;
     root.replaceChildren();
     const cleanup = await feature.mount(root, {});

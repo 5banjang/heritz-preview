@@ -1,0 +1,57 @@
+@import url("./fabric-intro.css");
+@import url("./home-editorial.css");
+@import url("./home-scroll.css");
+@import url("./process-scroll.css");
+@import url("./rental-editorial.css");
+@import url("./store-editorial.css");
+/* Local editorial concept: scoped to the home hero and its transparent header. */
+.site-header.dark {
+  position:fixed; inset:0 0 auto; z-index:50; height:auto;
+  padding:24px 5vw; gap:24px; background:transparent; color:#fff; mix-blend-mode:difference; box-shadow:none; backdrop-filter:none;
+}
+.site-header.dark .brand { font-size:16px; font-weight:500; letter-spacing:.08em; }
+.site-header.dark .desktop-nav { margin-left:auto; gap:22px; font-size:10px; font-weight:500; letter-spacing:.13em; }
+.site-header.dark .desktop-nav a { padding:0; }
+.site-header.dark .menu-button { font-size:18px; }
+.home-editorial {
+  position:relative; isolation:isolate; display:flex; align-items:flex-start;
+  min-height:760px; min-height:100svh; height:auto; padding:120px 6vw;
+  background:#000; color:#fff; text-align:center; overflow:hidden;
+}
+.home-editorial .hero-content { position:relative; z-index:2; display:grid; grid-template-columns:1fr; justify-items:center; align-items:start; gap:24px; width:100%; max-width:none; }
+.home-editorial .hero-eyebrow { grid-column:1 / -1; color:#f2f2f2; font-size:10px; letter-spacing:.2em; font-weight:400; }
+.home-editorial h1 { margin:0; max-width:none; font:500 clamp(64px,7.8vw,124px)/.96 'ivybodoni',Georgia,serif; letter-spacing:-.045em; }
+.home-editorial h1 span { display:block; }
+.home-editorial .hero-aside { padding:0; max-width:420px; }
+.home-editorial .hero-description { font-size:14px; line-height:1.9; font-weight:400; color:#f2f2f2; margin:0 0 24px; }
+.home-editorial .hero-links { display:flex; justify-content:center; flex-wrap:wrap; gap:8px 24px; }
+.home-editorial .hero-links a { display:inline-flex; align-items:center; gap:20px; min-height:44px; border-bottom:1px solid #ffffff70; font-size:10px; letter-spacing:.12em; color:#fff; }
+.home-editorial .hero-links a:hover { border-color:#fff; }
+.home-editorial a:focus-visible,.site-header.dark a:focus-visible,.site-header.dark button:focus-visible { outline-color:#fff; }
+@media(min-width:1000px) { .site-header.dark .desktop-nav { display:flex; } }
+@media(max-width:999px) {
+  .home-editorial { padding:100px 6vw 150px; }
+  .home-editorial .hero-content { grid-template-columns:1fr; gap:22px; }
+  .home-editorial .hero-aside { padding:0; max-width:420px; }
+  .home-editorial h1 { font-size:clamp(64px,10vw,100px); }
+}
+@media(max-width:599px) {
+  .site-header.dark { padding:16px 24px; }
+  .site-header.dark .brand { font-size:13px; letter-spacing:.08em; }
+  .site-header.dark .menu-button { margin-left:auto; }
+  .home-editorial { min-height:780px; min-height:max(780px,100svh); padding:88px 24px 142px; }
+  .home-editorial .hero-content { gap:20px; }
+  .home-editorial h1 { font-size:clamp(52px,14vw,78px); line-height:1.03; }
+  .home-editorial .hero-description { font-size:13px; line-height:1.85; margin-bottom:14px; }
+  .home-editorial .hero-links { gap:8px 22px; }
+}
+
+/* One canvas keeps drafting lines continuous across the cut and headline. */
+.home-opening { position:relative; isolation:isolate; background:#000; }
+.home-opening::after { content:''; position:absolute; inset:auto 0 0; height:clamp(160px,24svh,280px); background:linear-gradient(to bottom,transparent,#000); pointer-events:none; }
+.home-opening::before { content:''; position:absolute; inset:0; z-index:-1; pointer-events:none; background:url('./assets/effects/fabric-chalk-pattern.svg') center/cover no-repeat; opacity:.3; mask-image:radial-gradient(ellipse 580px 330px at 50% calc(max(760px,100svh) + 300px),#0001 0%,#0001 55%,#000 100%); }
+.home-opening .fabric-intro,.home-opening .fabric-stage,.home-opening .fabric-underlay,.home-opening .home-editorial { background:transparent; }
+.home-opening .fabric-underlay::before { content:none; }
+@media(max-width:599px) {
+ .home-opening::before { opacity:.24; mask-image:radial-gradient(ellipse 70vw 260px at 50% calc(max(760px,100svh) + 250px),#0001 0%,#0001 65%,#000 100%); }
+}

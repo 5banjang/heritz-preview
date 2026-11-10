@@ -1,0 +1,51 @@
+﻿.chapter-rail{position:fixed;left:12px;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:2px}
+.chapter-rail button{position:relative;display:flex;align-items:center;width:44px;height:44px;padding:0 8px;border:0;background:transparent;color:#fff;cursor:pointer;text-align:left}
+.chapter-tick{position:relative;display:block;width:16px;height:2px;background:#888;box-shadow:0 0 0 1px #0003}
+.chapter-tick:after{content:'';position:absolute;inset:0;background:var(--rail-active,#fff);transform:scaleX(var(--chapter-progress,0));transform-origin:left}
+.chapter-rail button[aria-current] .chapter-tick{width:28px;height:3px}
+.chapter-label{position:absolute;left:48px;white-space:nowrap;padding:10px 14px;border-radius:5px;background:#000e;color:#fff;font:500 11px/1.5 var(--sans,sans-serif);letter-spacing:.07em;opacity:0;visibility:hidden;pointer-events:none}
+.chapter-rail button:hover .chapter-label,.chapter-rail button:focus-visible .chapter-label{opacity:1;visibility:visible}
+.chapter-rail button:focus-visible{outline:2px solid #888;outline-offset:-2px;border-radius:4px}
+/* Full-frame photographs share one stationary editorial foreground. */
+.home-main .moments{display:block}
+.moments-stage{display:flex;flex-direction:column;gap:36px}
+.home-main .moments-gallery{width:100%;min-width:0}
+.home-main .moments-controls{display:flex;align-items:center;justify-content:space-between;gap:16px;color:#fff;font:400 11px/1.5 var(--sans,sans-serif)}
+.moments-dots{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;max-width:100%}
+.moments-dots button{display:grid;place-items:center;width:44px;height:44px;border:0;background:transparent;cursor:pointer}
+.moments-dots button span{height:2px;width:18px;background:#ffffff60}
+.moments-dots button[aria-pressed=true] span{background:#fff;width:30px}
+.moments-dots button:focus-visible{outline:1px solid white;outline-offset:-3px}
+.home-main.scroll-motion .moments{padding:0;position:relative;height:320svh;display:block;background:#000}
+.home-main.scroll-motion .moments::before{content:'';position:absolute;inset:0 0 auto;height:clamp(160px,24svh,280px);z-index:4;background:linear-gradient(to bottom,#000 0%,#000b 28%,transparent 100%);pointer-events:none}
+.home-main.scroll-motion .moments-stage{position:sticky;top:0;height:100svh;min-height:601px;box-sizing:border-box;isolation:isolate;overflow:hidden;display:flex;justify-content:flex-end;gap:26px;padding:100px 7.5vw 145px}
+.home-main.scroll-motion .moments-stage::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#0005,transparent 24%),linear-gradient(90deg,#0009,transparent 78%),linear-gradient(0deg,#000b,transparent 75%),#0002}
+.home-main.scroll-motion .moments .moments-gallery{position:absolute;inset:0;z-index:0;width:100%;height:100%}
+.home-main.scroll-motion .moments-viewport,.home-main.scroll-motion .moments .moment-grid{position:absolute;inset:0;display:block;width:100%;height:100%;margin:0;overflow:hidden}
+.home-main.scroll-motion .moments .photo-link{position:absolute;inset:0;width:100%;height:100%;padding:0;margin:0;border:0;border-radius:0;transform-origin:center;transition:transform var(--film-duration,0ms) ease,opacity var(--film-duration,0ms) linear;background:#111;will-change:transform,opacity}
+.home-main.scroll-motion .moments .photo{width:100%;height:100%;aspect-ratio:auto;border-radius:0;background:#000}
+.home-main.scroll-motion .moments .photo img{object-fit:contain!important;object-position:center}
+.home-main.scroll-motion .moments .photo-caption{display:none}
+.home-main.scroll-motion .moments .editorial-heading,.home-main.scroll-motion .moments .section-bottom{position:relative;z-index:2;max-width:660px;width:fit-content;color:#fff}
+.home-main.scroll-motion .moments .editorial-heading{gap:24px;pointer-events:none}
+.home-main.scroll-motion .moments .eyebrow{font-size:10px;letter-spacing:.15em}
+.home-main.scroll-motion .moments h2{font-size:clamp(40px,4.1vw,66px);font-weight:400;line-height:1.28;letter-spacing:-.055em}
+.home-main.scroll-motion .moments .section-description{font-size:13px;line-height:1.8;opacity:.85}
+.home-main.scroll-motion .moments .section-bottom{display:flex;align-items:flex-start;flex-direction:column;gap:0}
+.home-main.scroll-motion .moments .section-bottom p{display:none}
+.home-main.scroll-motion .moments .editorial-link{border:0;border-bottom:1px solid #ffffff80;border-radius:0;padding:9px 0;min-height:44px;font-size:11px;font-weight:400;gap:35px}
+.home-main.scroll-motion .moments .moments-controls{position:absolute;bottom:80px;left:7.5vw;right:7.5vw;z-index:3}
+/* Controls sit above the shade while the photograph remains the background. */
+.home-main.scroll-motion .moments .moments-gallery{z-index:auto}
+.home-main.scroll-motion .moments-viewport{z-index:0}
+@media(max-width:599px){
+ .chapter-rail{left:0;gap:0}.chapter-rail button{padding-left:8px}.chapter-label{left:42px;font-size:10px}
+ .home-main.home-scroll .section:not(.moments){padding-left:52px}
+ .home-main.scroll-motion .moments-stage{padding:80px 28px 156px 40px;gap:18px}
+ .home-main.scroll-motion .moments h2{font-size:clamp(32px,8vw,42px);line-height:1.3}
+ .home-main.scroll-motion .moments .editorial-heading{gap:17px}
+ .home-main.scroll-motion .moments .section-description{font-size:12px}
+ .home-main.scroll-motion .moments .moments-controls{left:40px;right:24px;bottom:90px;gap:6px}
+ .moments-dots button{width:32px}
+ .home-main.scroll-motion .moments-stage::after{background:linear-gradient(0deg,#000d,transparent 85%),#0002}
+}

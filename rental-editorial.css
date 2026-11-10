@@ -1,0 +1,56 @@
+﻿.home-main .section.rental{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;min-height:850px;height:100svh;max-height:1200px;padding:66px 0 72px 7vw;overflow:hidden;background:#a8b5b9;color:#fff}
+.rental-backdrops,.rental-shade{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.rental-backdrop{position:absolute;width:100%;height:100%;object-fit:contain;object-position:64% center;opacity:0;transition:opacity .8s ease;mix-blend-mode:multiply}
+.rental-backdrop.is-active{opacity:1}
+.rental-shade{background:linear-gradient(90deg,rgba(9,17,20,.87),rgba(9,17,20,.34) 48%,rgba(9,17,20,.06)),linear-gradient(0deg,rgba(8,16,19,.65),transparent 75%)}
+.rental-topline{display:flex;justify-content:space-between;margin-right:7vw;padding-top:20px;border-top:1px solid #fff6;font:10px/1.5 var(--sans);letter-spacing:.18em}
+.rental-layout{display:grid;grid-template-columns:38% 62%;align-items:end;gap:0;width:100%;margin-top:100px}
+.rental-copy{padding:0 48px 70px 0}
+.rental-copy .eyebrow{font-size:10px;letter-spacing:.18em;margin-bottom:24px}
+.home-main .rental h2{font:400 clamp(58px,6.5vw,106px)/.96 'ivybodoni',Georgia,serif;letter-spacing:-.045em;overflow-wrap:normal;margin:0 0 20px}
+.rental-name{font-size:14px;letter-spacing:.08em;margin:0 0 25px}
+.home-main .rental .section-description{font-size:12px;line-height:1.9;color:#e2e5e5;opacity:1;margin:0 0 30px}
+.home-main .rental .editorial-link{display:inline-flex;gap:40px;align-items:center;padding:14px 24px;border:1px solid #fff7;border-radius:40px;color:#fff;font-size:12px;min-height:48px}
+.rental-browser{min-width:0}
+.home-main .rental .rental-grid{display:flex;flex-direction:row;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;padding:12px 0 20px;overscroll-behavior-x:contain}
+.rental-grid:after{content:'';flex:0 0 calc(100% - 234px)}
+.rental-grid::-webkit-scrollbar{display:none}
+.home-main .rental-grid figure{flex:0 0 214px;min-width:0;margin:0;padding:0;scroll-snap-align:start}
+.home-main .rental-grid.rental-dragging{scroll-snap-type:none;cursor:grabbing;user-select:none}
+.rental-look{display:block;position:relative;width:100%;border:1px solid #fff4;border-radius:10px;overflow:hidden;padding:0;background:#738085;color:#fff;text-align:left;cursor:grab;transition:transform .45s,border-color .45s}
+.rental-look[aria-pressed=true]{border-color:#d7b97e;transform:translateY(-8px)}
+.rental-look:after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 40%,#0b1113e8)}
+.rental-look:focus-visible,.rental-grid:focus-visible{outline:2px solid #e2c487;outline-offset:3px}
+.rental-grid img,.rental-look{-webkit-user-drag:none;user-select:none}
+.home-main .rental-grid .photo{aspect-ratio:2/3;border-radius:0;background:#b1bfc3;overflow:hidden}
+.home-main .rental-grid .photo img{object-fit:contain!important}
+.rental-card-copy{position:absolute;z-index:1;bottom:20px;left:18px;right:12px;display:flex;flex-direction:column;gap:7px}
+.rental-card-copy small{font:9px/1.5 var(--sans);letter-spacing:.15em}
+.rental-card-copy strong{font:400 29px/1 'ivybodoni',Georgia,serif;letter-spacing:-.025em}
+.rental-card-copy>span{font:10px/1.5 var(--sans);color:#ddd}
+.rental-controls{display:flex;align-items:center;gap:24px;margin:10px 7vw 0 0}
+.rental-controls>div:first-child{display:flex;gap:10px}
+.rental-controls button{width:46px;height:46px;border:1px solid #fff7;background:transparent;color:inherit;font-size:23px;cursor:pointer;border-radius:50%}
+.rental-controls button:disabled{opacity:.25;cursor:default}
+.rental-controls button:focus-visible{outline:2px solid white;outline-offset:4px}
+.rental-progress{height:2px;background:#fff4;flex:1}
+.rental-progress span{display:block;width:12.5%;height:100%;background:#d7b97e;transition:width .5s ease}
+.rental-count{font:36px/1 'ivybodoni',Georgia,serif;white-space:nowrap}
+.rental-count small{font:10px/1 var(--sans);color:#ddd}
+.rental-hint{font:9px/1.5 var(--sans);letter-spacing:.15em;color:#ddd;margin:20px 0 0}
+@media(max-width:799px){
+ .home-main.home-scroll .section.rental{min-height:900px;height:auto;max-height:none;padding:58px 0 40px 32px}
+ .rental-topline{margin-right:24px;font-size:8px;gap:20px}.rental-topline span:last-child{display:none}
+ .rental-backdrop{object-position:center top;object-fit:cover}.rental-shade{background:linear-gradient(90deg,#091114c9,#09111422),linear-gradient(0deg,#091114ed,transparent)}
+ .rental-layout{display:flex;flex-direction:column;align-items:stretch;margin-top:170px}
+ .rental-copy{padding:0 32px 32px 0}.home-main .rental h2{font-size:58px;max-width:300px}.rental-copy .eyebrow{margin-bottom:16px}.rental-name{margin-bottom:16px}
+ .home-main .rental .section-description{font-size:11px;margin-bottom:20px}
+ .home-main .rental-grid figure{flex-basis:156px}.home-main .rental .rental-grid{gap:14px}.rental-grid:after{flex-basis:calc(100% - 170px)}
+ .rental-card-copy{bottom:14px;left:12px}.rental-card-copy strong{font-size:23px}.rental-controls{margin-right:24px;gap:16px}.rental-hint{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.rental-backdrop,.rental-look,.rental-progress span{transition:none}}
+.home-main .section.rental{align-items:stretch}
+.rental-topline{gap:30px}
+.rental-backdrop{width:75%;right:0;mask-image:linear-gradient(90deg,transparent,#000 24%,#000 80%,transparent)}
+@media(max-width:799px){.rental-backdrop{width:100%;mask-image:none}}
+@media(min-width:800px){.rental-backdrop{width:auto;max-width:none;height:100%;right:8%;object-position:center;mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}}

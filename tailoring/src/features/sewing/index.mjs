@@ -57,14 +57,18 @@ export function mount(root, options = {}) {
     section.querySelector('.sewing-detail-title').textContent=item.name;
     section.querySelector('.sewing-description').textContent=item.text;
     section.querySelector('.sewing-photo').dataset.stitch=item.id;
-    const hasPhoto=item.id==='pad-stitching';
-    section.querySelector('.sewing-photo-image').hidden=!hasPhoto;
-    section.querySelector('.sewing-photo-empty').hidden=hasPhoto;
-    section.querySelector('.sewing-photo-empty').setAttribute('aria-label',`${item.name} 실제 사진 미등록`);
-    section.querySelector('.sewing-photo figcaption').textContent=`${item.name} 실제 사진${hasPhoto ? '' : ' · 등록 예정'}`;
-    section.querySelector('.sewing-note').textContent=hasPhoto
+    const isPad=item.id==='pad-stitching';
+    const photo=section.querySelector('.sewing-photo-image');
+    photo.src=new URL(`../../../assets/sewing/${item.id}.jpg`, import.meta.url).href;
+    photo.width=isPad ? 721 : 960;
+    photo.height=isPad ? 960 : 720;
+    photo.alt=isPad ? '라펠 안쪽 심지에 팔자 모양의 손바느질이 반복된 팔자뜨기 실제 작업 사진' : '짙은 정장 라펠 가장자리를 따라 이어진 픽스티치 실제 작업 사진';
+    photo.hidden=false;
+    section.querySelector('.sewing-photo-empty').hidden=true;
+    section.querySelector('.sewing-photo figcaption').textContent=`${item.name} 실제 사진`;
+    section.querySelector('.sewing-note').textContent=isPad
       ? '2D 개념도는 스티치의 위치와 역할을 안내합니다. 실제 작업 사진에서 라펠 안쪽 심지에 이어지는 팔자뜨기를 살펴보세요.'
-      : '2D 개념도는 스티치의 위치와 역할을 안내합니다. 픽스티치 실제 사진은 추후 등록 예정이며, 현재 사진 영역은 비워 두었습니다.';
+      : '2D 개념도는 스티치의 위치와 역할을 안내합니다. 실제 작업 사진에서 라펠 가장자리를 따라 이어지는 픽스티치를 살펴보세요.';
   }
   const onClick=event=>{
     const button=event.target.closest?.('[data-sewing-index]');
