@@ -55,3 +55,22 @@
 @media(max-width:599px) {
  .home-opening::before { opacity:.24; mask-image:radial-gradient(ellipse 70vw 260px at 50% calc(max(760px,100svh) + 250px),#0001 0%,#0001 65%,#000 100%); }
 }
+/* Each choice opens the matching hands-on chapter of the tailoring page. */
+.tailoring-entry{position:relative;background:#000;color:#fff;padding:40px 7vw 120px}
+.tailoring-entry-heading{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;margin-bottom:48px;border-top:1px solid #fff4;padding-top:24px}
+.tailoring-entry-heading>p{grid-column:1/-1;font:10px/1.5 var(--sans);letter-spacing:.15em;color:#999}
+.tailoring-entry-heading h2{font:400 clamp(27px,3vw,46px)/1.4 var(--sans);letter-spacing:-.045em;margin:0}
+.tailoring-entry-heading>span{font:13px/1.8 var(--sans);color:#aaa;justify-self:end}
+.tailoring-entry-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.tailoring-entry-card{display:flex;flex-direction:column;position:relative;overflow:hidden;padding:28px;border:1px solid #fff3;background:#0a0a0a;transition:background .3s,border-color .3s;min-height:340px}
+.entry-number{font:9px/1.5 var(--sans);letter-spacing:.15em;color:#888}
+.tailoring-entry-card>strong{font:400 clamp(48px,5.5vw,80px)/1 'ivybodoni',Georgia,serif;letter-spacing:-.04em;margin:36px 0 18px}
+.tailoring-entry-card h3{font:400 18px/1.5 var(--sans);letter-spacing:-.035em;margin:0 0 12px}
+.tailoring-entry-card p{font:12px/1.9 var(--sans);color:#aaa;max-width:28ch;margin:0 0 32px;word-break:keep-all}
+.entry-action{display:flex;justify-content:space-between;gap:16px;font:11px/1.5 var(--sans);border-top:1px solid #fff3;padding-top:18px;margin-top:auto;align-items:center}
+.entry-action>span{font-size:24px;transition:transform .3s}
+.tailoring-entry-card:hover,.tailoring-entry-card:focus-visible{background:#171717;border-color:#aaa}
+.tailoring-entry-card:hover .entry-action>span,.tailoring-entry-card:focus-visible .entry-action>span{transform:translate(4px,-4px)}
+.tailoring-entry-card:focus-visible{outline:2px solid #fff;outline-offset:4px}
+@media(max-width:799px){.tailoring-entry{padding:20px 24px 80px 40px}.tailoring-entry-heading{display:flex;flex-direction:column;align-items:flex-start;gap:20px;margin-bottom:28px}.tailoring-entry-heading>span{font-size:12px}.tailoring-entry-options{grid-template-columns:1fr;gap:14px}.tailoring-entry-card{min-height:0;padding:24px}.tailoring-entry-card>strong{font-size:54px;margin:24px 0 14px}.tailoring-entry-card p{max-width:none;margin-bottom:24px}}
+@media(prefers-reduced-motion:reduce){.tailoring-entry-card,.entry-action>span{transition:none}}
