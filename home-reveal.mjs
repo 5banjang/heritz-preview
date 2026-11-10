@@ -4,12 +4,12 @@ export function mountHomeReveal(doc = document) {
   const root = doc.querySelector('.home-main');
   const preference = view?.matchMedia?.('(prefers-reduced-motion: reduce)');
   if (!root || !view?.IntersectionObserver || preference?.matches) return () => {};
-  const selector = '.fabric-copy, .hero-content, .editorial-heading, .section-bottom, .rental-grid, .experience:not(.process-enhanced) .step-card, .store-grid article, .booking, .moments-viewport, .moments:not(.moments-cinema) .moment-grid > .photo-link, .process-stage > .editorial-link';
+  const selector = '.fabric-copy, .hero-content, .editorial-heading, .section-bottom, .rental-backdrops, .rental-copy, .rental-topline, .rental-grid, .experience:not(.process-enhanced) .step-card, .store-grid article, .booking, .moments-viewport, .moments:not(.moments-cinema) .moment-grid > .photo-link, .process-stage > .editorial-link';
   const groups = [...root.querySelectorAll(selector)];
   const targets = new Map(groups.map(group => [group,
     group.matches('.hero-content')
       ? ['.hero-eyebrow', 'h1', '.hero-description', '.hero-links'].map(selector => group.querySelector(selector)).filter(Boolean)
-      : group.matches('.rental-grid, .moments-viewport, .photo-link, .process-stage > .editorial-link') ? [group] : [...group.children],
+      : group.matches('.rental-backdrops, .rental-grid, .moments-viewport, .photo-link, .process-stage > .editorial-link') ? [group] : [...group.children],
   ]));
   const elements = [...targets.values()].flat();
   if (!elements.every(element => typeof element.animate === 'function')) return () => {};
@@ -35,9 +35,9 @@ export function mountHomeReveal(doc = document) {
       targets.get(group).forEach(restore);
       if (group.contains(doc.activeElement)) continue;
       const animations = targets.get(group).map((element, index) => element.animate([
-        { opacity: 0, transform: 'translateY(42px)' },
-        { opacity: 1, transform: 'translateY(0)' },
-      ], { duration: 800, delay: 1000 + index * 180, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' }));
+        { opacity: 0, transform: element.matches?.('.rental-backdrops') ? 'none' : 'translateY(42px)' },
+        { opacity: 1, transform: element.matches?.('.rental-backdrops') ? 'none' : 'translateY(0)' },
+      ], { duration: 800, delay: 500 + index * 180, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' }));
       active.set(group, animations);
       Promise.all(animations.map(animation => animation.finished.catch(() => {})))
         .then(() => { if (active.get(group) === animations) active.delete(group); });
