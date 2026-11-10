@@ -55,22 +55,17 @@
 @media(max-width:599px) {
  .home-opening::before { opacity:.24; mask-image:radial-gradient(ellipse 70vw 260px at 50% calc(max(760px,100svh) + 250px),#0001 0%,#0001 65%,#000 100%); }
 }
-/* Each choice opens the matching hands-on chapter of the tailoring page. */
-.tailoring-entry{position:relative;background:#000;color:#fff;padding:40px 7vw 120px}
-.tailoring-entry-heading{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;margin-bottom:48px;border-top:1px solid #fff4;padding-top:24px}
-.tailoring-entry-heading>p{grid-column:1/-1;font:10px/1.5 var(--sans);letter-spacing:.15em;color:#999}
-.tailoring-entry-heading h2{font:400 clamp(27px,3vw,46px)/1.4 var(--sans);letter-spacing:-.045em;margin:0}
-.tailoring-entry-heading>span{font:13px/1.8 var(--sans);color:#aaa;justify-self:end}
-.tailoring-entry-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.tailoring-entry-card{display:flex;flex-direction:column;position:relative;overflow:hidden;padding:28px;border:1px solid #fff3;background:#0a0a0a;transition:background .3s,border-color .3s;min-height:340px}
-.entry-number{font:9px/1.5 var(--sans);letter-spacing:.15em;color:#888}
-.tailoring-entry-card>strong{font:400 clamp(48px,5.5vw,80px)/1 'ivybodoni',Georgia,serif;letter-spacing:-.04em;margin:36px 0 18px}
-.tailoring-entry-card h3{font:400 18px/1.5 var(--sans);letter-spacing:-.035em;margin:0 0 12px}
-.tailoring-entry-card p{font:12px/1.9 var(--sans);color:#aaa;max-width:28ch;margin:0 0 32px;word-break:keep-all}
-.entry-action{display:flex;justify-content:space-between;gap:16px;font:11px/1.5 var(--sans);border-top:1px solid #fff3;padding-top:18px;margin-top:auto;align-items:center}
-.entry-action>span{font-size:24px;transition:transform .3s}
-.tailoring-entry-card:hover,.tailoring-entry-card:focus-visible{background:#171717;border-color:#aaa}
-.tailoring-entry-card:hover .entry-action>span,.tailoring-entry-card:focus-visible .entry-action>span{transform:translate(4px,-4px)}
-.tailoring-entry-card:focus-visible{outline:2px solid #fff;outline-offset:4px}
-@media(max-width:799px){.tailoring-entry{padding:20px 24px 80px 40px}.tailoring-entry-heading{display:flex;flex-direction:column;align-items:flex-start;gap:20px;margin-bottom:28px}.tailoring-entry-heading>span{font-size:12px}.tailoring-entry-options{grid-template-columns:1fr;gap:14px}.tailoring-entry-card{min-height:0;padding:24px}.tailoring-entry-card>strong{font-size:54px;margin:24px 0 14px}.tailoring-entry-card p{max-width:none;margin-bottom:24px}}
-@media(prefers-reduced-motion:reduce){.tailoring-entry-card,.entry-action>span{transition:none}}
+.tailoring-entry{position:relative;isolation:isolate;display:flex;align-items:flex-end;min-height:90svh;padding:130px 8vw 100px;background:#111;color:#fff;overflow:hidden}
+.tailoring-entry-visual{position:absolute;inset:0;z-index:-1}
+.tailoring-entry-visual img{width:100%;height:100%;object-fit:cover;object-position:center;filter:grayscale(1)}
+.tailoring-entry-visual:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#000b,#0004),linear-gradient(0deg,#0008,transparent 70%)}
+.tailoring-entry-copy{max-width:760px}
+.entry-eyebrow{font:500 10px/1.5 var(--sans);letter-spacing:.2em;margin:0 0 32px}
+.tailoring-entry h2{font:300 clamp(44px,5.5vw,84px)/1.25 var(--sans);letter-spacing:-.055em;margin:0 0 32px;word-break:keep-all}
+.entry-description{font:400 13px/1.9 var(--sans);color:#eee;margin:0 0 30px;word-break:keep-all}
+.tailoring-experience-link{display:inline-flex;align-items:center;gap:56px;min-height:52px;padding:15px 24px;border:1px solid #fff9;color:#fff;font:500 12px/1.5 var(--sans);transition:background .25s,color .25s}
+.tailoring-experience-link span{font-size:22px}
+.tailoring-experience-link:hover{background:#fff;color:#111}
+.tailoring-experience-link:focus-visible{outline:2px solid #fff;outline-offset:5px}
+@media(max-width:799px){.tailoring-entry{min-height:80svh;padding:100px 30px 70px 40px}.tailoring-entry-visual img{object-position:58% center}.tailoring-entry h2{font-size:clamp(38px,9vw,60px)}.entry-eyebrow{margin-bottom:24px}.entry-description{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.tailoring-experience-link{transition:none}}

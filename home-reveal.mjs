@@ -4,7 +4,7 @@ export function mountHomeReveal(doc = document) {
   const root = doc.querySelector('.home-main');
   const preference = view?.matchMedia?.('(prefers-reduced-motion: reduce)');
   if (!root || !view?.IntersectionObserver || preference?.matches) return () => {};
-  const selector = '.tailoring-entry, .fabric-copy, .hero-content, .editorial-heading, .section-bottom, .rental-backdrops, .rental-copy, .rental-topline, .rental-grid, .experience:not(.process-enhanced) .step-card, .store-grid article, .booking, .moments-viewport, .moments:not(.moments-cinema) .moment-grid > .photo-link, .process-stage > .editorial-link';
+  const selector = '.tailoring-entry-copy, .fabric-copy, .hero-content, .editorial-heading, .section-bottom, .rental-backdrops, .rental-copy, .rental-topline, .rental-grid, .experience:not(.process-enhanced) .step-card, .store-grid article, .booking, .moments-viewport, .moments:not(.moments-cinema) .moment-grid > .photo-link, .process-stage > .editorial-link';
   const groups = [...root.querySelectorAll(selector)];
   const targets = new Map(groups.map(group => [group,
     group.matches('.hero-content')
