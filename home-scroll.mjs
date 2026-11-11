@@ -50,9 +50,13 @@ export function mountHomeScroll() {
   const chapterButtons = [...nav.children];
   let gallery, viewport, controls, dots = [], frame = 0, disposed = false;
   let position = 0, anchor, focused = false, resized = false, lastY = window.scrollY;
+  let paintedPosition, paintedIndex;
+  const paintedOffsets = new Map();
   main.classList.add('home-scroll');
   const progressNow = () => backgroundProgress(moments.getBoundingClientRect(), window.innerHeight);
   function restoreGrid() {
+    paintedPosition = paintedIndex = undefined;
+    paintedOffsets.clear();
     slides.forEach(slide => {
       slide.inert = false; slide.removeAttribute('aria-hidden');
       for (const key of ['transform', 'transform-origin', 'filter', 'opacity', 'z-index']) slide.style.removeProperty(key);
@@ -130,7 +134,7 @@ export function mountHomeScroll() {
     frame = 0;
     if (disposed) return;
     const rects = sections.map(section => section.getBoundingClientRect());
-    const screen = viewport?.getBoundingClientRect();
+    const screen = viewport;
     const chapter = chapterFrame(rects, window.innerHeight);
     const scrolled = window.scrollY !== lastY;
     if (scrolled || resized) track.style.setProperty('--film-duration', '0ms');
@@ -138,8 +142,8 @@ export function mountHomeScroll() {
     if (screen) {
       const progress = backgroundProgress(rects[0], window.innerHeight);
       if (resized) anchor = { progress, position };
-      if (!focused && !resized && (scrolled || !anchor)) position = anchoredPosition(progress, slides.length, anchor);
       if (!focused && (rects[0].top >= window.innerHeight || rects[0].top + rects[0].height <= 0)) anchor = undefined;
+      if (!focused && !resized && (scrolled || !anchor)) position = anchoredPosition(progress, slides.length, anchor);
     }
     resized = false;
     nav.style.setProperty('--rail-active', chapter.index === 2 || chapter.index === 4 || (chapter.index < 0 && window.scrollY < window.innerHeight * .2) ? '#000' : '#fff');
@@ -148,19 +152,29 @@ export function mountHomeScroll() {
       else button.removeAttribute('aria-current');
       button.style.setProperty('--chapter-progress', i < chapter.index ? 1 : i === chapter.index ? chapter.progress : 0);
     });
-    if (screen) {
+    if (screen && position !== paintedPosition) {
+      paintedPosition = position;
       const index = Math.round(position);
       slides.forEach((slide, i) => {
-        const pose = backgroundPose(i - position);
-        slide.style.transform = `translate3d(${pose.x}%,0,0) scale(${pose.scale})`;
-        slide.style.opacity = String(pose.opacity);
-        slide.style.setProperty('z-index', String(slides.length - Math.round(Math.abs(i - position))));
-        const hidden = i !== index && !slide.contains(document.activeElement);
-        slide.inert = hidden;
-        slide.setAttribute('aria-hidden', String(hidden));
+        const offset = Math.max(-1, Math.min(1, i - position));
+        if (paintedOffsets.get(slide) !== offset) {
+          paintedOffsets.set(slide, offset);
+          const pose = backgroundPose(offset);
+          slide.style.transform = `translate3d(${pose.x}%,0,0) scale(${pose.scale})`;
+          slide.style.opacity = String(pose.opacity);
+        }
+        if (paintedIndex !== index) {
+          slide.style.setProperty('z-index', String(slides.length - Math.abs(i - index)));
+          const hidden = i !== index && !slide.contains(document.activeElement);
+          slide.inert = hidden;
+          slide.setAttribute('aria-hidden', String(hidden));
+        }
       });
-      dots.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
-      controls.querySelector('.moments-counter').textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+      if (paintedIndex !== index) {
+        paintedIndex = index;
+        dots.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+        controls.querySelector('.moments-counter').textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+      }
     }
   }
   function queue() { if (!disposed && !frame) frame = requestAnimationFrame(paint); }

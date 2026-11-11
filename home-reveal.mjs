@@ -1,15 +1,16 @@
 // Progressive enhancement: content stays readable when motion is unavailable.
 export function mountHomeReveal(doc = document) {
   const view = doc.defaultView;
-  const root = doc.querySelector('.home-main');
+  const root = doc.querySelector('.home-main, .about-main');
   const preference = view?.matchMedia?.('(prefers-reduced-motion: reduce)');
   if (!root || !view?.IntersectionObserver || preference?.matches) return () => {};
-  const selector = '.tailoring-entry-copy, .fabric-copy, .hero-content, .editorial-heading, .section-bottom, .rental-backdrops, .rental-copy, .rental-topline, .rental-grid, .experience:not(.process-enhanced) .step-card, .store-grid article, .booking, .moments-viewport, .moments:not(.moments-cinema) .moment-grid > .photo-link, .process-stage > .editorial-link';
+  const selector = '.tailoring-entry-copy, .fabric-copy, .hero-content, .editorial-heading, .section-bottom, .rental-backdrops, .rental-copy, .rental-topline, .rental-grid, .experience:not(.process-enhanced) .step-card, .store-grid article, .booking, .moments-viewport, .moments:not(.moments-cinema) .moment-grid > .photo-link, .process-stage > .editorial-link, .about-opening, .about-story figure, .about-prose, .about-section-heading, .about-profile, .about-history-heading, .about-history li, .about-bi-heading, .about-logo, .about-bi-usage';
   const groups = [...root.querySelectorAll(selector)];
   const targets = new Map(groups.map(group => [group,
     group.matches('.hero-content')
       ? ['.hero-eyebrow', 'h1', '.hero-description', '.hero-links'].map(selector => group.querySelector(selector)).filter(Boolean)
-      : group.matches('.rental-backdrops, .rental-grid, .moments-viewport, .photo-link, .process-stage > .editorial-link') ? [group] : [...group.children],
+      : group.matches('.about-opening') ? [...group.children].filter(element => !element.matches('.about-cover'))
+      : group.matches('.rental-backdrops, .rental-grid, .moments-viewport, .photo-link, .process-stage > .editorial-link, .about-story figure') ? [group] : [...group.children],
   ]));
   const elements = [...targets.values()].flat();
   if (!elements.every(element => typeof element.animate === 'function')) return () => {};

@@ -11,8 +11,9 @@ export function mountProcessScroll(doc = document) {
   if (!view || !section?.querySelector('.process-stage') || !cards.length) return () => {};
   const compact = view.matchMedia('(prefers-reduced-motion: reduce), (max-height: 600px)');
   const buttons = [...section.querySelectorAll('[data-process-step]')];
-  let frame = 0, disposed = false;
+  let frame = 0, disposed = false, active = -1;
   function reset() {
+    active = -1;
     section.classList.remove('process-enhanced');
     section.style.removeProperty('--process-index');
     cards.forEach(card => { card.removeAttribute('data-current'); card.removeAttribute('aria-hidden'); card.inert = false; });
@@ -21,10 +22,12 @@ export function mountProcessScroll(doc = document) {
   function paint() {
     frame = 0;
     if (disposed) return;
-    if (compact.matches) { reset(); return; }
-    section.classList.add('process-enhanced');
+    if (compact.matches) { if (active !== -1) reset(); return; }
+    if (active === -1) section.classList.add('process-enhanced');
     const rect = section.getBoundingClientRect();
     const index = processStep(rect.top, rect.height, view.innerHeight, cards.length);
+    if (index === active) return;
+    active = index;
     section.style.setProperty('--process-index', index);
     buttons.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.processStep) === index)));
     cards.forEach((card, i) => {

@@ -1,9 +1,19 @@
 @import url("./fabric-intro.css");
 @import url("./home-editorial.css");
+@import url("./about.css");
 @import url("./home-scroll.css");
 @import url("./process-scroll.css");
 @import url("./rental-editorial.css");
 @import url("./store-editorial.css");
+.editorial-footer{padding:64px 6vw 36px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem}
+.editorial-footer>.brand{flex-basis:100%;font:500 clamp(32px,8vw,120px)/1.1 ivybodoni,Georgia,serif;letter-spacing:-.065em;white-space:normal;padding-bottom:32px;border-bottom:1px solid #ffffff30}
+.editorial-footer>p,.editorial-footer>a:not(.brand){font-size:10px;letter-spacing:.08em;color:#bdbdbd}
+.editorial-footer nav{display:flex;flex-wrap:wrap;gap:0 28px;align-items:center;font-size:11px}
+.editorial-footer nav a,.editorial-footer>a:not(.brand){display:inline-flex;align-items:center;min-height:48px}
+.editorial-footer a:hover{text-decoration:underline;text-underline-offset:5px}
+.editorial-footer .legal-footer{flex-basis:100%;display:grid;grid-template-columns:1fr 2fr auto;gap:24px 48px;padding-top:32px;border-top:1px solid #ffffff30;font-size:12px;line-height:1.9;color:#bdbdbd}
+.editorial-footer .legal-footer p{margin:0}
+@media(max-width:799px){.editorial-footer nav{width:100%;gap:0 20px}.editorial-footer .legal-footer{grid-template-columns:minmax(0,1fr);gap:20px}.home-main+.editorial-footer{padding-bottom:100px}}
 /* Local editorial concept: scoped to the home hero and its transparent header. */
 .site-header.dark {
   position:fixed; inset:0 0 auto; z-index:50; height:auto;

@@ -1,4 +1,4 @@
-﻿.chapter-rail{position:fixed;left:12px;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:2px}
+.chapter-rail{position:fixed;left:12px;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:2px}
 .chapter-rail button{position:relative;display:flex;align-items:center;width:44px;height:44px;padding:0 8px;border:0;background:transparent;color:#fff;cursor:pointer;text-align:left}
 .chapter-tick{position:relative;display:block;width:16px;height:2px;background:#888;box-shadow:0 0 0 1px #0003}
 .chapter-tick:after{content:'';position:absolute;inset:0;background:var(--rail-active,#fff);transform:scaleX(var(--chapter-progress,0));transform-origin:left}
@@ -22,7 +22,7 @@
 .home-main.scroll-motion .moments-stage::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#0005,transparent 24%),linear-gradient(90deg,#0009,transparent 78%),linear-gradient(0deg,#000b,transparent 75%),#0002}
 .home-main.scroll-motion .moments .moments-gallery{position:absolute;inset:0;z-index:0;width:100%;height:100%}
 .home-main.scroll-motion .moments-viewport,.home-main.scroll-motion .moments .moment-grid{position:absolute;inset:0;display:block;width:100%;height:100%;margin:0;overflow:hidden}
-.home-main.scroll-motion .moments .photo-link{position:absolute;inset:0;width:100%;height:100%;padding:0;margin:0;border:0;border-radius:0;transform-origin:center;transition:transform var(--film-duration,0ms) ease,opacity var(--film-duration,0ms) linear;background:#111;will-change:transform,opacity}
+.home-main.scroll-motion .moments .photo-link{position:absolute;inset:0;width:100%;height:100%;padding:0;margin:0;border:0;border-radius:0;transform-origin:center;transition:transform var(--film-duration,0ms) ease,opacity var(--film-duration,0ms) linear;background:#111}
 .home-main.scroll-motion .moments .photo{width:100%;height:100%;aspect-ratio:auto;border-radius:0;background:#000}
 .home-main.scroll-motion .moments .photo img{object-fit:contain!important;object-position:center}
 .home-main.scroll-motion .moments .photo-caption{display:none}
