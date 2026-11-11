@@ -67,6 +67,10 @@
 .home-main .booking-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}.home-main .booking-links .editorial-link:first-child{background:#fff;color:#000;border-color:#fff}
 .home-main+.site-footer{padding:32px 6vw 110px;background:#000;color:#fff;border-top:1px solid #fff3;align-items:center}
 .home-main+.site-footer p{font-weight:400;font-size:11px;color:#aaa}
+.home-main+.legal-footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;gap:24px 48px;align-items:start;font-size:12px;line-height:1.9}
+.legal-company strong{display:block;margin-bottom:8px}
+.legal-footer a:hover{text-decoration:underline}
+@media(max-width:799px){.home-main+.legal-footer{grid-template-columns:minmax(0,1fr);gap:20px}}
 .home-main~.floating-contact{width:auto;right:24px;bottom:20px;flex-direction:row;gap:0;background:#fff;color:#000;border:1px solid #000;box-shadow:none}
 .home-main~.floating-contact .contact-button{min-height:44px;min-width:0;padding:12px 18px;background:#fff;color:#000;border:0;border-radius:0;box-shadow:none}
 .home-main~.floating-contact .contact-button+.contact-button{border-left:1px solid #000}
