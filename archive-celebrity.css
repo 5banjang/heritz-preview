@@ -1,0 +1,44 @@
+.archive-editorial .archive-celebrity-content {
+  padding: 64px max(6vw, calc((100% - 1120px) / 2)) 120px;
+  background: #fff;
+  color: #111;
+  font-family: AboutPretendard, var(--sans, sans-serif);
+}
+.archive-editorial .archive-celebrity-heading { margin-bottom: 64px; }
+.archive-editorial .archive-celebrity-eyebrow { margin: 0 0 24px; font-size: 10px; letter-spacing: .16em; }
+.archive-editorial .archive-celebrity-heading h1 {
+  margin: 0;
+  font: 500 clamp(64px, 9vw, 120px)/1.05 ivybodoni, Georgia, serif;
+  letter-spacing: -.045em;
+}
+.archive-editorial .archive-celebrity-intro {
+  margin: 32px 0 0;
+  padding-top: 28px;
+  border-top: 1px solid #111;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #555;
+  word-break: keep-all;
+}
+.archive-editorial .archive-celebrity-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px 32px; align-items: start; }
+.archive-editorial .archive-celebrity-entry { min-width: 0; margin: 0; }
+.archive-editorial .archive-celebrity-entry img { display: block; width: 100%; height: auto; border-radius: 0; box-shadow: none; }
+.archive-editorial .archive-celebrity-caption { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding-top: 18px; }
+.archive-editorial .archive-celebrity-number { font-size: 10px; line-height: 2; color: #666; font-variant-numeric: tabular-nums; }
+.archive-editorial .archive-celebrity-copy p { margin: 0; font-size: 12px; line-height: 1.9; white-space: pre-wrap; word-break: keep-all; overflow-wrap: anywhere; }
+.archive-editorial .archive-celebrity-copy p + p { margin-top: 4px; color: #666; }
+.archive-editorial .archive-celebrity-pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 72px; padding-top: 24px; border-top: 1px solid #d9d9d9; }
+.archive-editorial .archive-celebrity-pagination a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; color: #666; font-size: 12px; text-decoration: none; border-bottom: 1px solid transparent; }
+.archive-editorial .archive-celebrity-pagination a[aria-current="page"],
+.archive-editorial .archive-celebrity-pagination a:hover { color: #111; border-bottom-color: currentColor; }
+.archive-editorial .archive-celebrity-pagination a:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+.archive-editorial .archive-celebrity-empty { padding: 48px 0; font-size: 14px; line-height: 1.9; color: #666; }
+@media (max-width: 900px) {
+  .archive-editorial .archive-celebrity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 24px; }
+}
+@media (max-width: 540px) {
+  .archive-editorial .archive-celebrity-content { padding: 40px 6vw 72px; }
+  .archive-editorial .archive-celebrity-heading { margin-bottom: 40px; }
+  .archive-editorial .archive-celebrity-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .archive-editorial .archive-celebrity-pagination { margin-top: 48px; }
+}

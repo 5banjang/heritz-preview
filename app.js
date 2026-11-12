@@ -8,6 +8,8 @@ import { renderFabricIntro, mountFabricIntro } from './fabric-intro.mjs';
 import { DESIGN } from './design-data.js';
 import { MOMENT_PHOTOS } from './moments-data.mjs';
 import { ARCHIVE } from './archive-data.js';
+import { renderArchiveNav, renderArchiveOverview } from './archive-editorial.mjs';
+import { renderCelebrity } from './archive-celebrity.mjs';
 
 // GitHub Pages project path during preview; production custom domain uses the site root.
 const BASE_PATH = location.hostname === '5banjang.github.io' ? '/heritz-preview/' : '/';
@@ -144,25 +146,29 @@ function lookCopy(look, index, fixed = false) {
  return `<div class="look-copy ${fixed ? 'look-fixed' : ''} ${index === 3 ? 'look-romance' : ''}"><p>LOOK ${index + 1}</p><h2>${escape(look.title)}</h2></div>`;
 }
 function archiveSpecialPage(kind, number) {
- const isLook = kind === 'lookbook';
- const page = Math.min(isLook ? ARCHIVE.lookbooks.length : ARCHIVE.celebrity.length, Math.max(1, Math.floor(number || 1)));
+ if (kind === 'celebrity') return archiveEditorialPage('celebrity', number);
+ const page = Math.min(ARCHIVE.lookbooks.length, Math.max(1, Math.floor(number || 1)));
  let body;
- if (isLook) {
-  if (number > 0) {
+ if (number > 0) {
    const look = ARCHIVE.lookbooks[page - 1];
    body = `<section class="look-detail" aria-label="${escape(look.title)}"><div class="look-photos">${look.photos.map((p,i) => archivePhoto(p, `${look.title} 사진 ${i + 1}`, i === 0)).join('')}</div>${lookCopy(look, page - 1, true)}</section><a class="look-back" href="#/archive/lookbook">← LOOKBOOK 목록</a>`;
-  } else {
-   body = `<div class="look-list">${ARCHIVE.lookbooks.map((look,i) => `<a href="#/archive/lookbook/${i+1}" aria-label="LOOK ${i+1} ${escape(look.title)} 상세 보기">${archivePhoto(look.photos[0], look.title, i === 0)}${lookCopy(look, i)}</a>`).join('')}</div>`;
-  }
  } else {
-  body = `<div class="celebrity-grid">${ARCHIVE.celebrity[page-1].map((p,i) => `<article>${archivePhoto(p, p.caption.map(s => s.trim()).join(' · '), i < 3)}<div class="celebrity-caption">${p.caption.map(line => `<p>${escape(line)}</p>`).join('')}</div></article>`).join('')}</div><nav class="archive-pagination" aria-label="Celebrity 페이지">${ARCHIVE.celebrity.map((_,i) => `<a ${i+1 === page ? 'aria-current="page"' : ''} href="#/archive/celebrity/${i+1}">${i+1}</a>`).join('')}</nav><div class="celebrity-bottom"><p>헤리츠테일러와 함께한 협찬 스타일입니다.</p><a class="button secondary" href="#/">메인으로 돌아가기 →</a></div>`;
+   body = `<div class="look-list">${ARCHIVE.lookbooks.map((look,i) => `<a href="#/archive/lookbook/${i+1}" aria-label="LOOK ${i+1} ${escape(look.title)} 상세 보기">${archivePhoto(look.photos[0], look.title, i === 0)}${lookCopy(look, i)}</a>`).join('')}</div>`;
  }
- const heading = isLook ? '<h1 class="serif">LOOKBOOK</h1>' : '<div class="celebrity-heading"><h1 class="serif">CELEBRITY</h1><h2>협찬 갤러리</h2><p>헤리츠테일러와 함께한 셀럽들의 스타일을 만나보세요.</p></div>';
- return header() + `<main id="main" class="archive-special archive-${kind}">${archiveNav(kind)}${heading}${body}</main>` + footer(true, isLook ? 'LOOKBOOK' : 'CELEBRITY') + contact();
+ return header() + `<main id="main" class="archive-special archive-lookbook">${archiveNav('lookbook')}<h1 class="serif">LOOKBOOK</h1>${body}</main>` + footer(true, 'LOOKBOOK') + contact();
 }
+
 function archivePage(category) {
+  if (category === 'overview') return archiveEditorialPage('overview');
   gallery = DESIGN[category];
   return `${header()}<main id="main" class="archive-main">${archiveNav("all")}<section class="archive-content" aria-labelledby="archive-title"><div class="archive-heading"><h1 class="serif" id="archive-title">HERITZ MOMENTS</h1><h2>고객 갤러리</h2><p>스튜디오 촬영부터 결혼식까지, 헤리츠테일러와 함께한 고객님의 소중한 순간을 만나보세요.</p></div><div class="gallery-controls">${tabs('archive',category)}<p>사진을 선택해 크게 보세요.</p></div><div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`)}<span class="customer-caption"><strong>${label}</strong><span aria-hidden="true">↗</span></span></button>`;}).join('')}</div><div class="gallery-bottom"><p>소중한 순간을 함께해 주신 고객님들께 감사드립니다.</p><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></section></main>${footer(true)}${contact()}`;
+}
+
+function archiveEditorialPage(category, number = 0) {
+  const body = category === 'celebrity'
+    ? renderCelebrity({pages: ARCHIVE.celebrity, number, archivePhoto, escape})
+    : renderArchiveOverview({archive: ARCHIVE, design: DESIGN, sitePath, escape, archivePhoto, photo});
+  return header(true) + `<main id="main" class="archive-editorial">${renderArchiveNav(category, sitePath)}${body}</main>` + editorialFooter();
 }
 
 function packageCard(kind) {
@@ -205,14 +211,14 @@ function parseRoute(hash = location.hash) {
       ? '/' + location.pathname.slice(BASE_PATH.length)
       : location.pathname;
     const cleanPath = relativePath.replace(/\/+$/, '') || '/';
-    if (cleanPath === '/archive' || cleanPath.startsWith('/archive/')) return {page:'archive', selection:'all', number:0};
+    if (cleanPath === '/archive' || cleanPath.startsWith('/archive/')) return {page:'archive', selection:'overview', number:0};
     if (cleanPath === '/event' || cleanPath.startsWith('/event/')) return {page:'event', selection:'all', number:0};
     if (cleanPath === '/store' || cleanPath.startsWith('/store/')) return {page:'store', selection:'cheongdam'};
   }
-  const [,page='main',selection='all'] = hash.replace(/^#/, '').split('/');
+  const [,page='main',selection=page === 'archive' ? 'overview' : 'all'] = hash.replace(/^#/, '').split('/');
   if (page==='about') return {page, selection:['brand-intro','brand-history','brand-bi'].includes(selection) ? selection : ''};
   if (page==='store') return {page,selection:STORE_NAMES.some(x=>x[0]===selection)?selection:'cheongdam'};
-  if (page==='archive') return {page, selection:['all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'all', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
+  if (page==='archive') return {page, selection:['overview','all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'overview', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
   if (page==='event') return {page, selection:['all','store','package','groom','family'].includes(selection) ? selection : 'store', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
   return {page:'main', selection:['experience','rental','store','booking','moments'].includes(selection) ? selection : ''};
 }
@@ -221,6 +227,7 @@ const SEO_METADATA = {
   about: {title:'브랜드 소개 및 연혁 | HERITZ TAILOR', description:'헤리츠테일러의 브랜드 이야기, 테일러 소개와 브랜드 연혁을 만나보세요.'},
   main: {title:'HERITZ TAILOR | 맞춤예복 & 렌탈', description:'헤리츠테일러의 웨딩 맞춤예복과 정장 렌탈 서비스를 만나보세요. 고객 착용사진, 패키지 안내, 매장 방문 예약을 확인할 수 있습니다.'},
   archive: {
+    overview: {title:'Archive | HERITZ TAILOR', description:'헤리츠테일러의 룩북, 셀러브리티 스타일과 고객의 소중한 순간을 만나보세요.'},
     all: {title:'고객 갤러리 | HERITZ TAILOR', description:'헤리츠테일러의 웨딩 수트 고객 갤러리. 스튜디오 촬영과 결혼식 본식에서 맞춤예복과 렌탈 수트를 착용한 고객 사진을 확인하세요.'},
     studio: {title:'스튜디오 촬영 갤러리 | HERITZ TAILOR', description:'헤리츠테일러의 수트를 착용한 고객들의 웨딩 스튜디오 촬영 사진을 확인하세요.'},
     ceremony: {title:'결혼식 본식 갤러리 | HERITZ TAILOR', description:'결혼식 본식에서 헤리츠테일러 웨딩 수트를 착용한 고객들의 소중한 순간을 확인하세요.'},
@@ -335,4 +342,3 @@ document.querySelector('.lightbox-image').addEventListener('touchstart',event=>{
 document.querySelector('.lightbox-image').addEventListener('touchend',event=>{if(touchStart!==null){const change=event.changedTouches[0].clientX-touchStart;if(Math.abs(change)>60)displayPhoto(photoIndex+(change>0?-1:1));touchStart=null;}},{passive:true});
 window.addEventListener('hashchange',render);
 render();
-
