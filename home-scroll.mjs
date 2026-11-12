@@ -51,6 +51,8 @@ export function mountHomeScroll() {
   let gallery, viewport, controls, dots = [], frame = 0, disposed = false;
   let position = 0, anchor, focused = false, resized = false, lastY = window.scrollY;
   let paintedPosition, paintedIndex;
+  let paintedChapter, paintedRailColor;
+  const paintedChapterProgress = [];
   const paintedOffsets = new Map();
   main.classList.add('home-scroll');
   const progressNow = () => backgroundProgress(moments.getBoundingClientRect(), window.innerHeight);
@@ -146,12 +148,19 @@ export function mountHomeScroll() {
       if (!focused && !resized && (scrolled || !anchor)) position = anchoredPosition(progress, slides.length, anchor);
     }
     resized = false;
-    nav.style.setProperty('--rail-active', chapter.index === 2 || chapter.index === 4 || (chapter.index < 0 && window.scrollY < window.innerHeight * .2) ? '#000' : '#fff');
+    const railColor = chapter.index === 2 || chapter.index === 4 || (chapter.index < 0 && window.scrollY < window.innerHeight * .2) ? '#000' : '#fff';
+    if (railColor !== paintedRailColor) nav.style.setProperty('--rail-active', railColor);
+    paintedRailColor = railColor;
     chapterButtons.forEach((button, i) => {
-      if (i === chapter.index) button.setAttribute('aria-current', 'location');
-      else button.removeAttribute('aria-current');
-      button.style.setProperty('--chapter-progress', i < chapter.index ? 1 : i === chapter.index ? chapter.progress : 0);
+      if (chapter.index !== paintedChapter) {
+        if (i === chapter.index) button.setAttribute('aria-current', 'location');
+        else button.removeAttribute('aria-current');
+      }
+      const progress = i < chapter.index ? 1 : i === chapter.index ? chapter.progress : 0;
+      if (progress !== paintedChapterProgress[i]) button.style.setProperty('--chapter-progress', progress);
+      paintedChapterProgress[i] = progress;
     });
+    paintedChapter = chapter.index;
     if (screen && position !== paintedPosition) {
       paintedPosition = position;
       const index = Math.round(position);

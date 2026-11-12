@@ -31,10 +31,13 @@ export function mountFabricIntro() {
   if (!stage) return;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const short = matchMedia('(max-height: 600px)');
-  const properties = Object.keys(cutFrame(0));
+  const properties = [...Object.keys(cutFrame(0)), 'stage-height'];
   let frame = 0;
   let disposed = false;
+  let paintedProgress, paintedHeight;
   function reset() {
+    if (paintedProgress === undefined) return;
+    paintedProgress = paintedHeight = undefined;
     intro.classList.remove('fabric-enhanced');
     for (const key of properties) intro.style.removeProperty('--' + key);
   }
@@ -46,6 +49,10 @@ export function mountFabricIntro() {
     const center = rect.top + rect.height / 2;
     // The first screen stays entirely white even on taller desktop viewports.
     const values = cutFrame(cutProgress(center, window.innerHeight, center + window.scrollY));
+    if (values.progress === paintedProgress && rect.height === paintedHeight) return;
+    if (rect.height !== paintedHeight) intro.style.setProperty('--stage-height', `${rect.height}px`);
+    paintedProgress = values.progress;
+    paintedHeight = rect.height;
     for (const [key, value] of Object.entries(values)) intro.style.setProperty('--' + key, value);
     intro.classList.add('fabric-enhanced');
   }

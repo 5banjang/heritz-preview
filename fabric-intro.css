@@ -20,7 +20,7 @@
 .fabric-enhanced .fabric-stage{--apex:inherit;--gap:inherit;--release:inherit}
 .fabric-enhanced .fabric-left{transform:translateX(calc(var(--release)*-1%))}
 .fabric-enhanced .fabric-right{transform:translateX(calc(var(--release)*1%))}
-.fabric-enhanced .fabric-shears{top:calc((100 - var(--progress)*130)*1%)}
+.fabric-enhanced .fabric-shears{transform:translate(-49.5%,calc(-51.5% - var(--progress)*var(--stage-height)*1.3))}
 
 @media(max-width:799px){.fabric-intro{gap:0;padding:0}.fabric-copy{padding:0 24px}.fabric-title{font-size:clamp(42px,10vw,80px)}.fabric-notes{left:24px;right:24px;gap:20px}.fabric-notes>div{max-width:45%;margin-top:0}.fabric-notes>p{font-size:18px}.fabric-stage{width:100%;max-width:none}.fabric-shears{width:min(72vw,380px)}}
 @media(prefers-reduced-motion:reduce),(max-height:600px){.fabric-enhanced .fabric-stage{--apex:35;--gap:24;--release:0}.fabric-enhanced .fabric-piece{transform:none}.fabric-enhanced .fabric-shears{top:50%}}
