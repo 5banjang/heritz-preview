@@ -44,3 +44,15 @@
  .home-main .process-enhanced .process-stage>.editorial-link{margin:0 24px;min-height:30px;font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){.home-main .process-enhanced .steps-grid{transition:none}}
+/* Phones use native horizontal paging without a pinned vertical scroll interval. */
+@media(max-width:799px){
+ .home-main .experience.process-swipe{height:auto}
+ .process-swipe .process-stage{position:relative;top:auto;height:auto;grid-template-rows:auto auto auto auto;padding-bottom:48px}
+ .process-swipe .process-window{overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none}
+ .process-swipe .process-window::-webkit-scrollbar{display:none}
+ .process-swipe .process-window:focus-visible{outline:2px solid #111;outline-offset:-2px}
+ .home-main .process-swipe .steps-grid{display:flex;flex-direction:row;height:auto;transform:none;transition:none;will-change:auto}
+ .home-main .process-swipe .step-card{flex:0 0 100%;height:auto;scroll-snap-align:start;grid-template-rows:auto 1fr}
+ .home-main .process-swipe .step-card .photo{height:clamp(220px,64vw,400px);opacity:1;transition:none}
+ .process-swipe .process-tabs button{min-height:44px}
+}

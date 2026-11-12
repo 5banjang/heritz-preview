@@ -42,6 +42,7 @@ export function mountHomeScroll() {
   const slides = [...track.children];
   const compactMotion = matchMedia('(prefers-reduced-motion: reduce), (max-height: 600px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 799px)');
   const nav = document.createElement('nav');
   nav.className = 'chapter-rail';
   nav.setAttribute('aria-label', '메인 페이지 섹션 이동');
@@ -66,21 +67,23 @@ export function mountHomeScroll() {
     if (gallery) {
       const active = track.contains(document.activeElement) ? document.activeElement : controls.contains(document.activeElement) ? slides[Math.round(position)] : null;
       controls.removeEventListener('click', selectPhoto);
+      viewport.removeEventListener('scroll', queue);
+      viewport.removeEventListener('keydown', galleryKey);
       gallery.replaceWith(track);
       gallery = viewport = controls = undefined;
       active?.focus({ preventScroll: true });
     }
     track.style.removeProperty('transform');
     track.style.removeProperty('--film-duration');
-    moments.classList.remove('moments-cinema');
+    moments.classList.remove('moments-cinema', 'moments-swipe');
   }
   function configure() {
     restoreGrid();
     anchor = undefined;
     resized = false;
     focused = slides.some(slide => slide.contains(document.activeElement));
-    main.classList.toggle('scroll-motion', !compactMotion.matches);
-    if (!compactMotion.matches) {
+    main.classList.toggle('scroll-motion', mobile.matches || !compactMotion.matches);
+    if (mobile.matches || !compactMotion.matches) {
       gallery = document.createElement('div');
       gallery.className = 'moments-gallery';
       gallery.innerHTML = `<div class="moments-viewport"></div><div class="moments-controls"></div>`;
@@ -94,6 +97,14 @@ export function mountHomeScroll() {
       active?.focus({ preventScroll: true });
       controls.addEventListener('click', selectPhoto);
       moments.classList.add('moments-cinema');
+      if (mobile.matches) {
+        moments.classList.add('moments-swipe');
+        viewport.setAttribute('tabindex', '0');
+        viewport.setAttribute('aria-label', '고객 사진 · 좌우로 넘겨 보기');
+        viewport.addEventListener('scroll', queue, { passive: true });
+        viewport.addEventListener('keydown', galleryKey);
+        resized = true;
+      }
       if (focused) {
         const focusedIndex = slides.findIndex(slide => slide.contains(document.activeElement));
         if (focusedIndex !== Math.round(position)) position = focusedIndex;
@@ -109,19 +120,30 @@ export function mountHomeScroll() {
     // A pointer activation can leave focus on the old link in some browsers.
     if (track.contains(document.activeElement)) button.focus({ preventScroll: true });
     position = Number(button.dataset.photoIndex);
+    if (mobile.matches) {
+      viewport.scrollTo({ left: position * viewport.clientWidth, behavior: reduced.matches ? 'instant' : 'smooth' });
+      return;
+    }
     track.style.setProperty('--film-duration', '550ms');
     anchor = { progress: progressNow(), position };
     lastY = window.scrollY;
     queue();
   }
+  function galleryKey(event) {
+    if (event.target !== viewport || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const index = event.key === 'Home' ? 0 : event.key === 'End' ? slides.length - 1
+      : Math.max(0, Math.min(slides.length - 1, Math.round(position) + (event.key === 'ArrowLeft' ? -1 : 1)));
+    viewport.scrollTo({ left: index * viewport.clientWidth, behavior: reduced.matches ? 'instant' : 'smooth' });
+  }
   function focusIn() {
-    if (!gallery) return;
+    if (!gallery || mobile.matches) return;
     focused = true;
     anchor = { progress: progressNow(), position };
     lastY = window.scrollY;
   }
   function focusOut(event) {
-    if (!gallery || track.contains(event.relatedTarget)) return;
+    if (!gallery || mobile.matches || track.contains(event.relatedTarget)) return;
     focused = false;
     // Rebase on blur: accumulated scrolling while focused must never catch up.
     anchor = { progress: progressNow(), position };
@@ -139,9 +161,12 @@ export function mountHomeScroll() {
     const screen = viewport;
     const chapter = chapterFrame(rects, window.innerHeight);
     const scrolled = window.scrollY !== lastY;
-    if (scrolled || resized) track.style.setProperty('--film-duration', '0ms');
+    if (!mobile.matches && (scrolled || resized)) track.style.setProperty('--film-duration', '0ms');
     lastY = window.scrollY;
-    if (screen) {
+    if (screen && mobile.matches) {
+      if (resized) screen.scrollTo({ left: Math.round(position) * screen.clientWidth, behavior: 'instant' });
+      position = Math.max(0, Math.min(slides.length - 1, Math.round(screen.scrollLeft / Math.max(1, screen.clientWidth))));
+    } else if (screen) {
       const progress = backgroundProgress(rects[0], window.innerHeight);
       if (resized) anchor = { progress, position };
       if (!focused && (rects[0].top >= window.innerHeight || rects[0].top + rects[0].height <= 0)) anchor = undefined;
@@ -165,6 +190,7 @@ export function mountHomeScroll() {
       paintedPosition = position;
       const index = Math.round(position);
       slides.forEach((slide, i) => {
+        if (mobile.matches) return;
         const offset = Math.max(-1, Math.min(1, i - position));
         if (paintedOffsets.get(slide) !== offset) {
           paintedOffsets.set(slide, offset);
@@ -194,6 +220,7 @@ export function mountHomeScroll() {
   window.addEventListener('scroll', queue, { passive: true });
   window.addEventListener('resize', resize);
   compactMotion.addEventListener('change', configure);
+  mobile.addEventListener('change', configure);
   configure();
   return () => {
     if (disposed) return;
@@ -202,6 +229,7 @@ export function mountHomeScroll() {
     window.removeEventListener('scroll', queue);
     window.removeEventListener('resize', resize);
     compactMotion.removeEventListener('change', configure);
+    mobile.removeEventListener('change', configure);
     track.removeEventListener('focusin', focusIn);
     track.removeEventListener('focusout', focusOut);
     nav.removeEventListener('click', selectChapter);

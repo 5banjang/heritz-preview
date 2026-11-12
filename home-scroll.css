@@ -38,6 +38,19 @@
 /* Controls sit above the shade while the photograph remains the background. */
 .home-main.scroll-motion .moments .moments-gallery{z-index:auto}
 .home-main.scroll-motion .moments-viewport{z-index:0}
+/* Mobile photos use native horizontal paging instead of a pinned scroll scene. */
+.home-main.scroll-motion .moments.moments-swipe{height:auto}
+.home-main.scroll-motion .moments-swipe .moments-stage{position:relative;height:100svh;min-height:640px}
+.home-main.scroll-motion .moments-swipe .moments-viewport{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none}
+.moments-swipe .moments-viewport::-webkit-scrollbar{display:none}
+.home-main.scroll-motion .moments-swipe .moment-grid{position:relative;display:flex;overflow:visible;gap:0}
+.home-main.scroll-motion .moments-swipe .photo-link{position:relative;inset:auto;flex:0 0 100%;scroll-snap-align:start;transition:none}
+.moments-swipe .moments-viewport:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+.moments-swipe .moments-counter::after{content:' · 좌우로 넘겨 보기';font-size:10px}
+.home-main.scroll-motion .moments.moments-swipe .moments-controls{flex-direction:column;align-items:stretch;gap:4px;bottom:80px}
+.moments-swipe .moments-counter{white-space:nowrap;line-height:20px}
+.moments-swipe .moments-dots{flex-wrap:nowrap;justify-content:space-between}
+.moments-swipe .moments-dots button{flex:1;min-width:0}
 @media(max-width:599px){
  .chapter-rail{left:0;gap:0}.chapter-rail button{padding-left:8px}.chapter-label{left:42px;font-size:10px}
  .home-main.home-scroll .section:not(.moments){padding-left:52px}
