@@ -133,26 +133,27 @@ function archiveNav(active){
 function archivePhoto(data, alt, priority = false) {
  return `<img class="archive-photo" src="${escape(sitePath(data.src))}?v=9915ea1" alt="${escape(alt)}" width="${data.width}" height="${data.height}" loading="${priority ? 'eager' : 'lazy'}" decoding="async" ${priority ? 'fetchpriority="high"' : ''} data-figma-node="${escape(data.nodeId)}">`;
 }
-function lookCopy(look, index, fixed = false) {
- return `<div class="look-copy ${fixed ? 'look-fixed' : ''} ${index === 3 ? 'look-romance' : ''}"><p>LOOK ${index + 1}</p><h2>${escape(look.title)}</h2></div>`;
-}
 function archiveSpecialPage(kind, number) {
  if (kind === 'celebrity') return archiveEditorialPage('celebrity', number);
- const page = Math.min(ARCHIVE.lookbooks.length, Math.max(1, Math.floor(number || 1)));
- let body;
- if (number > 0) {
-   const look = ARCHIVE.lookbooks[page - 1];
-   body = `<section class="look-detail" aria-label="${escape(look.title)}"><div class="look-photos">${look.photos.map((p,i) => archivePhoto(p, `${look.title} 사진 ${i + 1}`, i === 0)).join('')}</div>${lookCopy(look, page - 1, true)}</section><a class="look-back" href="#/archive/lookbook">← LOOKBOOK 목록</a>`;
- } else {
-   body = `<div class="look-list">${ARCHIVE.lookbooks.map((look,i) => `<a href="#/archive/lookbook/${i+1}" aria-label="LOOK ${i+1} ${escape(look.title)} 상세 보기">${archivePhoto(look.photos[0], look.title, i === 0)}${lookCopy(look, i)}</a>`).join('')}</div>`;
- }
- return header() + `<main id="main" class="archive-special archive-lookbook">${archiveNav('lookbook')}<h1 class="serif">LOOKBOOK</h1>${body}</main>` + footer(true, 'LOOKBOOK') + contact();
+ const page = Math.min(ARCHIVE.lookbooks.length, Math.max(1, Math.floor(Number(number) || 1)));
+ const look = ARCHIVE.lookbooks[page - 1];
+ const next = page % ARCHIVE.lookbooks.length;
+ return header(true) + `<main id="main" class="archive-editorial lookbook-editorial">${renderArchiveNav('lookbook', sitePath)}
+ <section class="lookbook-intro" aria-labelledby="lookbook-title"><p>HERITZ TAILOR / COLLECTION</p><h1 id="lookbook-title">Look book.</h1><div class="lookbook-deck"><p>한 벌에 담긴, 서로 다른 표정.</p><p>실루엣과 디테일로 전하는 헤리츠의 시선.<br>네 가지 컬렉션을 만나보세요.</p></div></section>
+ <nav class="lookbook-collections" aria-label="룩북 컬렉션">${ARCHIVE.lookbooks.map((item,i)=>`<a href="#/archive/lookbook/${i+1}"${i===page-1?' aria-current="page"':''}><small>0${i+1}</small>${escape(item.title)}</a>`).join('')}</nav>
+ <section class="lookbook-story" aria-labelledby="lookbook-collection-title"><div class="lookbook-story-heading"><div><p>COLLECTION / 0${page}</p><h2 id="lookbook-collection-title">${escape(look.title)}</h2></div><span>HERITZ TAILOR — LOOKBOOK</span></div>
+ <div class="lookbook-track store-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="${escape(look.title)} 사진 슬라이드. 좌우 방향키로 이동" id="lookbook-photos">${look.photos.map((p,i)=>`<figure class="lookbook-slide" role="group" aria-roledescription="slide" aria-label="${i+1} / ${look.photos.length}">${archivePhoto(p, `${look.title} 사진 ${i+1}`, i===0)}</figure>`).join('')}</div>
+ <div class="lookbook-slide-bar"><p>HERITZ / ${escape(look.title)}</p><div class="lookbook-controls"><button type="button" data-store-prev aria-label="이전 룩북 사진" aria-controls="lookbook-photos" disabled>←</button><span data-store-count aria-live="polite" aria-atomic="true">01 / ${String(look.photos.length).padStart(2,'0')}</span><button type="button" data-store-next aria-label="다음 룩북 사진" aria-controls="lookbook-photos"${look.photos.length<2?' disabled':''}>→</button></div></div>
+ <div class="lookbook-end"><p>사진을 좌우로 넘겨 컬렉션을 살펴보세요.</p><a href="#/archive/lookbook/${next+1}">다음 컬렉션 · ${escape(ARCHIVE.lookbooks[next].title)} <span aria-hidden="true">↗</span></a></div></section></main>` + editorialFooter();
 }
 
 function archivePage(category) {
   if (category === 'overview') return archiveEditorialPage('overview');
-  gallery = DESIGN[category];
-  return `${header()}<main id="main" class="archive-main">${archiveNav("all")}<section class="archive-content" aria-labelledby="archive-title"><div class="archive-heading"><h1 class="serif" id="archive-title">HERITZ MOMENTS</h1><h2>고객 갤러리</h2><p>스튜디오 촬영부터 결혼식까지, 헤리츠테일러와 함께한 고객님의 소중한 순간을 만나보세요.</p></div><div class="gallery-controls">${tabs('archive',category)}<p>사진을 선택해 크게 보세요.</p></div><div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`)}<span class="customer-caption"><strong>${label}</strong><span aria-hidden="true">↗</span></span></button>`;}).join('')}</div><div class="gallery-bottom"><p>소중한 순간을 함께해 주신 고객님들께 감사드립니다.</p><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></section></main>${footer(true)}${contact()}`;
+  gallery = category === 'all' ? [] : DESIGN[category];
+  const portals = [['studio', 'Studio.', '스튜디오 촬영', 0], ['ceremony', 'Wedding.', '결혼식 본식촬영', 4]];
+  const categoryLinks = `<div class="customer-portals">${portals.map(([key,title,label,index])=>`<a class="customer-portal" href="#/archive/${key}" aria-label="${label} 사진 보기">${photo(DESIGN.all[index], label+' 대표 사진', '', true)}<span class="customer-portal-top">${String(index+1).padStart(2,'0')} / HERITZ MOMENTS</span><span class="customer-portal-copy"><span class="customer-portal-label">${label}</span><strong>${title}</strong><span class="customer-portal-cta">사진 보기 <span aria-hidden="true">↗</span></span></span></a>`).join('')}</div>`;
+  const filters = [['all','전체'],['studio','스튜디오 촬영'],['ceremony','본식']];
+  return header(true) + `<main id="main" class="archive-editorial customer-editorial">${renderArchiveNav(category, sitePath)}<section class="customer-intro" aria-labelledby="archive-title"><p>HERITZ TAILOR / CUSTOMER GALLERY</p><h1 id="archive-title">Moments.</h1><div class="customer-intro-deck"><p>당신의 순간, 우리의 기록.</p><p>스튜디오 촬영부터 결혼식까지.<br>헤리츠와 함께한 소중한 순간을 만나보세요.</p></div></section><section class="customer-body" aria-label="고객 착용사진"><div class="customer-filterbar"><nav class="customer-filters" aria-label="고객 사진 분류">${filters.map(([key,label])=>`<a href="#/archive/${key}"${key===category?' aria-current="page"':''}>${label}<small>${key==='all'?'02':String(DESIGN[key].length).padStart(2,'0')}</small></a>`).join('')}</nav><p>${category==='all'?'EXPLORE MOMENTS / 촬영 종류를 선택해 주세요':'SELECT A MOMENT / 사진을 선택해 크게 보세요'}</p></div>${category==='all'?categoryLinks:`<div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`, '', i===0)}<span class="customer-caption"><strong>${label}</strong><span>${String(i+1).padStart(2,'0')} <span aria-hidden="true">↗</span></span></span></button>`;}).join('')}</div>`}<div class="customer-closing"><p>소중한 순간을 함께해 주신<br>고객님들께 감사드립니다.</p><a href="${sitePath('store/')}">헤리츠 만나기 <span aria-hidden="true">↗</span></a></div></section></main>` + editorialFooter();
 }
 
 function archiveEditorialPage(category, number = 0) {
@@ -282,7 +283,7 @@ function render() {
     disposeFabricIntro?.();
     app.innerHTML=route.page==='about' ? header(true) + renderAbout(sitePath) + editorialFooter() : route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection,route.number) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
-    disposeStore = route.page === 'store' ? mountStoreSlideshow() : undefined;
+    disposeStore = route.page === 'store' || (route.page === 'archive' && route.selection === 'lookbook') ? mountStoreSlideshow() : undefined;
     disposeAbout = route.page === 'about' ? mountAbout() : undefined;
     disposeFabricIntro = route.page === 'main' ? mountFabricIntro() : undefined;
     disposeHomeScroll = route.page === 'main' ? mountHomeScroll() : undefined;

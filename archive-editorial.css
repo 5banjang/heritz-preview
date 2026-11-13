@@ -1,4 +1,6 @@
 @import './archive-celebrity.css';
+@import './lookbook-editorial.css';
+@import './customer-editorial.css';
 
 .archive-editorial{--archive-gutter:max(6vw,calc((100vw - 1280px)/2));--archive-ink:#111;--archive-muted:#666;--archive-line:#d9d9d9;padding-top:100px;background:linear-gradient(#111 100px,#fff 100px);color:var(--archive-ink);font-family:AboutPretendard,var(--sans,Arial,sans-serif)}
 .archive-editorial :where(h1,h2){margin:0;font:500 clamp(40px,6vw,80px)/1.1 ivybodoni,Georgia,serif;letter-spacing:-.045em;word-break:keep-all;overflow-wrap:break-word}
