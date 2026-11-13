@@ -14,11 +14,12 @@ async function walk(directory) {
 
 test('desktop, menu and static pages link to tailoring without replacing ABOUT', async () => {
   const app = await read('app.js');
-  assert.ok(app.includes("['ABOUT', '#/main/experience']"));
+  assert.ok(app.includes("['ABOUT', sitePath('about/')]"));
   assert.ok(app.includes("['TAILORING', sitePath('tailoring/')]"));
   assert.match(app, /menu-navigation.*NAVIGATION\.map/);
   for (const page of ['index.html', 'archive/index.html', 'event/index.html', 'store/index.html']) {
     assert.match(await read(page), /href="(?:\.\.\/)?tailoring\/">TAILORING<\/a>/);
+    assert.match(await read(page), /src="(?:\.\.\/)?app\.js\?v=local-editorial-draft"/);
   }
 });
 
@@ -28,7 +29,7 @@ test('tailoring retains five chapters and offers return, booking and consultatio
   assert.match(page, /href="\.\.\/" aria-label="헤리츠테일러 메인"/);
   assert.match(page, /https:\/\/naver.me\/G7ZOAG1j/);
   assert.match(page, /https:\/\/pf.kakao.com\/_ljgUxj\/chat/);
-  assert.match(page, /noindex, nofollow/);
+  assert.match(page, /index, follow/);
   const visit = await read('tailoring/src/features/visit/index.mjs');
   assert.ok(visit.includes("link.href = '../#/main/booking'"));
   assert.ok(!visit.includes('네이버 예약 · 준비 중'));
