@@ -1,0 +1,44 @@
+/* A two-page architectural spread, scoped to the homepage visit chapter. */
+.home-main .section.store{display:block;padding:120px 7vw 90px;background:#fff;color:#111}
+.home-main .store>.editorial-heading{display:grid;grid-template-columns:1.4fr 1fr;align-items:end;gap:38px 7vw;border-top:1px solid rgba(0,0,0,.25);padding-top:20px;margin-bottom:100px}
+.home-main .store .eyebrow{grid-column:1/-1;color:#555;font-size:10px;letter-spacing:.17em}
+.home-main .store h2{font:400 clamp(80px,10vw,160px)/.9 'ivybodoni',Georgia,serif;letter-spacing:-.06em;white-space:nowrap;margin:0}
+.home-main .store h2 em{font-weight:400}
+.home-main .store .section-description{font-size:13px;line-height:1.9;opacity:1;color:#555;padding-bottom:6px}
+.home-main .store-grid{display:grid;grid-template-columns:1fr;gap:130px}
+.home-main .store-grid article{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:6vw;align-items:end}
+.home-main .store-grid article>.photo{grid-column:1;grid-row:1;aspect-ratio:5/4;border-radius:0;width:100%;height:auto;overflow:hidden}
+.home-main .store-grid article>.store-caption{grid-column:2;grid-row:1;display:block;padding:0 0 10px;margin:0;border:0}
+.home-main .store-grid article:nth-child(2){grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);padding-top:0;margin-left:7vw}
+.home-main .store-grid article:nth-child(2)>.photo{grid-column:2;aspect-ratio:4/5}
+.home-main .store-grid article:nth-child(2)>.store-caption{grid-column:1}
+.home-main .store .floor-badge{font:400 clamp(70px,8vw,120px)/1 'ivybodoni',Georgia,serif;letter-spacing:-.055em;color:#111;padding:0 0 28px;border-bottom:1px solid rgba(0,0,0,.2);margin-bottom:28px;background:none;min-width:0}
+.home-main .store-grid .store-category{font:400 9px/1.7 var(--sans);letter-spacing:.12em;color:#555;margin:0 0 18px}
+.home-main .store-grid h3{font:400 clamp(38px,4.3vw,66px)/1.03 'ivybodoni',Georgia,serif;letter-spacing:-.035em;margin:0}
+.home-main .store-grid .store-caption p:not(.store-category){font-size:13px;line-height:1.95;color:#555;max-width:330px;margin:24px 0 30px;word-break:keep-all}
+.store-visit-link{display:flex;align-items:center;justify-content:space-between;gap:30px;max-width:330px;min-height:48px;border-bottom:1px solid rgba(0,0,0,.4);font-size:11px}
+.store-visit-link span{font-size:21px;transition:transform .3s}
+@media(hover:hover){.store-visit-link:hover span{transform:translate(3px,-3px)}}
+.home-main .store>.section-bottom{display:flex;justify-content:space-between;align-items:end;gap:24px;border-top:1px solid rgba(0,0,0,.25);padding-top:28px;margin-top:100px}
+.home-main .store .section-bottom p{font-size:13px;color:#333;letter-spacing:0}
+.store-address-label{display:block;font-size:9px;letter-spacing:.15em;margin-bottom:14px}
+.home-main .store .section-bottom .editorial-link{color:#111;border:0;border-bottom:1px solid rgba(0,0,0,.4);border-radius:0;padding:12px 0;min-height:44px;font-size:12px;gap:70px}
+@media(max-width:799px){
+ .home-main.home-scroll .section.store{padding:80px 24px 72px 40px}
+ .home-main .store>.editorial-heading{display:flex;align-items:flex-start;flex-direction:column;gap:28px;margin-bottom:50px}
+ .home-main .store h2{font-size:clamp(60px,12vw,90px);white-space:normal}
+ .home-main .store .section-description{font-size:12px}
+ .home-main .store-grid{gap:70px}
+ .home-main .store-grid article,.home-main .store-grid article:nth-child(2){display:flex;flex-direction:column;align-items:stretch;gap:26px;margin-left:0}
+ .home-main .store-grid article>.photo,.home-main .store-grid article:nth-child(2)>.photo{aspect-ratio:4/3}
+ .home-main .store-grid article>.store-caption{display:grid;grid-template-columns:62px minmax(0,1fr);gap:20px;padding:0}
+ .home-main .store .floor-badge{font-size:54px;border:0;padding:0;margin:0}
+ .home-main .store-grid h3{font-size:36px}
+ .home-main .store-grid .store-category{font-size:8px;margin-bottom:12px;letter-spacing:.04em}
+ .home-main .store-grid .store-caption p:not(.store-category){font-size:12px;margin:18px 0}
+ .home-main .store>.section-bottom{margin-top:64px;align-items:stretch;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){.store-visit-link span{transition:none}}
+.home-main .store .floor-badge{box-shadow:none;text-align:left;border-radius:0}
+.home-main .store-grid .store-caption .store-category{font:400 9px/1.7 var(--sans);letter-spacing:.12em;margin:0 0 18px;color:#555}
+@media(max-width:799px){.home-main .store-grid .store-caption .store-category{font-size:8px;letter-spacing:.04em;margin-bottom:12px}}

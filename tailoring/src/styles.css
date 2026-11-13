@@ -22,7 +22,7 @@ body.design-page { margin: 0; background: var(--design-paper); color: var(--desi
 .design-skip { position: fixed; z-index: 10; left: 1rem; top: 1rem; padding: .7rem 1rem; background: #fff; color: #111 !important; transform: translateY(-200%); }
 .design-skip:focus { transform: translateY(0); }
 .design-header { position:absolute; inset:0 0 auto; z-index:6; padding:28px 6vw; display:flex; justify-content:space-between; align-items:center; gap:24px; color:#fff; background:transparent; }
-.design-wordmark { font:400 clamp(32px,8.4vw,128px)/1.1 var(--design-serif); letter-spacing:-.065em; text-decoration:none; }
+.design-wordmark { font:500 clamp(32px,8.4vw,128px)/1.1 ivybodoni,Georgia,serif; letter-spacing:-.065em; text-decoration:none; }
 .design-header > .design-wordmark { font-size:26px; letter-spacing:-.04em; white-space:nowrap; }
 .design-nav { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:0 28px; align-items:center; font-size:11px; }
 .design-nav a { text-decoration:none; min-height:48px; display:inline-flex; align-items:center; gap:.8rem; color:inherit; border-bottom:1px solid transparent; }

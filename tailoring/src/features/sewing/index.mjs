@@ -1,4 +1,4 @@
-export const details = Object.freeze([
+﻿export const details = Object.freeze([
   { id: 'pick-stitch', region: '라펠 가장자리', name: '픽스티치', english: 'Pick-Stitch', text: '라펠 가장자리를 따라 작은 땀이 이어지는 스티치입니다. 가장자리의 선을 정돈하며 은은한 디테일을 더합니다. 실제 땀의 간격과 표현은 원단과 작업 방식에 따라 달라집니다.', viewBox: '330 55 220 310' },
   { id: 'pad-stitching', region: '라펠 안쪽', name: '팔자뜨기', english: 'Pad-Stitch', text: '겉감과 심지(Canvas)를 손바느질로 연결해 라펠의 입체적인 볼륨을 만드는 기법입니다. 여러 땀이 쌓이며 라펠이 자연스럽게 돌아 접히는 형태를 돕습니다. 그림은 안쪽의 바느질을 드러내어 설명합니다.', viewBox: '190 100 190 330' },
 ].map(Object.freeze));

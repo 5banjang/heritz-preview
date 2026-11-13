@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1500" fill="none">
+  <defs>
+    <filter id="pencil" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="2" seed="14" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round" filter="url(#pencil)">
+    <g stroke-width="1" opacity=".45">
+      <path d="M254 98L258 1254M385 82L389 1306M562 112L567 1285M802 90L807 1277"/>
+      <path d="M146 157L851 152M100 489L885 485M118 862L844 859M109 1232L880 1228"/>
+      <path d="M174 506L179 1208M423 510L428 1175M596 468L600 1250"/>
+      <path d="M206 568L359 529M205 600L357 562M514 330L825 306M518 336L825 345"/>
+      <path d="M161 1233L252 1368M275 1354L450 1288M455 1244L470 1302"/>
+    </g>
+    <g stroke-width="3.5" opacity=".9">
+      <path d="M252 130C239 232 192 367 135 499L147 1231L200 1326L441 1230"/>
+      <path d="M233 124L407 186M382 177C365 269 350 363 368 462C376 506 410 530 451 526C556 521 604 465 590 369C585 304 569 238 550 183L713 129L804 174"/>
+      <path d="M803 153C806 288 806 382 795 491C780 682 775 883 782 1048L790 1230"/>
+      <path d="M119 490L860 486M128 1232L824 1230"/>
+      <path d="M420 527C419 753 420 1024 439 1235C460 1101 461 781 465 529"/>
+      <path d="M288 643L291 1291M284 643L296 642M587 580L582 1239"/>
+      <path d="M220 569L364 532M222 598L360 561M221 553L224 615M358 518L360 578"/>
+      <path d="M229 881L378 839M231 909L376 866M230 864L232 926M374 825L377 888"/>
+      <path d="M504 334L825 332M442 1124L583 1123"/>
+    </g>
+    <g stroke-width="1.4" opacity=".7">
+      <path d="M249 134C234 242 194 372 139 491M386 183C369 290 353 384 374 465M796 179L800 409M147 526L153 1192"/>
+      <path d="M128 469L130 514M113 511L151 470M251 135L242 162M379 167L397 156M553 177L543 154M711 117L713 166M794 143L820 132M790 169L832 171"/>
+      <path d="M796 325L813 309M796 341L820 349M787 485L806 473M782 855L803 843M783 1166L816 1151M147 1202L130 1174M149 1244L171 1222M431 1220L451 1248M577 581L597 578"/>
+      <path d="M171 602L184 597M173 952L186 948M410 864L431 858M197 1327L210 1343"/>
+      <path d="M504 1367C600 1343 700 1350 801 1345M512 1375L785 1356"/>
+    </g>
+    <g fill="#fff" stroke="none" opacity=".8" font-family="'Segoe Print','Bradley Hand',cursive" font-style="italic" font-size="23">
+      <text x="356" y="131" transform="rotate(-9 356 131)">4</text>
+      <text x="548" y="142" transform="rotate(-8 548 142)">1.5</text>
+      <text x="654" y="119" transform="rotate(5 654 119)">1/5</text>
+      <text x="766" y="116" transform="rotate(-11 766 116)">1/8</text>
+      <text x="832" y="342" transform="rotate(8 832 342)">1/2</text>
+      <text x="165" y="466" transform="rotate(-5 165 466)">3.5 + 4</text>
+      <text x="443" y="466" transform="rotate(-7 443 466)">1/4 B</text>
+      <text x="698" y="462" transform="rotate(5 698 462)">B + 7</text>
+      <text x="818" y="1190" transform="rotate(-8 818 1190)">8 cm</text>
+      <text x="80" y="1303" transform="rotate(-9 80 1303)">8 cm</text>
+      <text x="193" y="1380" transform="rotate(7 193 1380)">4</text>
+      <text x="518" y="1334" font-size="32" transform="rotate(-3 518 1334)">Heritz / bespoke</text>
+    </g>
+  </g>
+</svg>

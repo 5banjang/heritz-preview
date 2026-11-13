@@ -30,6 +30,7 @@ jobs:
           const site = 'https://heritztailor.com/';
           const pages = {
             'index.html': site,
+            'about/index.html': site+'about/',
             'archive/index.html': site+'archive/',
             'event/index.html': site+'event/',
             'store/index.html': site+'store/',
@@ -49,5 +50,5 @@ jobs:
           const sitemap=fs.readFileSync('sitemap.xml','utf8');
           assert.ok(!sitemap.includes('github.io'), 'preview in sitemap');
           for(const url of Object.values(pages)) assert.ok(sitemap.includes('<loc>'+url+'</loc>'), 'missing sitemap URL '+url);
-          console.log('Production SEO validation passed for 5 page URLs.');
+          console.log('Production SEO validation passed for 6 page URLs.');
           NODE

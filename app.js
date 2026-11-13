@@ -1,5 +1,16 @@
+import { renderAbout, mountAbout } from './about.mjs';
+import { mountRentalScene } from './rental-scene.mjs';
+import { mountRentalDrag } from './rental-drag.mjs';
+import { mountHomeScroll } from './home-scroll.mjs';
+import { mountHomeReveal } from './home-reveal.mjs';
+import { mountProcessScroll } from './process-scroll.mjs';
+import { renderFabricIntro, mountFabricIntro } from './fabric-intro.mjs';
 import { DESIGN } from './design-data.js';
+import { MOMENT_PHOTOS } from './moments-data.mjs';
 import { ARCHIVE } from './archive-data.js';
+import { renderArchiveNav, renderArchiveOverview } from './archive-editorial.mjs';
+import { renderCelebrity } from './archive-celebrity.mjs';
+import { mountStoreSlideshow } from './store-slideshow.mjs';
 
 // GitHub Pages project path during preview; production custom domain uses the site root.
 const BASE_PATH = location.hostname === '5banjang.github.io' ? '/heritz-preview/' : '/';
@@ -9,7 +20,7 @@ const RESERVATION = 'https://naver.me/G7ZOAG1j';
 const CONSULTATION = 'https://pf.kakao.com/_ljgUxj/chat';
 const LOCATION = 'https://map.naver.com/p/entry/place/36523919';
 const NAVIGATION = [
-  ['ABOUT', '#/main/experience'], ['TAILORING', sitePath('tailoring/')],
+  ['ABOUT', sitePath('about/')], ['TAILORING', sitePath('tailoring/')],
   ['RENTAL', '#/main/rental'], ['ARCHIVE', sitePath('archive/')],
   ['EVENT', sitePath('event/')], ['STORE', sitePath('store/')]
 ];
@@ -29,7 +40,14 @@ function cropStyle(data) {
   return `width:${100/x}%;height:${100/y}%;left:${-100*left/x}%;top:${-100*top/y}%;object-fit:fill;`;
 }
 
+function responsivePhoto(src) {
+  if (!/^assets\/(rental|moments)\/.+\.jpe?g$/.test(src) && src !== 'tailoring/assets/hero/tailoring-work.jpg') return `src="${escape(sitePath(src))}"`;
+  const stem = src.replace(/\.jpe?g$/, '');
+  return `src="${sitePath(stem + '-1920.webp')}" srcset="${sitePath(stem + '-960.webp')} 960w, ${sitePath(stem + '-1920.webp')} 1920w" sizes="100vw"`;
+}
+
 function photo(data, alt, extra = '', priority = false, responsiveMain = false) {
+  if (data.src) return `<div class="photo ${extra}" data-asset="${escape(data.src)}"><img ${responsivePhoto(data.src)} alt="${escape(alt)}" width="${data.w}" height="${data.h}" loading="${priority ? 'eager' : 'lazy'}" decoding="async"></div>`;
   const dim = DESIGN.dimensions[data.hash];
   const tablet = responsiveMain ? DESIGN.tablet.find(p => p.hash === data.hash) : data;
   const mobile = responsiveMain ? DESIGN.mobile.find(p => p.hash === data.hash) : data;
@@ -50,54 +68,58 @@ function footer(archive = false, archiveLabel = 'CUSTOMER GALLERY') {
   return `<footer class="site-footer"><a class="brand" href="${sitePath('')}">HERITZ TAILOR</a><p>${archive ? 'ARCHIVE / ' + archiveLabel : 'Tailor House · Rental Center · Seoul'}</p></footer>`;
 }
 
+function editorialFooter(legal = false) {
+  return `<footer class="editorial-footer"><a class="brand" href="${sitePath('')}">HERITZ TAILOR</a><p>THE MAKING OF A SUIT</p><p>헤리츠테일러 · <a href="tel:025119876">02-511-9876</a></p><a href="#main">맨 위로 ↑</a><nav aria-label="예약 및 상담">${external(RESERVATION, '네이버 예약 ↗', '')}${external(CONSULTATION, '카카오톡 상담 ↗', '')}<a href="${sitePath('')}">메인으로</a>${legal ? external('https://www.instagram.com/heritztailor_/', 'Instagram', '') : ''}</nav>${legal ? `<div class="legal-footer"><div class="legal-company"><strong>㈜제이케이산업개발</strong><p>대표자: 곽진국</p><p>사업자 등록번호: 217-81-38933</p></div><div class="legal-contact"><p>주소: 서울 강남구 압구정로 72길 21, 301호(청담동, 부원빌딩)</p><p>개인정보관리책임자: 곽진국</p><p>전화: <a href="tel:025119876">02-511-9876</a></p><p>이메일: <a href="mailto:kawk111@nate.com">kawk111@nate.com</a></p></div><p class="legal-copyright">© 2026 HARITZ TAILOR<br>All Rights Reserved</p></div>` : ''}</footer>`;
+}
+
 function contact() {
   return `<aside class="floating-contact" aria-label="예약 및 상담">${external(RESERVATION, '<span class="service-icon n-icon" aria-hidden="true">N</span><span class="contact-copy"><small>네이버</small><strong>예약하기</strong></span>', 'contact-button reserve')}${external(CONSULTATION, '<span class="service-icon kakao-icon" aria-hidden="true">●</span><span class="contact-copy"><small>카카오톡</small><strong>상담하기</strong></span>', 'contact-button consult')}</aside>`;
 }
 
 function mainPage() {
   const main = DESIGN.main;
-  const steps = [
-    ['CONSULT', '예식 일정과 원하는 스타일을 확인합니다.'],
-    ['FITTING', '체형과 사이즈에 맞는 핏을 확인합니다.'],
-    ['SELECT', '원단·디자인 또는 렌탈 수트를 선택합니다.'],
-    ['FINAL', '최종 피팅 후 예식 준비를 마무리합니다.']
+  const rental = [
+    ['double-black', '더블랙', 'Double Black'],
+    ['black-peaked', '블랙피크드', 'Black Peaked'],
+    ['ivory', '아이보리', 'Ivory'],
+    ['dark-navy', '다크곤', 'Dark Navy'],
+    ['montblanc', '몽블랑', 'Montblanc'],
+    ['charcoal', '차콜', 'Charcoal'],
+    ['double-choco', '더블초코', 'Double Choco'],
+    ['olive', '올리브', 'Olive'],
   ];
-  return `<div class="site-switch"><span>현재 맞춤 홈페이지</span><span aria-hidden="true">|</span><a href="#/main/rental">렌탈 컬렉션 보기 →</a></div>${header(true)}<main id="main">
-    <section class="hero" aria-labelledby="hero-title">${photo(main[0], '헤리츠테일러 웨딩 수트를 입은 신랑과 신부', 'hero-photo', true, true)}<div class="hero-content"><p class="eyebrow">HERITZ TAILOR · WEDDING SUIT</p><h1 id="hero-title">Crafted for your moment</h1><p class="hero-description">맞춤예복부터 렌탈까지,<br class="mobile-break"> 한 공간에서 완성하는 웨딩 수트</p><a class="button hero-button" href="#/main/rental">RENTAL COLLECTION</a></div></section>
-    <section class="section moments" id="moments" aria-labelledby="moments-title"><p class="eyebrow">ARCHIVE / CUSTOMER GALLERY</p><h2 class="serif" id="moments-title">HERITZ MOMENTS</h2><p class="section-description">헤리츠테일러를 입고 완성한, 고객님의 스튜디오 촬영과 결혼식.</p><div class="four-grid moment-grid">${main.slice(1,5).map((p,i) => `<a class="photo-link" href="${sitePath('archive/')}" aria-label="${i%2 === 0 ? '스튜디오 촬영' : '결혼식 본식'} 고객 사진 보기">${photo(p, i%2 === 0 ? '스튜디오 촬영 고객 착용사진' : '결혼식 본식 고객 착용사진', '', false, true)}</a>`).join('')}</div><div class="section-bottom"><p>스튜디오 촬영 · 결혼식 본식</p><a class="button gallery-button" href="${sitePath('archive/')}">고객 착용사진 전체 보기 &nbsp; →</a></div></section>
-    <section class="section rental" id="rental" aria-labelledby="rental-title"><h2 class="serif" id="rental-title">A suit for every silhouette</h2><p class="section-description">스타일과 체형에 따라 선택할 수 있는 렌탈 컬렉션</p><div class="four-grid rental-grid">${main.slice(5,9).map((p,i) => photo(p, ['블랙 렌탈 수트','블루 렌탈 수트','그레이 렌탈 수트','버건디 렌탈 수트'][i], '', false, true)).join('')}</div></section>
-    <section class="section experience" id="experience" aria-labelledby="experience-title"><p class="eyebrow">HERITZ EXPERIENCE</p><h2 id="experience-title">상담부터 최종 피팅까지</h2><div class="four-grid steps-grid">${steps.map(([name, desc], i) => `<article class="step-card"><span class="step-number">0${i+1}</span><h3>${name}</h3><p>${desc}</p>${photo(main[i+9], ['상담과 일정 확인','체형에 맞는 치수 측정','원단 및 디자인 선택','최종 수트 피팅'][i], '', false, true)}</article>`).join('')}</div></section>
-    <section class="section store" id="store" aria-labelledby="store-title"><div class="store-copy"><p class="eyebrow">HERITZ STORE</p><h2 class="serif" id="store-title">Tailor House &amp;<br>Rental Center</h2><p class="section-description">서로 다른 공간에서 만나는 맞춤 제작과 렌탈 컬렉션.</p>${external(LOCATION, '방문 위치 확인', 'button location-button')}</div><div class="store-grid">${main.slice(13,15).map((p,i) => `<article>${photo(p, i===0 ? '헤리츠테일러 2층 맞춤센터 내부' : '헤리츠테일러 지하 1층 렌탈센터 내부', '', false, true)}<h3><span class="floor-badge">${i===0 ? '2F' : 'B1'}</span>${i===0 ? '맞춤센터' : '렌탈센터'}</h3><p>${i===0 ? '나에게 맞는 한 벌을 준비하는 공간' : '다양한 수트를 직접 비교하는 공간'}</p></article>`).join('')}</div></section>
-    <section class="section booking" id="booking" aria-labelledby="booking-title"><p class="eyebrow">BOOK YOUR FITTING</p><h2 id="booking-title">당신에게 맞는 예복을<br>직접 만나보세요.</h2><p class="section-description">맞춤예복과 렌탈 수트를 한 자리에서 비교하고 상담하세요.</p>${external(RESERVATION, '<span class="service-icon n-icon" aria-hidden="true">N</span><span>네이버 예약하고<br>무료주차권 받기</span>', 'button booking-button naver')}</section>
-  </main>${footer()}${contact()}`;
+  const steps = [
+    ['CONSULT', '예식 일정과 착용할 자리를 먼저 확인합니다. 원하는 분위기와 평소 즐겨 입는 스타일을 함께 살펴보고, 맞춤 제작과 렌탈 중 적합한 방향을 정합니다.'],
+    ['FITTING', '어깨와 가슴, 허리의 여유와 전체 길이의 균형을 살펴봅니다. 서 있을 때의 실루엣뿐 아니라 앉거나 팔을 움직일 때의 편안함까지 함께 확인합니다.'],
+    ['SELECT', '맞춤은 원단의 색감과 질감, 디자인의 조합을 살펴보고, 렌탈은 준비된 수트를 직접 비교합니다. 착용할 장소와 계절, 함께 입을 셔츠와의 조화도 고려합니다.'],
+    ['FINAL', '최종 착용 상태에서 재킷과 바지의 길이, 몸에 닿는 여유, 전체적인 균형을 다시 확인합니다. 필요한 조정 사항을 상담하고 착용 준비를 마무리합니다.']
+  ];
+  return `${header(true)}<main id="main" class="home-main"><div class="home-opening">${renderFabricIntro(sitePath('assets/effects/tailor-shears-open30.webp'))}
+    <section class="hero home-editorial" aria-labelledby="hero-title"><div class="hero-content"><p class="hero-eyebrow">HERITZ TAILOR · BESPOKE &amp; RENTAL</p><h1 id="hero-title">Crafted for <span>your moment.</span></h1><div class="hero-aside"><p class="hero-description">당신의 가장 빛나는 순간을 위해.<br>한 사람의 취향과 시간을 담은 한 벌.</p><nav class="hero-links" aria-label="컬렉션 살펴보기"><a href="${sitePath('tailoring/')}">BESPOKE <span aria-hidden="true">↗</span></a><a href="#/main/rental">RENTAL <span aria-hidden="true">↗</span></a></nav></div></div></section>
+    </div><section class="tailoring-entry" aria-labelledby="tailoring-entry-title"><div class="tailoring-entry-visual"><img ${responsivePhoto('tailoring/assets/hero/tailoring-work.jpg')} width="1920" height="1280" alt="테일러가 원단 위에 초크로 선을 그리는 모습" loading="lazy" decoding="async"></div><div class="tailoring-entry-copy"><p class="entry-eyebrow">THE ART OF BESPOKE</p><h2 id="tailoring-entry-title">한 사람을 위한<br>한 벌의 과정.</h2><p class="entry-description">당신의 몸을 읽고, 당신만의 선을 그립니다.<br>측정부터 디자인, 바느질까지 직접 경험해 보세요.</p><a class="tailoring-experience-link" href="${sitePath('tailoring/')}">테일러링 체험하기 <span aria-hidden="true">↗</span></a></div></section><section class="section moments" id="moments" aria-labelledby="moments-title"><div class="moments-stage"><div class="editorial-heading"><p class="eyebrow">01 / HERITZ MOMENTS</p><h2 id="moments-title">당신의 빛나는 순간에,<br>가장 당신다운 한 벌.</h2><p class="section-description">한 벌의 옷이,<br>당신의 가장 소중한 장면이 되도록.</p></div><div class="four-grid moment-grid">${MOMENT_PHOTOS.map((p,i) => `<a class="photo-link" href="${sitePath('archive/')}" aria-label="${(p.studio || i%2 === 0) ? '스튜디오 촬영' : '결혼식 본식'} 고객 사진 보기">${photo(p, (p.studio || i%2 === 0) ? '스튜디오 촬영 고객 착용사진' : '결혼식 본식 고객 착용사진', '', false, true)}<span class="photo-caption"><span>${(p.studio || i%2 === 0) ? 'STUDIO' : 'CEREMONY'}</span><span>0${i+1} ↗</span></span></a>`).join('')}</div><div class="section-bottom"><p>HERITZ / CUSTOMER ARCHIVE</p><a class="editorial-link" href="${sitePath('archive/')}">모든 순간 살펴보기 <span aria-hidden="true">↗</span></a></div></div></section>
+    <section class="section rental" id="rental" aria-labelledby="rental-title"><div class="rental-backdrops" aria-hidden="true">${rental.map(([file],i)=>`<img class="rental-backdrop ${i===0?'is-active':''}" ${responsivePhoto('assets/rental/'+file+'.jpg')} alt="" loading="lazy" decoding="async" width="2016" height="3024">`).join('')}</div><div class="rental-shade"></div><div class="rental-topline"><span>02 / RENTAL COLLECTION</span><span>SELECTED LOOKS · HERITZ TAILOR</span></div><div class="rental-layout"><div class="rental-copy"><p class="eyebrow">YOUR STYLE. YOUR MOMENT.</p><h2 id="rental-title">Double Black</h2><p class="rental-name">더블랙</p><p class="section-description">취향은 다르니까. 선택은 더 자유롭게.<br>다양한 대여복 중, 헤리츠가 고른 대표 스타일.<br>더 많은 디자인과 컬러를 매장에서 만나보세요.</p><a class="editorial-link" href="#/main/booking">피팅 예약하기 <span aria-hidden="true">↗</span></a></div><div class="rental-browser"><div class="four-grid rental-grid" tabindex="0" aria-label="대표 대여복 사진, 좌우 방향키로 이동">${rental.map(([file,name,label],i)=>`<figure><button type="button" class="rental-look" data-rental-select="${i}" data-label="${label}" data-name="${name}" aria-label="${name} 스타일 보기" aria-pressed="${i===0}">${photo({src: `assets/rental/${file}.jpg`,w:2016,h:3024},`${name} 렌탈 수트`)}<span class="rental-card-copy"><small>LOOK / 0${i+1}</small><strong>${label}</strong><span>${name}</span></span></button></figure>`).join('')}</div><div class="rental-controls"><div><button type="button" data-rental-direction="-1" aria-label="이전 대여복 사진">←</button><button type="button" data-rental-direction="1" aria-label="다음 대여복 사진">→</button></div><div class="rental-progress"><span></span></div><span class="rental-count">01 <small>/ 08</small></span></div><p class="rental-hint">DRAG TO EXPLORE · 좌우로 드래그</p></div></div></section>
+    <section class="section experience" id="experience" aria-labelledby="experience-title"><div class="process-stage"><div class="editorial-heading"><p class="eyebrow">03 / THE PROCESS</p><h2 id="experience-title">처음부터 마지막까지,<br> 당신에게 맞추는 과정.</h2><p class="section-description">첫 대화부터 마지막 피팅까지.<br>한 사람을 위한 세심한 과정.</p></div><nav class="process-tabs" aria-label="제작 과정 단계 선택">${steps.map(([name],i)=>`<button type="button" data-process-step="${i}">${String(i+1).padStart(2,'0')} <span>${name}</span></button>`).join('')}</nav><div class="process-window"><div class="steps-grid">${steps.map(([name, desc], i) => `<article class="step-card"><button type="button" class="step-number" data-process-step="${i}" aria-label="${i+1}단계 ${name} 보기">0${i+1}</button><div class="step-copy"><h3>${['먼저, 당신의 이야기를 듣습니다.','몸에 맞는 편안함을 찾습니다.','취향을 한 벌에 담습니다.','마지막까지 세심하게 맞춥니다.'][i]}</h3><small>${name}</small><p>${desc}</p></div>${photo(main[i+9], ['상담과 일정 확인','체형에 맞는 치수 측정','원단 및 디자인 선택','최종 수트 피팅'][i], '', false, true)}</article>`).join('')}</div></div><a class="editorial-link" href="${sitePath('tailoring/')}">헤리츠의 테일러링 이야기 <span aria-hidden="true">↗</span></a></div></section>
+    <section class="section store" id="store" aria-labelledby="store-title"><div class="editorial-heading"><p class="eyebrow">04 / VISIT HERITZ</p><h2 id="store-title">Visit <em>Heritz.</em></h2><p class="section-description">직접 입어보고, 당신의 한 벌을 찾아보세요.<br>서로 다른 두 공간, 당신을 위한 하나의 경험.</p></div><div class="store-grid">${main.slice(13,15).map((p,i) => `<article>${photo(p, i===0 ? '헤리츠테일러 2층 맞춤센터 내부' : '헤리츠테일러 지하 1층 렌탈센터 내부', '', false, true)}<div class="store-caption"><span class="floor-badge">${i===0 ? '2F' : 'B1'}</span><div><p class="store-category">${i===0 ? 'BESPOKE / 상담과 맞춤 제작' : 'RENTAL / 셀렉션과 피팅'}</p><h3>${i===0 ? 'Tailor House' : 'Rental Center'}</h3><p>${i===0 ? '몸과 취향을 읽는 상담부터 원단과 디자인을 고르는 시간까지. 당신의 한 벌을 차분하게 준비하는 맞춤 공간입니다.' : '다양한 수트를 직접 입어보며 실루엣과 착용감을 비교합니다. 특별한 날에 어울리는 선택을 만나는 렌탈 공간입니다.'}</p><a class="store-visit-link" href="#/main/booking">${i===0 ? '맞춤 상담 예약' : '대여복 피팅 예약'} <span aria-hidden="true">↗</span></a></div></div></article>`).join('')}</div><div class="section-bottom"><p><span class="store-address-label">FIND US / CHEONGDAM</span>서울 강남구 압구정로72길 21</p>${external(LOCATION, '방문 위치 확인 <span aria-hidden="true">↗</span>', 'editorial-link')}</div></section>
+    <section class="section booking" id="booking" aria-labelledby="booking-title"><p class="eyebrow">YOUR STORY STARTS HERE</p><h2 id="booking-title">당신의 이야기를<br>입어볼 시간.</h2><div class="booking-details"><p class="section-description">당신에게 어울리는 한 벌.<br>헤리츠에서 이야기를 시작해 보세요.</p><div class="booking-links">${external(RESERVATION, '방문 · 피팅 예약 <span aria-hidden="true">↗</span>', 'editorial-link')}${external(CONSULTATION, '카카오톡 상담 <span aria-hidden="true">↗</span>', 'editorial-link')}</div></div></section>
+  </main>${editorialFooter(true)}${contact()}`;
 }
 
 const STORE_NAMES=[['cheongdam','청담 본점'],['rental-center','청담 렌탈센터'],['suwon','수원'],['hapjeong','합정'],['ilsan','일산']];
-const STORE_PHOTOS={'cheongdam':Array.from({length:7},(_,i)=>'assets/store/cheongdam/'+(i+1)+'.webp'),'rental-center':Array.from({length:7},(_,i)=>'assets/store/rental-center/'+(i+1)+'.webp'),'suwon':Array.from({length:7},(_,i)=>'assets/store/suwon/'+(i+1)+'.webp'),'ilsan':Array.from({length:7},(_,i)=>'assets/store/ilsan/'+(i+1)+'.webp')};
+const STORE_PHOTOS={'hapjeong':Array.from({length:7},(_,i)=>'assets/store/hapjeong/'+(i+1)+'.webp'),'cheongdam':Array.from({length:7},(_,i)=>'assets/store/cheongdam/'+(i+1)+'.webp'),'rental-center':Array.from({length:7},(_,i)=>'assets/store/rental-center/'+(i+1)+'.webp'),'suwon':Array.from({length:7},(_,i)=>'assets/store/suwon/'+(i+1)+'.webp'),'ilsan':Array.from({length:7},(_,i)=>'assets/store/ilsan/'+(i+1)+'.webp')};
 const STORE_INFO={
- 'cheongdam':[['위치','서울 강남구 압구정로 72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능'],['기타 안내','원활한 상담을 위해 방문 전 예약을 권장드립니다.']],
+ 'cheongdam':[['위치','서울 강남구 압구정로 72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능'],['기타 안내','원활한 상담을 위해 방문 전 예약을 권장드립니다.'],['인스타그램','https://www.instagram.com/heritztailor_/']],
  'rental-center':[['위치','서울 강남구 압구정로72길 21 지하1층'],['연락처','070-4214-8904'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','발렛파킹 가능'],['기타 안내','렌탈센터 예약·방문 안내를 입력해 주세요']],
- 'suwon':[['위치','경기 수원시 팔달구 정조로892번길 4 1~4층'],['연락처','0507-1402-1467'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','주차 가능'],['기타 안내','https://www.instagram.com/heritztailor_suwon']],
- 'hapjeong':[['위치','서울 마포구 월드컵로8길 23 1, 2층'],['연락처','02-336-5662'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['주차','매장 내 주차 가능']],
- 'ilsan':[['위치','경기 고양시 일산동구 일산로286번길 19-9 1층'],['연락처','0507-1457-1234'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','매장 앞 주차 가능']]
+ 'suwon':[['위치','경기 수원시 팔달구 정조로892번길 4 1~4층'],['연락처','0507-1402-1467'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','주차 가능'],['인스타그램','https://www.instagram.com/heritztailor_suwon']],
+ 'hapjeong':[['위치','서울 마포구 월드컵로8길 23 1, 2층'],['연락처','02-336-5662'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['주차','매장 내 주차 가능'],['인스타그램','https://www.instagram.com/heritztailor_hapjeong/']],
+ 'ilsan':[['위치','경기 고양시 일산동구 일산로286번길 19-9 1층'],['연락처','0507-1457-1234'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','매장 앞 주차 가능'],['인스타그램','https://www.instagram.com/heritztailor.ilsan/']]
 };
-let storePhotoIndex=0;
-function storeImage(src,alt) {
- return '<div class="photo store-original-photo"><img src="'+escape(sitePath(src))+'" alt="'+escape(alt)+'" loading="lazy" decoding="async"></div>';
-}
 function storePage(slug) {
+ if (!STORE_NAMES.some(([id])=>id===slug)) slug='cheongdam';
  const name=STORE_NAMES.find(x=>x[0]===slug)?.[1] || '청담 본점';
+ const title={'cheongdam':'Cheongdam.','rental-center':'Rental center.','suwon':'Suwon.','hapjeong':'Hapjeong.','ilsan':'Ilsan.'}[slug];
  const photos=STORE_PHOTOS[slug]||[];
- storePhotoIndex=0;
  const info=STORE_INFO[slug]||STORE_INFO.cheongdam;
- return `${header()}<main id="main" class="store-detail"><nav class="store-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label])=>`<a href="#/store/${id}" class="${slug===id?'selected':''}" ${slug===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav><h1 class="serif">STORE</h1><h2>${name}</h2>${photos.length?`<section class="store-slideshow" aria-label="매장 사진"><button type="button" class="store-photo-button" data-store-next aria-label="다음 사진">${storeImage(photos[0],name+' 매장 사진 1')}</button><div class="store-photo-controls"><button data-store-prev type="button">← 이전</button><span data-store-count>1 / ${photos.length}</span><button data-store-next type="button">다음 →</button></div></section>`:`<div class="store-photo-pending" role="status">피그마 원본 사진 연결 준비 중</div>`}<dl class="store-info">${info.map(([key,value])=>`<div><dt>${escape(key)}</dt><dd>${value.startsWith('https://')?`<a href="${escape(value)}" target="_blank" rel="noopener noreferrer">헤리츠테일러 수원 인스타그램</a>`:value.split('|').map(v=>escape(v)).join('<br>')}</dd></div>`).join('')}</dl></main>${footer()}${contact()}`;
-}
-function cycleStorePhoto(delta) {
- const store=STORE_PHOTOS[parseRoute().selection]||[];
- if (!store.length) return;
- storePhotoIndex=(storePhotoIndex+delta+store.length)%store.length;
- document.querySelector('.store-photo-button').innerHTML=storeImage(store[storePhotoIndex],'매장 사진 '+(storePhotoIndex+1));
- document.querySelector('[data-store-count]').textContent=`${storePhotoIndex+1} / ${store.length}`;
+ return `${header(true)}<main id="main" class="store-editorial" data-store="${slug}"><section class="store-intro"><p class="store-eyebrow">HERITZ TAILOR / OUR STORES</p><h1>Visit Heritz.</h1><div class="store-intro-deck"><p>당신의 시간을 위한 공간.</p><p>가까운 헤리츠에서<br>당신에게 맞는 한 벌을 만나보세요.</p></div></section><nav class="store-branch-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label],i)=>`<a href="#/store/${id}" ${slug===id?'aria-current="page"':''}><small>0${i+1}</small>${label}</a>`).join('')}</nav><section class="store-location" aria-labelledby="store-name"><div class="store-location-heading"><p class="store-eyebrow">THE SPACE / ${String(STORE_NAMES.findIndex(([id])=>id===slug)+1).padStart(2,'0')}</p><h2 id="store-name" lang="en">${title}</h2><p class="store-location-label">${name}</p></div>${photos.length?`<section class="store-slideshow" aria-label="${name} 매장 사진" aria-roledescription="슬라이드"><div class="store-track" id="store-photos" tabindex="0" aria-label="매장 사진, 좌우 방향키로 이동">${photos.map((src,i)=>`<figure class="store-slide" role="group" aria-roledescription="슬라이드" aria-label="${i+1} / ${photos.length}"><picture><source media="(max-width: 799px)" srcset="${escape(sitePath(src.replace('.webp','-720.webp')))}"><img src="${escape(sitePath(src))}" alt="${name} 매장 사진 ${i+1}" loading="${i===0?'eager':'lazy'}" decoding="async"></picture></figure>`).join('')}</div><div class="store-slide-bar"><p class="store-photo-caption"><span>THE SPACE &amp; DETAILS</span><span>${name} <span aria-hidden="true">—</span> 공간과 디테일</span></p><div class="store-slide-controls"><button data-store-prev type="button" aria-label="이전 매장 사진" aria-controls="store-photos" disabled>←</button><span data-store-count aria-live="polite" aria-atomic="true">01 / ${String(photos.length).padStart(2,'0')}</span><button data-store-next type="button" aria-label="다음 매장 사진" aria-controls="store-photos">→</button></div></div></section>`:`<div class="store-empty"><p>공간 사진을 준비하고 있습니다.</p><p>방문 문의는 아래 연락처를 이용해 주세요.</p></div>`}<div class="store-visit"><div class="store-visit-heading"><p class="store-eyebrow">VISIT INFORMATION</p><h3 lang="en">Plan your<br>visit.</h3><p class="store-visit-label">방문 안내</p></div><dl class="store-details">${info.filter(([key,value])=>!value.includes('입력해 주세요')).map(([key,value])=>`<div><dt>${escape(key)}</dt><dd>${key==='연락처'?`<a href="tel:${value.replace(/-/g,'')}">${escape(value)}</a>`:value.startsWith('https://')?`<a href="${escape(value)}" target="_blank" rel="noopener noreferrer">${escape(name)} 인스타그램 ↗</a>`:value.split('|').map(v=>escape(v)).join('<br>')}</dd></div>`).join('')}</dl></div></section></main>${editorialFooter()}${contact()}`;
 }
 function tabs(page, active) {
   const options = page === 'archive' ? [['all','전체'],['studio','스튜디오 촬영'],['ceremony','본식']] : [['all','전체 이벤트'],['groom','신랑 패키지'],['family','가족 패키지']];
@@ -115,25 +137,29 @@ function lookCopy(look, index, fixed = false) {
  return `<div class="look-copy ${fixed ? 'look-fixed' : ''} ${index === 3 ? 'look-romance' : ''}"><p>LOOK ${index + 1}</p><h2>${escape(look.title)}</h2></div>`;
 }
 function archiveSpecialPage(kind, number) {
- const isLook = kind === 'lookbook';
- const page = Math.min(isLook ? ARCHIVE.lookbooks.length : ARCHIVE.celebrity.length, Math.max(1, Math.floor(number || 1)));
+ if (kind === 'celebrity') return archiveEditorialPage('celebrity', number);
+ const page = Math.min(ARCHIVE.lookbooks.length, Math.max(1, Math.floor(number || 1)));
  let body;
- if (isLook) {
-  if (number > 0) {
+ if (number > 0) {
    const look = ARCHIVE.lookbooks[page - 1];
    body = `<section class="look-detail" aria-label="${escape(look.title)}"><div class="look-photos">${look.photos.map((p,i) => archivePhoto(p, `${look.title} 사진 ${i + 1}`, i === 0)).join('')}</div>${lookCopy(look, page - 1, true)}</section><a class="look-back" href="#/archive/lookbook">← LOOKBOOK 목록</a>`;
-  } else {
-   body = `<div class="look-list">${ARCHIVE.lookbooks.map((look,i) => `<a href="#/archive/lookbook/${i+1}" aria-label="LOOK ${i+1} ${escape(look.title)} 상세 보기">${archivePhoto(look.photos[0], look.title, i === 0)}${lookCopy(look, i)}</a>`).join('')}</div>`;
-  }
  } else {
-  body = `<div class="celebrity-grid">${ARCHIVE.celebrity[page-1].map((p,i) => `<article>${archivePhoto(p, p.caption.map(s => s.trim()).join(' · '), i < 3)}<div class="celebrity-caption">${p.caption.map(line => `<p>${escape(line)}</p>`).join('')}</div></article>`).join('')}</div><nav class="archive-pagination" aria-label="Celebrity 페이지">${ARCHIVE.celebrity.map((_,i) => `<a ${i+1 === page ? 'aria-current="page"' : ''} href="#/archive/celebrity/${i+1}">${i+1}</a>`).join('')}</nav><div class="celebrity-bottom"><p>헤리츠테일러와 함께한 협찬 스타일입니다.</p><a class="button secondary" href="#/">메인으로 돌아가기 →</a></div>`;
+   body = `<div class="look-list">${ARCHIVE.lookbooks.map((look,i) => `<a href="#/archive/lookbook/${i+1}" aria-label="LOOK ${i+1} ${escape(look.title)} 상세 보기">${archivePhoto(look.photos[0], look.title, i === 0)}${lookCopy(look, i)}</a>`).join('')}</div>`;
  }
- const heading = isLook ? '<h1 class="serif">LOOKBOOK</h1>' : '<div class="celebrity-heading"><h1 class="serif">CELEBRITY</h1><h2>협찬 갤러리</h2><p>헤리츠테일러와 함께한 셀럽들의 스타일을 만나보세요.</p></div>';
- return header() + `<main id="main" class="archive-special archive-${kind}">${archiveNav(kind)}${heading}${body}</main>` + footer(true, isLook ? 'LOOKBOOK' : 'CELEBRITY') + contact();
+ return header() + `<main id="main" class="archive-special archive-lookbook">${archiveNav('lookbook')}<h1 class="serif">LOOKBOOK</h1>${body}</main>` + footer(true, 'LOOKBOOK') + contact();
 }
+
 function archivePage(category) {
+  if (category === 'overview') return archiveEditorialPage('overview');
   gallery = DESIGN[category];
   return `${header()}<main id="main" class="archive-main">${archiveNav("all")}<section class="archive-content" aria-labelledby="archive-title"><div class="archive-heading"><h1 class="serif" id="archive-title">HERITZ MOMENTS</h1><h2>고객 갤러리</h2><p>스튜디오 촬영부터 결혼식까지, 헤리츠테일러와 함께한 고객님의 소중한 순간을 만나보세요.</p></div><div class="gallery-controls">${tabs('archive',category)}<p>사진을 선택해 크게 보세요.</p></div><div class="customer-grid">${gallery.map((p,i) => {const label=category==='ceremony' || (category==='all' && i>=3) ? '결혼식 본식' : '스튜디오 촬영';return `<button type="button" class="customer-card" data-photo="${i}" aria-label="${label} 사진 ${i+1} 확대 보기" aria-haspopup="dialog">${photo(p, `${label} 고객 착용사진 ${i+1}`)}<span class="customer-caption"><strong>${label}</strong><span aria-hidden="true">↗</span></span></button>`;}).join('')}</div><div class="gallery-bottom"><p>소중한 순간을 함께해 주신 고객님들께 감사드립니다.</p><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></section></main>${footer(true)}${contact()}`;
+}
+
+function archiveEditorialPage(category, number = 0) {
+  const body = category === 'celebrity'
+    ? renderCelebrity({pages: ARCHIVE.celebrity, number, archivePhoto, escape})
+    : renderArchiveOverview({archive: ARCHIVE, design: DESIGN, sitePath, escape, archivePhoto, photo});
+  return header(true) + `<main id="main" class="archive-editorial">${renderArchiveNav(category, sitePath)}${body}</main>` + editorialFooter();
 }
 
 function packageCard(kind) {
@@ -170,25 +196,29 @@ function eventPage(category,articleId=0) {
 }
 
 function parseRoute(hash = location.hash) {
+  if (!hash.startsWith('#/') && /\/about\/?$/.test(location.pathname)) return {page:'about', selection:['#brand-intro','#brand-history','#brand-bi'].includes(hash) ? hash.slice(1) : ''};
   if (!hash) {
     const relativePath = location.pathname.startsWith(BASE_PATH)
       ? '/' + location.pathname.slice(BASE_PATH.length)
       : location.pathname;
     const cleanPath = relativePath.replace(/\/+$/, '') || '/';
-    if (cleanPath === '/archive' || cleanPath.startsWith('/archive/')) return {page:'archive', selection:'all', number:0};
+    if (cleanPath === '/archive' || cleanPath.startsWith('/archive/')) return {page:'archive', selection:'overview', number:0};
     if (cleanPath === '/event' || cleanPath.startsWith('/event/')) return {page:'event', selection:'all', number:0};
     if (cleanPath === '/store' || cleanPath.startsWith('/store/')) return {page:'store', selection:'cheongdam'};
   }
-  const [,page='main',selection='all'] = hash.replace(/^#/, '').split('/');
+  const [,page='main',selection=page === 'archive' ? 'overview' : 'all'] = hash.replace(/^#/, '').split('/');
+  if (page==='about') return {page, selection:['brand-intro','brand-history','brand-bi'].includes(selection) ? selection : ''};
   if (page==='store') return {page,selection:STORE_NAMES.some(x=>x[0]===selection)?selection:'cheongdam'};
-  if (page==='archive') return {page, selection:['all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'all', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
+  if (page==='archive') return {page, selection:['overview','all','studio','ceremony','lookbook','celebrity'].includes(selection) ? selection : 'overview', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
   if (page==='event') return {page, selection:['all','store','package','groom','family'].includes(selection) ? selection : 'store', number:Math.max(0,Number(hash.replace(/^#/, '').split('/')[3])||0)};
   return {page:'main', selection:['experience','rental','store','booking','moments'].includes(selection) ? selection : ''};
 }
 
 const SEO_METADATA = {
+  about: {title:'브랜드 소개 및 연혁 | HERITZ TAILOR', description:'헤리츠테일러의 브랜드 이야기, 테일러 소개와 브랜드 연혁을 만나보세요.'},
   main: {title:'HERITZ TAILOR | 맞춤예복 & 렌탈', description:'헤리츠테일러의 웨딩 맞춤예복과 정장 렌탈 서비스를 만나보세요. 고객 착용사진, 패키지 안내, 매장 방문 예약을 확인할 수 있습니다.'},
   archive: {
+    overview: {title:'Archive | HERITZ TAILOR', description:'헤리츠테일러의 룩북, 셀러브리티 스타일과 고객의 소중한 순간을 만나보세요.'},
     all: {title:'고객 갤러리 | HERITZ TAILOR', description:'헤리츠테일러의 웨딩 수트 고객 갤러리. 스튜디오 촬영과 결혼식 본식에서 맞춤예복과 렌탈 수트를 착용한 고객 사진을 확인하세요.'},
     studio: {title:'스튜디오 촬영 갤러리 | HERITZ TAILOR', description:'헤리츠테일러의 수트를 착용한 고객들의 웨딩 스튜디오 촬영 사진을 확인하세요.'},
     ceremony: {title:'결혼식 본식 갤러리 | HERITZ TAILOR', description:'결혼식 본식에서 헤리츠테일러 웨딩 수트를 착용한 고객들의 소중한 순간을 확인하세요.'},
@@ -217,7 +247,7 @@ function updateSEO(route) {
   setMeta('meta[name="twitter:title"]',entry.title);
   setMeta('meta[name="twitter:description"]',entry.description);
   // Canonicalize the public landing URLs; hash navigation is not an independent indexed page.
-  const canonicalURL = route.page === 'archive'
+  const canonicalURL = route.page === 'about' ? sitePath('about/') : route.page === 'archive'
     ? sitePath('archive/')
     : route.page === 'event'
       ? sitePath('event/')
@@ -229,17 +259,41 @@ function updateSEO(route) {
   const canonicalLink = document.querySelector('link[rel="canonical"]');
   if (canonicalLink) canonicalLink.href = absoluteCanonical;
 }
+let disposeFabricIntro;
+let disposeHomeScroll;
+let disposeHomeReveal;
+let disposeProcessScroll;
+let disposeRentalDrag;
+let disposeRentalScene;
+let disposeAbout;
+let disposeStore;
 function render() {
   const route=parseRoute();
   if (menu.open) menu.close();
   if (photoDialog.open) photoDialog.close();
-  if (currentPage!==route.page || route.page!=='main') {
-    app.innerHTML=route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection,route.number) : route.page==='store' ? storePage(route.selection) : mainPage();
+  if (currentPage!==route.page || !['main','about'].includes(route.page)) {
+    disposeAbout?.();
+    disposeStore?.();
+    disposeHomeReveal?.();
+    disposeRentalScene?.();
+    disposeRentalDrag?.();
+    disposeProcessScroll?.();
+    disposeHomeScroll?.();
+    disposeFabricIntro?.();
+    app.innerHTML=route.page==='about' ? header(true) + renderAbout(sitePath) + editorialFooter() : route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection,route.number) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
+    disposeStore = route.page === 'store' ? mountStoreSlideshow() : undefined;
+    disposeAbout = route.page === 'about' ? mountAbout() : undefined;
+    disposeFabricIntro = route.page === 'main' ? mountFabricIntro() : undefined;
+    disposeHomeScroll = route.page === 'main' ? mountHomeScroll() : undefined;
+    disposeProcessScroll = route.page === 'main' ? mountProcessScroll() : undefined;
+    disposeRentalDrag = route.page === 'main' ? mountRentalDrag() : undefined;
+    disposeRentalScene = route.page === 'main' ? mountRentalScene() : undefined;
+    disposeHomeReveal = ['main','about'].includes(route.page) ? mountHomeReveal() : undefined;
   }
   updateSEO(route);
   requestAnimationFrame(() => {
-    if(route.page==='main' && route.selection) document.getElementById(route.selection)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
+    if(['main','about'].includes(route.page) && route.selection) document.getElementById(route.selection)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
     else window.scrollTo({top:0,behavior:'instant'});
   });
 }
@@ -258,8 +312,6 @@ function displayPhoto(index) {
 
 document.querySelector('#menu-navigation').innerHTML=NAVIGATION.map(([label,href]) => `<a href="${href}">${label}<span aria-hidden="true">↗</span></a>`).join('');
 document.addEventListener('click',event => {
-  if(event.target.closest('[data-store-prev]')){cycleStorePhoto(-1);return;}
-  if(event.target.closest('[data-store-next]')){cycleStorePhoto(1);return;}
   const opener=event.target.closest('#open-menu');
   if(opener){menu.showModal();return;}
   const closer=event.target.closest('[data-close]');
