@@ -24,7 +24,7 @@
 .home-main .moment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px 32px;align-items:start}
 .home-main .moment-grid .photo-link{display:block;min-width:0;border-radius:0}
 .home-main .photo-link img{transition:none}
-.home-main .photo-link:hover img,.home-main~.floating-contact .contact-button:hover{transform:none}
+.home-main .photo-link:hover img,:is(.home-main,.about-main)~.floating-contact .contact-button:hover{transform:none}
 .home-main .moment-grid .photo{height:auto;aspect-ratio:2/3}
 .home-main .moment-grid .photo-link:nth-child(2){margin-top:0}
 .home-main .moment-grid .photo-link:nth-child(3){width:100%;justify-self:stretch}
@@ -71,13 +71,13 @@
 .legal-company strong{display:block;margin-bottom:8px}
 .legal-footer a:hover{text-decoration:underline}
 @media(max-width:799px){.home-main+.legal-footer{grid-template-columns:minmax(0,1fr);gap:20px}}
-.home-main~.floating-contact{width:auto;right:24px;bottom:20px;flex-direction:row;gap:0;background:#fff;color:#000;border:1px solid #000;box-shadow:none}
-.home-main~.floating-contact .contact-button{min-height:44px;min-width:0;padding:12px 18px;background:#fff;color:#000;border:0;border-radius:0;box-shadow:none}
-.home-main~.floating-contact .contact-button+.contact-button{border-left:1px solid #000}
-.home-main~.floating-contact .service-icon,.home-main~.floating-contact small{display:none}
-.home-main~.floating-contact strong{font-size:11px;font-weight:500;color:#000}
-.home-main~.floating-contact .contact-button:hover{background:#000;color:#fff}
-.home-main~.floating-contact .contact-button:hover strong{color:#fff}
+:is(.home-main,.about-main)~.floating-contact{width:auto;right:24px;bottom:20px;flex-direction:row;gap:0;background:#fff;color:#000;border:1px solid #000;box-shadow:none}
+:is(.home-main,.about-main)~.floating-contact .contact-button{min-height:44px;min-width:0;padding:12px 18px;background:#fff;color:#000;border:0;border-radius:0;box-shadow:none}
+:is(.home-main,.about-main)~.floating-contact .contact-button+.contact-button{border-left:1px solid #000}
+:is(.home-main,.about-main)~.floating-contact .service-icon,:is(.home-main,.about-main)~.floating-contact small{display:none}
+:is(.home-main,.about-main)~.floating-contact strong{font-size:11px;font-weight:500;color:#000}
+:is(.home-main,.about-main)~.floating-contact .contact-button:hover{background:#000;color:#fff}
+:is(.home-main,.about-main)~.floating-contact .contact-button:hover strong{color:#fff}
 .site-header.dark:has(+.home-main .fabric-intro) a:focus-visible,.site-header.dark:has(+.home-main .fabric-intro) button:focus-visible{outline-color:#fff}
 @media(max-width:999px){
  .home-main{--home-gutter:5vw}
@@ -127,7 +127,7 @@
  .home-main .booking-links{margin-top:28px;gap:20px}
  .home-main .editorial-link{gap:20px;font-size:13px;padding:15px 18px}
  .home-main+.site-footer{padding:28px 24px 100px;align-items:start}
- .home-main~.floating-contact{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+ :is(.home-main,.about-main)~.floating-contact{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 }
 
 .home-main .moments{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);column-gap:clamp(32px,4vw,64px)}

@@ -10,6 +10,7 @@ import { MOMENT_PHOTOS } from './moments-data.mjs';
 import { ARCHIVE } from './archive-data.js';
 import { renderArchiveNav, renderArchiveOverview } from './archive-editorial.mjs';
 import { renderCelebrity } from './archive-celebrity.mjs';
+import { mountStoreSlideshow } from './store-slideshow.mjs';
 
 // GitHub Pages project path during preview; production custom domain uses the site root.
 const BASE_PATH = location.hostname === '5banjang.github.io' ? '/heritz-preview/' : '/';
@@ -104,31 +105,21 @@ function mainPage() {
 }
 
 const STORE_NAMES=[['cheongdam','청담 본점'],['rental-center','청담 렌탈센터'],['suwon','수원'],['hapjeong','합정'],['ilsan','일산']];
-const STORE_PHOTOS={'cheongdam':Array.from({length:7},(_,i)=>'assets/store/cheongdam/'+(i+1)+'.webp'),'rental-center':Array.from({length:7},(_,i)=>'assets/store/rental-center/'+(i+1)+'.webp'),'suwon':Array.from({length:7},(_,i)=>'assets/store/suwon/'+(i+1)+'.webp'),'ilsan':Array.from({length:7},(_,i)=>'assets/store/ilsan/'+(i+1)+'.webp')};
+const STORE_PHOTOS={'hapjeong':Array.from({length:7},(_,i)=>'assets/store/hapjeong/'+(i+1)+'.webp'),'cheongdam':Array.from({length:7},(_,i)=>'assets/store/cheongdam/'+(i+1)+'.webp'),'rental-center':Array.from({length:7},(_,i)=>'assets/store/rental-center/'+(i+1)+'.webp'),'suwon':Array.from({length:7},(_,i)=>'assets/store/suwon/'+(i+1)+'.webp'),'ilsan':Array.from({length:7},(_,i)=>'assets/store/ilsan/'+(i+1)+'.webp')};
 const STORE_INFO={
- 'cheongdam':[['위치','서울 강남구 압구정로 72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능'],['기타 안내','원활한 상담을 위해 방문 전 예약을 권장드립니다.']],
+ 'cheongdam':[['위치','서울 강남구 압구정로 72길 21 2층 헤리츠테일러'],['연락처','02-511-9876'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','발렛파킹 가능'],['기타 안내','원활한 상담을 위해 방문 전 예약을 권장드립니다.'],['인스타그램','https://www.instagram.com/heritztailor_/']],
  'rental-center':[['위치','서울 강남구 압구정로72길 21 지하1층'],['연락처','070-4214-8904'],['영업시간','화요일~금요일 - 11:00 ~ 20:00|토요일~일요일 - 10:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','발렛파킹 가능'],['기타 안내','렌탈센터 예약·방문 안내를 입력해 주세요']],
- 'suwon':[['위치','경기 수원시 팔달구 정조로892번길 4 1~4층'],['연락처','0507-1402-1467'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','주차 가능'],['기타 안내','https://www.instagram.com/heritztailor_suwon']],
- 'hapjeong':[['위치','서울 마포구 월드컵로8길 23 1, 2층'],['연락처','02-336-5662'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['주차','매장 내 주차 가능']],
- 'ilsan':[['위치','경기 고양시 일산동구 일산로286번길 19-9 1층'],['연락처','0507-1457-1234'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','매장 앞 주차 가능']]
+ 'suwon':[['위치','경기 수원시 팔달구 정조로892번길 4 1~4층'],['연락처','0507-1402-1467'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기휴무'],['주차','주차 가능'],['인스타그램','https://www.instagram.com/heritztailor_suwon']],
+ 'hapjeong':[['위치','서울 마포구 월드컵로8길 23 1, 2층'],['연락처','02-336-5662'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['주차','매장 내 주차 가능'],['인스타그램','https://www.instagram.com/heritztailor_hapjeong/']],
+ 'ilsan':[['위치','경기 고양시 일산동구 일산로286번길 19-9 1층'],['연락처','0507-1457-1234'],['영업시간','화요일~일요일 - 11:00 ~ 20:00'],['휴무일','매주 월요일 정기 휴무'],['주차','매장 앞 주차 가능'],['인스타그램','https://www.instagram.com/heritztailor.ilsan/']]
 };
-let storePhotoIndex=0;
-function storeImage(src,alt) {
- return '<div class="photo store-original-photo"><img src="'+escape(sitePath(src))+'" alt="'+escape(alt)+'" loading="lazy" decoding="async"></div>';
-}
 function storePage(slug) {
+ if (!STORE_NAMES.some(([id])=>id===slug)) slug='cheongdam';
  const name=STORE_NAMES.find(x=>x[0]===slug)?.[1] || '청담 본점';
+ const title={'cheongdam':'Cheongdam.','rental-center':'Rental center.','suwon':'Suwon.','hapjeong':'Hapjeong.','ilsan':'Ilsan.'}[slug];
  const photos=STORE_PHOTOS[slug]||[];
- storePhotoIndex=0;
  const info=STORE_INFO[slug]||STORE_INFO.cheongdam;
- return `${header()}<main id="main" class="store-detail"><nav class="store-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label])=>`<a href="#/store/${id}" class="${slug===id?'selected':''}" ${slug===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav><h1 class="serif">STORE</h1><h2>${name}</h2>${photos.length?`<section class="store-slideshow" aria-label="매장 사진"><button type="button" class="store-photo-button" data-store-next aria-label="다음 사진">${storeImage(photos[0],name+' 매장 사진 1')}</button><div class="store-photo-controls"><button data-store-prev type="button">← 이전</button><span data-store-count>1 / ${photos.length}</span><button data-store-next type="button">다음 →</button></div></section>`:`<div class="store-photo-pending" role="status">피그마 원본 사진 연결 준비 중</div>`}<dl class="store-info">${info.map(([key,value])=>`<div><dt>${escape(key)}</dt><dd>${value.startsWith('https://')?`<a href="${escape(value)}" target="_blank" rel="noopener noreferrer">헤리츠테일러 수원 인스타그램</a>`:value.split('|').map(v=>escape(v)).join('<br>')}</dd></div>`).join('')}</dl></main>${footer()}${contact()}`;
-}
-function cycleStorePhoto(delta) {
- const store=STORE_PHOTOS[parseRoute().selection]||[];
- if (!store.length) return;
- storePhotoIndex=(storePhotoIndex+delta+store.length)%store.length;
- document.querySelector('.store-photo-button').innerHTML=storeImage(store[storePhotoIndex],'매장 사진 '+(storePhotoIndex+1));
- document.querySelector('[data-store-count]').textContent=`${storePhotoIndex+1} / ${store.length}`;
+ return `${header(true)}<main id="main" class="store-editorial" data-store="${slug}"><section class="store-intro"><p class="store-eyebrow">HERITZ TAILOR / OUR STORES</p><h1>Visit Heritz.</h1><div class="store-intro-deck"><p>당신의 시간을 위한 공간.</p><p>가까운 헤리츠에서<br>당신에게 맞는 한 벌을 만나보세요.</p></div></section><nav class="store-branch-nav" aria-label="지점 선택">${STORE_NAMES.map(([id,label],i)=>`<a href="#/store/${id}" ${slug===id?'aria-current="page"':''}><small>0${i+1}</small>${label}</a>`).join('')}</nav><section class="store-location" aria-labelledby="store-name"><div class="store-location-heading"><p class="store-eyebrow">THE SPACE / ${String(STORE_NAMES.findIndex(([id])=>id===slug)+1).padStart(2,'0')}</p><h2 id="store-name" lang="en">${title}</h2><p class="store-location-label">${name}</p></div>${photos.length?`<section class="store-slideshow" aria-label="${name} 매장 사진" aria-roledescription="슬라이드"><div class="store-track" id="store-photos" tabindex="0" aria-label="매장 사진, 좌우 방향키로 이동">${photos.map((src,i)=>`<figure class="store-slide" role="group" aria-roledescription="슬라이드" aria-label="${i+1} / ${photos.length}"><picture><source media="(max-width: 799px)" srcset="${escape(sitePath(src.replace('.webp','-720.webp')))}"><img src="${escape(sitePath(src))}" alt="${name} 매장 사진 ${i+1}" loading="${i===0?'eager':'lazy'}" decoding="async"></picture></figure>`).join('')}</div><div class="store-slide-bar"><p class="store-photo-caption"><span>THE SPACE &amp; DETAILS</span><span>${name} <span aria-hidden="true">—</span> 공간과 디테일</span></p><div class="store-slide-controls"><button data-store-prev type="button" aria-label="이전 매장 사진" aria-controls="store-photos" disabled>←</button><span data-store-count aria-live="polite" aria-atomic="true">01 / ${String(photos.length).padStart(2,'0')}</span><button data-store-next type="button" aria-label="다음 매장 사진" aria-controls="store-photos">→</button></div></div></section>`:`<div class="store-empty"><p>공간 사진을 준비하고 있습니다.</p><p>방문 문의는 아래 연락처를 이용해 주세요.</p></div>`}<div class="store-visit"><div class="store-visit-heading"><p class="store-eyebrow">VISIT INFORMATION</p><h3 lang="en">Plan your<br>visit.</h3><p class="store-visit-label">방문 안내</p></div><dl class="store-details">${info.filter(([key,value])=>!value.includes('입력해 주세요')).map(([key,value])=>`<div><dt>${escape(key)}</dt><dd>${key==='연락처'?`<a href="tel:${value.replace(/-/g,'')}">${escape(value)}</a>`:value.startsWith('https://')?`<a href="${escape(value)}" target="_blank" rel="noopener noreferrer">${escape(name)} 인스타그램 ↗</a>`:value.split('|').map(v=>escape(v)).join('<br>')}</dd></div>`).join('')}</dl></div></section></main>${editorialFooter()}${contact()}`;
 }
 function tabs(page, active) {
   const options = page === 'archive' ? [['all','전체'],['studio','스튜디오 촬영'],['ceremony','본식']] : [['all','전체 이벤트'],['groom','신랑 패키지'],['family','가족 패키지']];
@@ -275,12 +266,14 @@ let disposeProcessScroll;
 let disposeRentalDrag;
 let disposeRentalScene;
 let disposeAbout;
+let disposeStore;
 function render() {
   const route=parseRoute();
   if (menu.open) menu.close();
   if (photoDialog.open) photoDialog.close();
   if (currentPage!==route.page || !['main','about'].includes(route.page)) {
     disposeAbout?.();
+    disposeStore?.();
     disposeHomeReveal?.();
     disposeRentalScene?.();
     disposeRentalDrag?.();
@@ -289,6 +282,7 @@ function render() {
     disposeFabricIntro?.();
     app.innerHTML=route.page==='about' ? header(true) + renderAbout(sitePath) + editorialFooter() : route.page==='archive' ? (['celebrity','lookbook'].includes(route.selection) ? archiveSpecialPage(route.selection,route.number) : archivePage(route.selection)) : route.page==='event' ? eventPage(route.selection,route.number) : route.page==='store' ? storePage(route.selection) : mainPage();
     currentPage=route.page;
+    disposeStore = route.page === 'store' ? mountStoreSlideshow() : undefined;
     disposeAbout = route.page === 'about' ? mountAbout() : undefined;
     disposeFabricIntro = route.page === 'main' ? mountFabricIntro() : undefined;
     disposeHomeScroll = route.page === 'main' ? mountHomeScroll() : undefined;
@@ -318,8 +312,6 @@ function displayPhoto(index) {
 
 document.querySelector('#menu-navigation').innerHTML=NAVIGATION.map(([label,href]) => `<a href="${href}">${label}<span aria-hidden="true">↗</span></a>`).join('');
 document.addEventListener('click',event => {
-  if(event.target.closest('[data-store-prev]')){cycleStorePhoto(-1);return;}
-  if(event.target.closest('[data-store-next]')){cycleStorePhoto(1);return;}
   const opener=event.target.closest('#open-menu');
   if(opener){menu.showModal();return;}
   const closer=event.target.closest('[data-close]');
