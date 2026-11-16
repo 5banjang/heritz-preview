@@ -8,6 +8,24 @@ export function cutProgress(center, viewportHeight, documentCenter = .8 * viewpo
   return Math.max(0, Math.min(1, (start - center) / (.6 * viewportHeight)));
 }
 
+export function cutTransforms(progress, width, height) {
+  const value = cutFrame(progress);
+  const apex = value.apex * height / 100;
+  const slope = apex < height ? value.gap * width / 100 / (height - apex) : 0;
+  const angle = Math.atan(slope) * 180 / Math.PI;
+  const shift = apex * slope - value.release * width / 100;
+  return {
+    left: `translate3d(${shift}px,0,0) skewX(${-angle}deg)`,
+    right: `translate3d(${-shift}px,0,0) skewX(${angle}deg)`,
+    cap: `scaleY(${value.apex / 100})`,
+    shears: `translate3d(-49.5%,calc(-51.5% - ${value.progress * height * 1.3}px),0)`,
+    titleLeft: `translate3d(${-value.spread}vw,0,0)`,
+    titleRight: `translate3d(${value.spread}vw,0,0)`,
+    notes: String(Math.max(0, Math.min(1, (value.progress - .3) * 3))),
+    hint: String(Math.max(0, 1 - value.progress * 5)),
+  };
+}
+
 export function renderFabricIntro(imageURL = 'assets/effects/tailor-shears-open30.png') {
   return `<section class="fabric-intro" aria-labelledby="fabric-title">
     <div class="fabric-copy">
@@ -31,15 +49,28 @@ export function mountFabricIntro() {
   if (!stage) return;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const short = matchMedia('(max-height: 600px)');
-  const properties = [...Object.keys(cutFrame(0)), 'stage-height'];
+  const cap = document.createElement('div');
+  cap.className = 'fabric-cap';
+  stage.insertBefore(cap, stage.querySelector('.fabric-shears'));
+  const targets = {
+    left: intro.querySelector('.fabric-left'), right: intro.querySelector('.fabric-right'), cap,
+    shears: intro.querySelector('.fabric-shears'),
+    titleLeft: intro.querySelector('.fabric-title span:first-child'), titleRight: intro.querySelector('.fabric-title span:last-child'),
+    notes: intro.querySelector('.fabric-notes'), hint: intro.querySelector('.fabric-scroll-hint'),
+  };
+  const property = key => key === 'notes' || key === 'hint' ? 'opacity' : 'transform';
+  const original = Object.fromEntries(Object.entries(targets).map(([key, element]) => [key, element.style.getPropertyValue(property(key))]));
   let frame = 0;
   let disposed = false;
-  let paintedProgress, paintedHeight;
+  let paintedProgress, paintedHeight, paintedWidth;
   function reset() {
     if (paintedProgress === undefined) return;
-    paintedProgress = paintedHeight = undefined;
+    paintedProgress = paintedHeight = paintedWidth = undefined;
     intro.classList.remove('fabric-enhanced');
-    for (const key of properties) intro.style.removeProperty('--' + key);
+    for (const [key, element] of Object.entries(targets)) {
+      if (original[key]) element.style.setProperty(property(key), original[key]);
+      else element.style.removeProperty(property(key));
+    }
   }
   function paint() {
     frame = 0;
@@ -48,12 +79,12 @@ export function mountFabricIntro() {
     const rect = stage.getBoundingClientRect();
     const center = rect.top + rect.height / 2;
     // The first screen stays entirely white even on taller desktop viewports.
-    const values = cutFrame(cutProgress(center, window.innerHeight, center + window.scrollY));
-    if (values.progress === paintedProgress && rect.height === paintedHeight) return;
-    if (rect.height !== paintedHeight) intro.style.setProperty('--stage-height', `${rect.height}px`);
-    paintedProgress = values.progress;
+    const progress = cutProgress(center, window.innerHeight, center + window.scrollY);
+    if (progress === paintedProgress && rect.height === paintedHeight && rect.width === paintedWidth) return;
+    paintedProgress = progress;
     paintedHeight = rect.height;
-    for (const [key, value] of Object.entries(values)) intro.style.setProperty('--' + key, value);
+    paintedWidth = rect.width;
+    for (const [key, value] of Object.entries(cutTransforms(progress, rect.width, rect.height))) targets[key].style.setProperty(property(key), value);
     intro.classList.add('fabric-enhanced');
   }
   function queue() { if (!disposed && !frame) frame = requestAnimationFrame(paint); }
@@ -76,5 +107,6 @@ export function mountFabricIntro() {
     motion.removeEventListener('change', onMedia);
     short.removeEventListener('change', onMedia);
     reset();
+    cap.remove();
   };
 }

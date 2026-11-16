@@ -10,6 +10,7 @@ export function mountHomeReveal(doc = document) {
     group.matches('.hero-content')
       ? ['.hero-eyebrow', 'h1', '.hero-description', '.hero-links'].map(selector => group.querySelector(selector)).filter(Boolean)
       : group.matches('.about-opening') ? [...group.children].filter(element => !element.matches('.about-cover'))
+      : group.matches('.fabric-copy') ? [...group.children].filter(element => !element.matches('.fabric-notes, .fabric-scroll-hint'))
       : group.matches('.rental-backdrops, .rental-grid, .moments-viewport, .photo-link, .process-stage > .editorial-link, .about-story figure') ? [group] : [...group.children],
   ]));
   const elements = [...targets.values()].flat();
