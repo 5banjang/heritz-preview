@@ -1,43 +1,43 @@
-// Photo-only Figma exports at 2x; ordering and captions follow the original design.
+// Lookbook uses uncropped originals; celebrity retains Figma exports. Original ordering and captions preserved.
 export const ARCHIVE = {
   "lookbooks": [
     {
       "title": "DAYLIGHT",
       "photos": [
         {
-          "src": "assets/archive/lookbook-1-01.webp",
+          "src": "assets/archive/lookbook-1-01-full.jpg",
           "nodeId": "542:8024",
           "imageHash": "6f5991b53c63bcae1e81521cd9f18e119faf9841",
           "caption": [
             "LOOK 1",
             "DAYLIGHT"
           ],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1280
         },
         {
-          "src": "assets/archive/lookbook-1-02.webp",
+          "src": "assets/archive/lookbook-1-02-full.jpg",
           "nodeId": "523:7405",
           "imageHash": "3d7eb2bd17ea8f870a2d4f2777312dd234b4e674",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1280
         },
         {
-          "src": "assets/archive/lookbook-1-03.webp",
+          "src": "assets/archive/lookbook-1-03-full.jpg",
           "nodeId": "523:7407",
           "imageHash": "2cc43f6a36d8fbf90a5c12b13bbc3c4e94bbe03b",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1310
         },
         {
-          "src": "assets/archive/lookbook-1-04.webp",
+          "src": "assets/archive/lookbook-1-04-full.jpg",
           "nodeId": "523:7409",
           "imageHash": "43d3f7aabff0f1da09398332af7332c0e5949d23",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1320
         }
       ]
     },
@@ -45,39 +45,39 @@ export const ARCHIVE = {
       "title": "THE BLOOM",
       "photos": [
         {
-          "src": "assets/archive/lookbook-2-01.webp",
+          "src": "assets/archive/lookbook-2-01-full.jpg",
           "nodeId": "542:8076",
           "imageHash": "da6886f1670fca2594b8baaaf8f8165fba6ed0f1",
           "caption": [
             "LOOK 2",
             "THE BLOOM"
           ],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1280
         },
         {
-          "src": "assets/archive/lookbook-2-02.webp",
+          "src": "assets/archive/lookbook-2-02-full.jpg",
           "nodeId": "523:7466",
           "imageHash": "9347b7d2ef7743ce6a5e86d15d65c5e235511400",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1280,
+          "height": 1920
         },
         {
-          "src": "assets/archive/lookbook-2-03.webp",
+          "src": "assets/archive/lookbook-2-03-full.jpg",
           "nodeId": "523:7468",
           "imageHash": "49a2ceb6281b95fb4a263f84933bc38fd9be19bd",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1280,
+          "height": 1920
         },
         {
-          "src": "assets/archive/lookbook-2-04.webp",
+          "src": "assets/archive/lookbook-2-04-full.jpg",
           "nodeId": "523:7470",
           "imageHash": "f48f6a64c2adb32511fd020d9dcaaa514c5b0139",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1280,
+          "height": 1920
         }
       ]
     },
@@ -85,39 +85,39 @@ export const ARCHIVE = {
       "title": "TIMELESS",
       "photos": [
         {
-          "src": "assets/archive/lookbook-3-01.webp",
+          "src": "assets/archive/lookbook-3-01-full.jpg",
           "nodeId": "542:8128",
           "imageHash": "3fcf7b2ea228d25f5e4d1509fce076b5771d01a9",
           "caption": [
             "LOOK 3",
             "TIMELESS"
           ],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1297
         },
         {
-          "src": "assets/archive/lookbook-3-02.webp",
+          "src": "assets/archive/lookbook-3-02-full.jpg",
           "nodeId": "523:7527",
           "imageHash": "bdb0d152fd39436eb96d52450421d9393d44d5f4",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1313
         },
         {
-          "src": "assets/archive/lookbook-3-03.webp",
+          "src": "assets/archive/lookbook-3-03-full.jpg",
           "nodeId": "523:7529",
           "imageHash": "048bae519ee7f7cdef106bf019728aaf6ee6de9d",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1280
         },
         {
-          "src": "assets/archive/lookbook-3-04.webp",
+          "src": "assets/archive/lookbook-3-04-full.jpg",
           "nodeId": "523:7531",
           "imageHash": "57225a6d508de59ba2ab602ac39f130b361100c4",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1280,
+          "height": 1920
         }
       ]
     },
@@ -125,39 +125,39 @@ export const ARCHIVE = {
       "title": "THE ROMANCE",
       "photos": [
         {
-          "src": "assets/archive/lookbook-4-01.webp",
+          "src": "assets/archive/lookbook-4-01-full.jpg",
           "nodeId": "542:8180",
           "imageHash": "ecbabdc3334647c4eff25feb9007ff2ec2d19b59",
           "caption": [
             "LOOK 4",
             "THE ROMANCE"
           ],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1309
         },
         {
-          "src": "assets/archive/lookbook-4-02.webp",
+          "src": "assets/archive/lookbook-4-02-full.jpg",
           "nodeId": "523:7588",
           "imageHash": "03d01a11524cc9d85596506d6639bab50bd5fea4",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1280
         },
         {
-          "src": "assets/archive/lookbook-4-03.webp",
+          "src": "assets/archive/lookbook-4-03-full.jpg",
           "nodeId": "523:7590",
           "imageHash": "bf870c7003bfc3a1243ef1923c98460b0ad7d7ee",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1280
         },
         {
-          "src": "assets/archive/lookbook-4-04.webp",
+          "src": "assets/archive/lookbook-4-04-full.jpg",
           "nodeId": "523:7592",
           "imageHash": "9e02cbb28e1d9c01ecbc5252e07c87f974c78f0b",
           "caption": [],
-          "width": 1488,
-          "height": 1020
+          "width": 1920,
+          "height": 1315
         }
       ]
     }
