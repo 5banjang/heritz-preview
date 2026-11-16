@@ -172,10 +172,10 @@ function packageCard(kind) {
 }
 
 const EVENT_POSTS=[
- {id:1,title:'[진행중] 9월~12월 후기 이벤트',date:'2026.10.20'},
- {id:2,title:'[결혼준비ZERO프로젝트] 파트너쉽 모집',date:'2026.10.19'},
- {id:3,title:'[진행중] 웨딩 스냅 이벤트',date:'2026.10.18'},
- {id:4,title:'[진행중] 청담점 지인소개 이벤트',date:'2026.10.17'}
+ {id:1,title:'[진행중] 9월~12월 후기 이벤트',date:'2026.10.20',thumbSize:800,detailWidth:1366,detailHeight:4096},
+ {id:2,title:'[결혼준비ZERO프로젝트] 파트너쉽 모집',date:'2026.10.19',thumbSize:800,detailWidth:1600,detailHeight:3115},
+ {id:3,title:'[진행중] 웨딩 스냅 이벤트',date:'2026.10.18',thumbSize:800,detailWidth:1600,detailHeight:3408},
+ {id:4,title:'[진행중] 청담점 지인소개 이벤트',date:'2026.10.17',thumbSize:800,detailWidth:1154,detailHeight:2284}
 ];
 function eventTabs(active){
  return '<nav class="event-category-tabs" aria-label="이벤트 종류">'+[['store','매장 이벤트'],['package','패키지 이벤트']].map(([slug,label])=>'<a href="#/event/'+slug+'" class="'+(active===slug?'active':'')+'" '+(active===slug?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav>';
@@ -187,11 +187,11 @@ function eventPage(category,articleId=0) {
  const heading='<section class="event-heading"><p class="eyebrow">HERITZ EVENT</p><h1 class="serif">EVENT</h1><p>이벤트별 구성과 혜택을 확인하세요.</p>'+eventTabs(isPackage?'package':'store')+'</section>';
  let content='';
  if(post&&!isPackage){
-  content='<article class="event-article"><p class="eyebrow">매장 이벤트</p><h2>'+escape(post.title)+'</h2><time>'+post.date+'</time><div class="event-original-pending">피그마 상세 콘텐츠 원본 이미지 적용 대기</div><a href="#/event/store" class="event-return">← 목록으로 돌아가기</a><section class="event-recent"><h3>최신글</h3>'+EVENT_POSTS.filter(p=>p.id!==post.id).map(p=>'<a href="#/event/store/'+p.id+'">'+escape(p.title)+'</a>').join('')+'</section></article>';
+  content='<article class="event-article"><p class="eyebrow">매장 이벤트</p><h2>'+escape(post.title)+'</h2><time>'+post.date+'</time><img class="event-detail-image" src="'+sitePath('assets/event/event-'+post.id+'-detail.jpg')+'" alt="'+escape(post.title)+' 상세 안내" width="'+post.detailWidth+'" height="'+post.detailHeight+'" decoding="async"><a href="#/event/store" class="event-return">← 목록으로 돌아가기</a><section class="event-recent"><h3>최신글</h3>'+EVENT_POSTS.filter(p=>p.id!==post.id).map(p=>'<a href="#/event/store/'+p.id+'">'+escape(p.title)+'</a>').join('')+'</section></article>';
  } else if(isPackage) {
   content=(packageType!=='family'?packageCard('groom'):'')+(packageType!=='groom'?packageCard('family'):'');
  } else {
-  content='<section class="event-post-section"><p class="event-sort">최신글순 ↓</p><div class="event-post-grid">'+EVENT_POSTS.map(p=>'<a class="event-post-card" href="#/event/store/'+p.id+'"><div class="event-original-pending"></div><h2>'+escape(p.title)+'</h2><time>'+p.date+'</time></a>').join('')+'</div></section>';
+  content='<section class="event-post-section"><p class="event-sort">최신글순 ↓</p><div class="event-post-grid">'+EVENT_POSTS.map(p=>'<a class="event-post-card" href="#/event/store/'+p.id+'"><img class="event-thumbnail" src="'+sitePath('assets/event/event-'+p.id+'-thumb.jpg')+'" alt="'+escape(p.title)+'" width="'+p.thumbSize+'" height="'+p.thumbSize+'" loading="lazy" decoding="async"><h2>'+escape(p.title)+'</h2><time>'+p.date+'</time></a>').join('')+'</div></section>';
  }
  return header()+'<main id="main" class="event-main">'+heading+content+'<div class="event-bottom"><a href="#/" class="button secondary">메인으로 돌아가기 &nbsp; →</a></div></main>'+footer()+contact();
 }
