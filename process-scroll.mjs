@@ -1,104 +1,121 @@
-export function processStep(top, height, viewport, count = 4) {
-  if (height <= viewport || count <= 1) return 0;
-  const progress = Math.max(0, Math.min(1, -top / (height - viewport)));
-  return Math.min(count - 1, Math.floor(progress * count));
-}
-
 export function mountProcessScroll(doc = document) {
   const section = doc.querySelector('#experience');
+  const viewport = section?.querySelector('.process-window');
+  const tabs = section?.querySelector('.process-tabs');
   const view = doc.defaultView;
   const cards = [...(section?.querySelectorAll('.step-card') ?? [])];
-  if (!view || !section?.querySelector('.process-stage') || !cards.length) return () => {};
-  const compact = view.matchMedia('(prefers-reduced-motion: reduce), (max-height: 600px)');
-  const mobile = view.matchMedia('(max-width: 799px)');
+  if (!view || !viewport || !tabs || !cards.length) return () => {};
   const reduced = view.matchMedia('(prefers-reduced-motion: reduce)');
-  const viewport = section.querySelector('.process-window');
-  if (!viewport) return () => {};
-  const viewportAttributes = ['tabindex', 'role', 'aria-label'].map(name => [name, viewport.getAttribute(name)]);
+  const originalAttributes = ['tabindex', 'role', 'aria-label'].map(name => [name, viewport.getAttribute(name)]);
   const buttons = [...section.querySelectorAll('[data-process-step]')];
-  let frame = 0, disposed = false, active = -1;
-  function reset() {
-    active = -1;
-    section.classList.remove('process-enhanced', 'process-swipe');
-    section.style.removeProperty('--process-index');
-    viewportAttributes.forEach(([name, value]) => value === null ? viewport.removeAttribute(name) : viewport.setAttribute(name, value));
-    cards.forEach(card => { card.removeAttribute('data-current'); card.removeAttribute('aria-hidden'); card.inert = false; });
-    buttons.forEach(button => button.removeAttribute('aria-pressed'));
-  }
+  const controls = doc.createElement('div');
+  controls.className = 'process-controls';
+  controls.innerHTML = '<button type="button" data-process-direction="-1" aria-label="이전 제작 과정">←</button><span aria-live="polite" aria-atomic="true"></span><button type="button" data-process-direction="1" aria-label="다음 제작 과정">→</button>';
+  tabs.after(controls);
+  const arrows = [...controls.querySelectorAll('button')];
+  const counter = controls.querySelector('span');
+  let frame = 0, disposed = false, active = -1, gesture = null, suppressClick = false;
+  const clamp = index => Math.max(0, Math.min(cards.length - 1, index));
+  section.classList.add('process-enhanced', 'process-swipe');
+  viewport.setAttribute('tabindex', '0');
+  viewport.setAttribute('role', 'region');
+  viewport.setAttribute('aria-label', '제작 과정, 좌우로 넘겨 보기');
   function paint() {
     frame = 0;
     if (disposed) return;
-    if (compact.matches && !mobile.matches) { if (active !== -1) reset(); return; }
-    if (active === -1) {
-      section.classList.add('process-enhanced');
-      if (mobile.matches) {
-        section.classList.add('process-swipe');
-        viewport.setAttribute('tabindex', '0');
-        viewport.setAttribute('role', 'region');
-        viewport.setAttribute('aria-label', '제작 과정, 좌우로 넘겨 보기');
-      }
-    }
-    const rect = mobile.matches ? null : section.getBoundingClientRect();
-    const index = mobile.matches
-      ? Math.max(0, Math.min(cards.length - 1, Math.round(viewport.scrollLeft / Math.max(1, viewport.clientWidth))))
-      : processStep(rect.top, rect.height, view.innerHeight, cards.length);
+    const index = clamp(Math.round(viewport.scrollLeft / Math.max(1, viewport.clientWidth)));
     if (index === active) return;
     active = index;
-    section.style.setProperty('--process-index', index);
     buttons.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.processStep) === index)));
-    cards.forEach((card, i) => {
-      card.inert = !mobile.matches && i !== index;
-      if (mobile.matches) card.removeAttribute('aria-hidden');
-      else card.setAttribute('aria-hidden', String(i !== index));
-      if (i === index) card.setAttribute('data-current', 'true');
-      else card.removeAttribute('data-current');
-    });
+    cards.forEach((card, i) => i === index ? card.setAttribute('data-current', 'true') : card.removeAttribute('data-current'));
+    arrows[0].disabled = index === 0;
+    arrows[1].disabled = index === cards.length - 1;
+    counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
   }
   function queue() { if (!disposed && !frame) frame = view.requestAnimationFrame(paint); }
-  function onPageScroll() { if (!mobile.matches) queue(); }
-  function onMedia() { view.cancelAnimationFrame(frame); reset(); viewport.scrollLeft = 0; paint(); }
   function moveTo(index, behavior = reduced.matches ? 'instant' : 'smooth') {
-    viewport.scrollTo({ left: Math.max(0, Math.min(cards.length - 1, index)) * viewport.clientWidth, behavior });
+    viewport.scrollTo({ left: clamp(index) * viewport.clientWidth, behavior });
   }
-  function resize() {
-    if (mobile.matches && active >= 0) moveTo(active, 'instant');
-    queue();
-  }
+  function resize() { moveTo(Math.max(0, active), 'instant'); queue(); }
   function key(event) {
-    if (!mobile.matches || event.target !== viewport || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    if (event.target !== viewport || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
     moveTo(event.key === 'Home' ? 0 : event.key === 'End' ? cards.length - 1 : active + (event.key === 'ArrowLeft' ? -1 : 1));
   }
   function select(event) {
+    const direction = event.target.closest('[data-process-direction]');
+    if (arrows.includes(direction) && !direction.disabled) { moveTo(active + Number(direction.dataset.processDirection)); return; }
     const button = event.target.closest('[data-process-step]');
-    const index = button ? Number(button.dataset.processStep) : cards.indexOf(event.target.closest('.step-card'));
-    if (!Number.isInteger(index) || index < 0 || index >= cards.length) return;
-    if (mobile.matches) { moveTo(index); return; }
-    if (compact.matches) { cards[index].scrollIntoView({ behavior: 'instant', block: 'center' }); return; }
-    const rect = section.getBoundingClientRect();
-    view.scrollTo({ top: view.scrollY + rect.top + (rect.height - view.innerHeight) * (index + .5) / cards.length, behavior: 'smooth' });
+    if (buttons.includes(button)) moveTo(Number(button.dataset.processStep));
   }
+  function finish(event) {
+    if (!gesture || (event && event.pointerId !== gesture.id)) return;
+    const previous = gesture;
+    gesture = null;
+    viewport.classList.remove('process-dragging');
+    if (viewport.hasPointerCapture?.(previous.id)) viewport.releasePointerCapture(previous.id);
+    if (previous.dragging && !disposed) moveTo(Math.round(viewport.scrollLeft / Math.max(1, viewport.clientWidth)));
+  }
+  function down(event) {
+    suppressClick = false;
+    if (event.pointerType !== 'mouse' || event.button !== 0 || event.isPrimary === false) return;
+    finish();
+    gesture = { id: event.pointerId, x: event.clientX, left: viewport.scrollLeft, dragging: false };
+  }
+  function move(event) {
+    if (!gesture || event.pointerId !== gesture.id) return;
+    const delta = event.clientX - gesture.x;
+    if (!gesture.dragging && Math.abs(delta) <= 6) return;
+    if (!gesture.dragging) {
+      gesture.dragging = true;
+      suppressClick = true;
+      viewport.classList.add('process-dragging');
+      viewport.setPointerCapture?.(event.pointerId);
+    }
+    event.preventDefault();
+    viewport.scrollLeft = Math.max(0, Math.min((cards.length - 1) * viewport.clientWidth, gesture.left - delta));
+    queue();
+  }
+  function click(event) {
+    if (!suppressClick) return;
+    suppressClick = false;
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  function preventDrag(event) { event.preventDefault(); }
   section.addEventListener('click', select);
   viewport.addEventListener('scroll', queue, { passive: true });
   viewport.addEventListener('keydown', key);
-  view.addEventListener('scroll', onPageScroll, { passive: true });
+  viewport.addEventListener('pointerdown', down);
+  viewport.addEventListener('lostpointercapture', finish);
+  viewport.addEventListener('click', click, true);
+  viewport.addEventListener('dragstart', preventDrag);
+  view.addEventListener('pointermove', move, { passive: false });
+  view.addEventListener('pointerup', finish);
+  view.addEventListener('pointercancel', finish);
   view.addEventListener('resize', resize);
-  compact.addEventListener('change', onMedia);
-  mobile.addEventListener('change', onMedia);
   paint();
   return () => {
     if (disposed) return;
     disposed = true;
+    finish();
     view.cancelAnimationFrame(frame);
-    frame = 0;
-    view.removeEventListener('scroll', onPageScroll);
-    view.removeEventListener('resize', resize);
-    compact.removeEventListener('change', onMedia);
-    mobile.removeEventListener('change', onMedia);
+    section.removeEventListener('click', select);
     viewport.removeEventListener('scroll', queue);
     viewport.removeEventListener('keydown', key);
-    section.removeEventListener('click', select);
-    reset();
+    viewport.removeEventListener('pointerdown', down);
+    viewport.removeEventListener('lostpointercapture', finish);
+    viewport.removeEventListener('click', click, true);
+    viewport.removeEventListener('dragstart', preventDrag);
+    view.removeEventListener('pointermove', move);
+    view.removeEventListener('pointerup', finish);
+    view.removeEventListener('pointercancel', finish);
+    view.removeEventListener('resize', resize);
+    controls.remove();
+    section.classList.remove('process-enhanced', 'process-swipe');
+    originalAttributes.forEach(([name, value]) => value === null ? viewport.removeAttribute(name) : viewport.setAttribute(name, value));
+    cards.forEach(card => card.removeAttribute('data-current'));
+    buttons.forEach(button => button.removeAttribute('aria-pressed'));
     viewport.scrollLeft = 0;
   };
 }

@@ -1,8 +1,8 @@
 @import url("./fabric-intro.css");
 @import url("./home-editorial.css");
 @import url("./about.css");
-@import url("./home-scroll.css");
-@import url("./process-scroll.css");
+@import url("./home-scroll.css?v=manual-gallery-20261116");
+@import url("./process-scroll.css?v=manual-gallery-20261116");
 @import url("./rental-editorial.css");
 @import url("./store-editorial.css");
 .editorial-footer{padding:64px 6vw 36px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem}

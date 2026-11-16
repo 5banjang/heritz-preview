@@ -16,7 +16,7 @@
 .moments-dots button span{height:2px;width:18px;background:#ffffff60}
 .moments-dots button[aria-pressed=true] span{background:#fff;width:30px}
 .moments-dots button:focus-visible{outline:1px solid white;outline-offset:-3px}
-.home-main.scroll-motion .moments{padding:0;position:relative;height:320svh;display:block;background:#000}
+.home-main.scroll-motion .moments{padding:0;position:relative;display:block;background:#000}
 .home-main.scroll-motion .moments::before{content:'';position:absolute;inset:0 0 auto;height:clamp(160px,24svh,280px);z-index:4;background:linear-gradient(to bottom,#000 0%,#000b 28%,transparent 100%);pointer-events:none}
 .home-main.scroll-motion .moments-stage{position:sticky;top:0;height:100svh;min-height:601px;box-sizing:border-box;isolation:isolate;overflow:hidden;display:flex;justify-content:flex-end;gap:26px;padding:100px 7.5vw 145px}
 .home-main.scroll-motion .moments-stage::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#0005,transparent 24%),linear-gradient(90deg,#0009,transparent 78%),linear-gradient(0deg,#000b,transparent 75%),#0002}
@@ -38,7 +38,7 @@
 /* Controls sit above the shade while the photograph remains the background. */
 .home-main.scroll-motion .moments .moments-gallery{z-index:auto}
 .home-main.scroll-motion .moments-viewport{z-index:0}
-/* Mobile photos use native horizontal paging instead of a pinned scroll scene. */
+/* Photographs page independently of the document on every screen size. */
 .home-main.scroll-motion .moments.moments-swipe{height:auto}
 .home-main.scroll-motion .moments-swipe .moments-stage{position:relative;height:100svh;min-height:640px}
 .home-main.scroll-motion .moments-swipe .moments-viewport{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none}
@@ -46,19 +46,24 @@
 .home-main.scroll-motion .moments-swipe .moment-grid{position:relative;display:flex;overflow:visible;gap:0}
 .home-main.scroll-motion .moments-swipe .photo-link{position:relative;inset:auto;flex:0 0 100%;scroll-snap-align:start;transition:none}
 .moments-swipe .moments-viewport:focus-visible{outline:2px solid #fff;outline-offset:-4px}
-.moments-swipe .moments-counter::after{content:' · 좌우로 넘겨 보기';font-size:10px}
-.home-main.scroll-motion .moments.moments-swipe .moments-controls{flex-direction:column;align-items:stretch;gap:4px;bottom:80px}
+.moments-navigation{display:flex;align-items:center;gap:16px}
+.moments-navigation button{width:44px;height:44px;padding:0;color:inherit;font-size:22px}
+.moments-navigation button:disabled{opacity:.3;cursor:default}
+.moments-navigation button:focus-visible{outline:1px solid #fff;outline-offset:-3px}
+.moments-swipe .moments-viewport{cursor:grab}
+.moments-swipe .moments-viewport.moments-dragging{scroll-snap-type:none;cursor:grabbing;user-select:none}
+.home-main.scroll-motion .moments.moments-swipe .moments-controls{flex-direction:row;align-items:center;gap:16px;bottom:80px}
 .moments-swipe .moments-counter{white-space:nowrap;line-height:20px}
-.moments-swipe .moments-dots{flex-wrap:nowrap;justify-content:space-between}
+.moments-swipe .moments-dots{flex:1;flex-wrap:nowrap;justify-content:space-between;min-width:0}
 .moments-swipe .moments-dots button{flex:1;min-width:0}
 @media(max-width:599px){
  .chapter-rail{left:0;gap:0}.chapter-rail button{padding-left:8px}.chapter-label{left:42px;font-size:10px}
  .home-main.home-scroll .section:not(.moments){padding-left:52px}
- .home-main.scroll-motion .moments-stage{padding:80px 28px 156px 40px;gap:18px}
+ .home-main.scroll-motion .moments-stage{padding:80px 28px 210px 40px;gap:18px}
  .home-main.scroll-motion .moments h2{font-size:clamp(32px,8vw,42px);line-height:1.3}
  .home-main.scroll-motion .moments .editorial-heading{gap:17px}
  .home-main.scroll-motion .moments .section-description{font-size:12px}
- .home-main.scroll-motion .moments .moments-controls{left:40px;right:24px;bottom:90px;gap:6px}
+ .home-main.scroll-motion .moments.moments-swipe .moments-controls{left:40px;right:24px;bottom:90px;gap:4px;flex-direction:column;align-items:stretch}
  .moments-dots button{width:32px}
  .home-main.scroll-motion .moments-stage::after{background:linear-gradient(0deg,#000d,transparent 85%),#0002}
 }

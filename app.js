@@ -1,9 +1,9 @@
 import { renderAbout, mountAbout } from './about.mjs';
 import { mountRentalScene } from './rental-scene.mjs';
 import { mountRentalDrag } from './rental-drag.mjs';
-import { mountHomeScroll } from './home-scroll.mjs';
+import { mountHomeScroll } from './home-scroll.mjs?v=manual-gallery-20261116';
 import { mountHomeReveal } from './home-reveal.mjs';
-import { mountProcessScroll } from './process-scroll.mjs';
+import { mountProcessScroll } from './process-scroll.mjs?v=manual-gallery-20261116';
 import { renderFabricIntro, mountFabricIntro } from './fabric-intro.mjs';
 import { DESIGN } from './design-data.js';
 import { MOMENT_PHOTOS } from './moments-data.mjs';
