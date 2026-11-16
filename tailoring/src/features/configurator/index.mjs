@@ -1,6 +1,6 @@
-import { GROUPS, createState, select, describe } from './state.mjs';
+import { GROUPS, createState, select, describe } from './state.mjs?v=custom-colors-20261116';
 
-import { renderPreview, renderDetailIcon } from './preview.mjs';
+import { renderPreview, renderDetailIcon } from './preview.mjs?v=custom-colors-20261116';
 
 let instance = 0;
 

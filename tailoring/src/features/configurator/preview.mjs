@@ -1,4 +1,4 @@
-import { GROUPS, createState, describe } from './state.mjs';
+import { GROUPS, createState, describe } from './state.mjs?v=custom-colors-20261116';
 import { vectors } from './vectors.mjs';
 
 function drawing(group, value, placement = '') {
@@ -15,7 +15,7 @@ export function renderDetailIcon(group, value) {
 export function renderPreview(selection) {
   const state = createState(selection);
   const color = GROUPS.find(group => group.key === 'color').choices.find(choice => choice[0] === state.color)[2];
-  return `<svg class="configurator-suit" viewBox="0 0 454 483" role="img" aria-label="2D 정장 구성도: ${describe(state)}" data-lapel="${state.lapel}" data-vent="${state.vent}" data-cuff="${state.cuff}" data-fabric="${state.fabric}" style="--suit-color:${color};--suit-line:#000000">
+  return `<svg class="configurator-suit" viewBox="0 0 454 483" role="img" aria-label="2D 정장 구성도: ${describe(state)}" data-lapel="${state.lapel}" data-vent="${state.vent}" data-cuff="${state.cuff}" data-fabric="${state.fabric}" style="--suit-color:${color};--suit-line:${state.color === 'light-grey' ? '#000000' : '#6b6b6b'}">
     ${drawing('lapel', state.lapel, 'x="35" y="32" width="187" height="249"')}
     ${drawing('vent', state.vent, 'x="64" y="295" width="132" height="150"')}
     ${drawing('cuff', state.cuff, 'x="272" y="35" width="119" height="390"')}

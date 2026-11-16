@@ -60,5 +60,9 @@ test('source state and preview preserve 288 combinations with double vent defaul
   let states = [{}];
   for (const group of GROUPS) states = states.flatMap(state => group.choices.map(([value]) => ({ ...state, [group.key]: value })));
   assert.equal(states.length, 288);
-  for (const state of states) assert.match(renderPreview(state), /--suit-line:#000000/);
+  const colors = {black:'#000000', charcoal:'#0c0c0c', 'dark-navy':'#040414', 'light-grey':'#94979b'};
+  for (const state of states) {
+    const line = state.color === 'light-grey' ? '#000000' : '#6b6b6b';
+    assert.ok(renderPreview(state).includes(`--suit-color:${colors[state.color]};--suit-line:${line}`));
+  }
 });
