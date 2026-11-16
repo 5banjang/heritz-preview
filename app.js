@@ -7,7 +7,7 @@ import { mountProcessScroll } from './process-scroll.mjs';
 import { renderFabricIntro, mountFabricIntro } from './fabric-intro.mjs';
 import { DESIGN } from './design-data.js';
 import { MOMENT_PHOTOS } from './moments-data.mjs';
-import { ARCHIVE } from './archive-data.js';
+import { ARCHIVE } from './archive-data.js?v=lookbook-full-20261116';
 import { renderArchiveNav, renderArchiveOverview } from './archive-editorial.mjs';
 import { renderCelebrity } from './archive-celebrity.mjs';
 import { mountStoreSlideshow } from './store-slideshow.mjs';
