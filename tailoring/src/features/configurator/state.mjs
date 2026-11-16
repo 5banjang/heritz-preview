@@ -1,6 +1,5 @@
 // Labels preserve the brief; they are not verified store inventory or tailoring claims.
 export const GROUPS = Object.freeze([
-  { key: 'fabric', label: '원단', choices: [['retini', '레티니'], ['howard-hardy', '하워드하디'], ['drape', '드레이프'], ['scabal', '스카발']] },
   { key: 'color', label: '컬러', choices: [['black', '블랙', '#000000'], ['charcoal', '차콜', '#0c0c0c'], ['dark-navy', '다크네이비', '#040414'], ['light-grey', '라이트 그레이', '#94979b']] },
   { key: 'lapel', label: '라펠', choices: [['notched', '노치드'], ['peaked', '피크드'], ['shawl', '숄']] },
   { key: 'vent', label: '트임', choices: [['double-vent', '더블 벤트'], ['vent', '벤트'], ['slit', '슬릿']] },

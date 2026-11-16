@@ -53,13 +53,17 @@ test('all static tailoring assets and imports exist inside the checkout', async 
   }
 });
 
-test('source state and preview preserve 288 combinations with double vent default', async () => {
+test('custom excludes fabric and preserves 72 style combinations with double vent default', async () => {
   const { GROUPS, createState } = await import('../tailoring/src/features/configurator/state.mjs');
   const { renderPreview } = await import('../tailoring/src/features/configurator/preview.mjs');
   assert.equal(createState().vent, 'double-vent');
+  assert.deepEqual(GROUPS.map(group => group.key), ['color', 'lapel', 'vent', 'cuff']);
+  assert.throws(() => createState({fabric:'retini'}), RangeError);
+  assert.doesNotMatch(renderPreview(createState()), /data-fabric|레티니|undefined/);
+  assert.doesNotMatch(await read('tailoring/src/features/configurator/index.mjs'), /원단부터|원단 브랜드/);
   let states = [{}];
   for (const group of GROUPS) states = states.flatMap(state => group.choices.map(([value]) => ({ ...state, [group.key]: value })));
-  assert.equal(states.length, 288);
+  assert.equal(states.length, 72);
   const colors = {black:'#000000', charcoal:'#0c0c0c', 'dark-navy':'#040414', 'light-grey':'#94979b'};
   for (const state of states) {
     const line = state.color === 'light-grey' ? '#000000' : '#6b6b6b';

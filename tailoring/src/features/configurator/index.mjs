@@ -1,6 +1,6 @@
-import { GROUPS, createState, select, describe } from './state.mjs?v=custom-colors-20261116';
+import { GROUPS, createState, select, describe } from './state.mjs?v=custom-no-fabric-20261116';
 
-import { renderPreview, renderDetailIcon } from './preview.mjs?v=custom-colors-20261116';
+import { renderPreview, renderDetailIcon } from './preview.mjs?v=custom-no-fabric-20261116';
 
 let instance = 0;
 
@@ -18,7 +18,7 @@ export function mount(root, options = {}) {
     <header class="configurator-header">
       <p class="configurator-eyebrow">YOUR PERSONAL SELECTION</p>
       <h2 id="${prefix}-title">작은 선택이 만드는 차이.</h2>
-      <p>원단부터 바지 밑단까지, 원하는 조합을 골라보세요.</p>
+      <p>컬러부터 바지 밑단까지, 원하는 조합을 골라보세요.</p>
     </header>
     <div class="configurator-layout">
       <div class="configurator-viewport" role="region" aria-label="선택한 스타일 요약">
@@ -28,7 +28,7 @@ export function mount(root, options = {}) {
           <p class="configurator-eyebrow">MY SELECTION</p>
           <h3>나의 스타일 노트</h3>
           <dl class="configurator-selected-details"></dl>
-          <p class="configurator-caption">임시 2D 구성도입니다. 컬러·라펠·카브라와 뒷면 트임을 비교할 수 있습니다. 원단 브랜드는 이름만 반영하며 실제 질감·핏·색상을 재현하지 않습니다.</p>
+          <p class="configurator-caption">임시 2D 구성도입니다. 컬러·라펠·카브라와 뒷면 트임을 비교할 수 있습니다. 실제 질감·핏·색상을 재현하지 않습니다.</p>
         </div>
         <p class="configurator-pending">제공해 주신 SVG 원본의 라펠·트임·바지 경로를 사용한 2D 도식입니다. 3D 미리보기는 준비 중입니다.</p>
       </div>
