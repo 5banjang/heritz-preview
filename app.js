@@ -187,7 +187,7 @@ function eventPage(category,articleId=0) {
  const heading='<section class="event-heading"><p class="eyebrow">HERITZ TAILOR / EVENTS</p><h1>Events.</h1><div class="event-intro-deck"><p>당신의 시작을 위한, 특별한 제안.</p><p>헤리츠와 함께 준비하는 소중한 순간.<br>이벤트별 구성과 혜택을 만나보세요.</p></div></section>'+eventTabs(isPackage?'package':'store');
  let content='';
  if(post&&!isPackage){
-  content='<article class="event-article"><p class="eyebrow">매장 이벤트</p><h2>'+escape(post.title)+'</h2><time>'+post.date+'</time><img class="event-detail-image" src="'+sitePath('assets/event/event-'+post.id+'-detail.jpg')+'" alt="'+escape(post.title)+' 상세 안내" width="'+post.detailWidth+'" height="'+post.detailHeight+'" decoding="async"><a href="#/event/store" class="event-return">← 목록으로 돌아가기</a><section class="event-recent"><h3>최신글</h3>'+EVENT_POSTS.filter(p=>p.id!==post.id).map(p=>'<a href="#/event/store/'+p.id+'">'+escape(p.title)+'</a>').join('')+'</section></article>';
+  content='<article class="event-article"><p class="eyebrow">매장 이벤트</p><h2>'+escape(post.title)+'</h2><time>'+post.date+'</time><img class="event-detail-image" src="'+sitePath('assets/event/event-'+post.id+'-detail.jpg?v=event-original-20261117')+'" alt="'+escape(post.title)+' 상세 안내" width="'+post.detailWidth+'" height="'+post.detailHeight+'" decoding="async"><a href="#/event/store" class="event-return">← 목록으로 돌아가기</a><section class="event-recent"><h3>최신글</h3>'+EVENT_POSTS.filter(p=>p.id!==post.id).map(p=>'<a href="#/event/store/'+p.id+'">'+escape(p.title)+'</a>').join('')+'</section></article>';
  } else if(isPackage) {
   content=(packageType!=='family'?packageCard('groom'):'')+(packageType!=='groom'?packageCard('family'):'');
  } else {
