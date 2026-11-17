@@ -19,7 +19,7 @@ test('desktop, menu and static pages link to tailoring without replacing ABOUT',
   assert.match(app, /menu-navigation.*NAVIGATION\.map/);
   for (const page of ['index.html', 'archive/index.html', 'event/index.html', 'store/index.html']) {
     assert.match(await read(page), /href="(?:\.\.\/)?tailoring\/">TAILORING<\/a>/);
-    assert.match(await read(page), /src="(?:\.\.\/)?app\.js\?v=event-originals-20261117"/);
+    assert.match(await read(page), /src="(?:\.\.\/)?app\.js\?v=legal-info-20261117"/);
   }
 });
 
