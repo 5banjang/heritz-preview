@@ -10,9 +10,10 @@
   <link rel="stylesheet" href="https://use.typekit.net/cdv8dhm.css">
   <link rel="stylesheet" href="./main.css">
   <link rel="stylesheet" href="./editorial.css?v=bright-20261116">
+  <link rel="stylesheet" href="./landing.css?v=editorial-20261117">
   <script src="./main.js" defer></script>
 </head>
-<body>
+<body class="rental-home">
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 <div class="site-switch"><div><a href="/">맞춤센터 ↗</a><span aria-hidden="true">/</span><span>렌탈센터</span></div><p>TWO WAYS TO WEAR HERITZ</p></div>
 <header class="rental-header">
@@ -22,11 +23,28 @@
 </header>
 <main id="main">
   <section class="rental-hero" aria-labelledby="hero-title">
-    <div class="hero-copy"><p class="eyebrow">HERITZ RENTAL CENTER</p><h1 id="hero-title">A suit for<br>your moment.</h1><p class="hero-description">청담 정장대여, 헤리츠 렌탈센터.<br>촬영부터 본식·혼주 정장까지.</p><a class="button light" href="./collection.html">렌탈 컬렉션 보기 &nbsp; →</a></div>
-    <div class="hero-photos"><img src="../assets/d3de3e589982b1e5ccf2ebcb0805fbb77098cc74.webp" alt="블랙 수트 착용 화보" fetchpriority="high"><img src="../assets/113a37a22d63f71ed14e5f6e53f64b0cd9664d71.webp" alt="버건디 수트 착용 화보" fetchpriority="high"></div>
+    <div class="hero-copy"><p class="eyebrow">HERITZ RENTAL CENTER · CHEONGDAM</p><h1 id="hero-title">A suit for<br><em>your moment.</em></h1><p class="hero-description">한 번의 특별한 날,<br>오래 기억될 당신의 모습.</p><div class="hero-bottom"><p>촬영 · 본식 · 혼주<br>청담 헤리츠 정장대여</p><a class="text-link" href="./collection.html">컬렉션 살펴보기 <span aria-hidden="true">↗</span></a></div></div>
+    <div class="hero-photos"><figure class="cover-main"><img src="../assets/d3de3e589982b1e5ccf2ebcb0805fbb77098cc74.webp" alt="블랙 수트 착용 화보" fetchpriority="high"><figcaption>01 / THE BLACK SUIT</figcaption></figure><figure class="cover-side"><img src="../assets/113a37a22d63f71ed14e5f6e53f64b0cd9664d71.webp" alt="버건디 수트 착용 화보" fetchpriority="high"><figcaption>02 / A DIFFERENT MOOD</figcaption></figure></div>
+  </section>
+  <nav class="chapter-index" aria-label="페이지 챕터"><span>THE RENTAL EDIT</span><a href="#collection">01 &nbsp; Collection</a><a href="#moments">02 &nbsp; Moments</a><a href="#guide">03 &nbsp; Guide</a><a href="#store">04 &nbsp; Visit</a></nav>
+  <section class="rental-scale" aria-label="렌탈센터 소개">
+    <div><p class="serif">1,000+</p><h2>대여복 1,000벌 이상</h2><p>당신의 장면에 어울리는 선택</p></div>
+    <div><p class="serif">Your fit.</p><h2>다양한 체형을 위한 사이즈</h2><p>나에게 맞는 핏은 직접 입어보고</p></div>
+    <div><p class="serif">Cheongdam.</p><h2>헤리츠테일러 렌탈센터</h2><p>맞춤센터와 구분된 전용 공간</p></div>
+  </section>
+  <section class="section collection" id="collection" aria-labelledby="collection-title">
+    <div class="chapter-heading"><p class="eyebrow">01 / THE COLLECTION</p><h2 class="serif" id="collection-title">Find your<br><em>silhouette.</em></h2><p class="description">클래식한 블랙부터 깊이 있는 컬러까지.<br>당신의 분위기에 어울리는 한 벌을 만나보세요.</p></div>
+    <div class="collection-options"><p>RENTAL GRADES</p><div class="grades" aria-label="렌탈 등급 안내"><button class="button outline" data-grade="Standard">Standard</button><button class="button outline" data-grade="Premium">Premium</button><button class="button outline" data-grade="Luxury">Luxury</button></div></div>
+    <div class="photo-grid suit-grid">
+      <figure><a class="photo" href="./collection.html?item=black"><img src="../assets/d3de3e589982b1e5ccf2ebcb0805fbb77098cc74.webp" alt="블랙 수트 상세 보기" loading="lazy"></a><figcaption><span class="look-number">01</span><span><strong>The Black Suit</strong><small>블랙 수트</small></span><span aria-hidden="true">↗</span></figcaption></figure>
+      <figure><a class="photo blue-gray" href="./collection.html?item=blue-gray"><img src="../assets/54935bed96ed4558e53f724a0b84f08ceb30510a.webp" alt="블루 그레이 수트 상세 보기" loading="lazy"></a><figcaption><span class="look-number">02</span><span><strong>Blue Grey</strong><small>블루 그레이 수트</small></span><span aria-hidden="true">↗</span></figcaption></figure>
+      <figure><a class="photo" href="./collection.html?item=check"><img src="../assets/a84462cc22d711df29b998123e443d88c0749d75.webp" alt="체크 수트 상세 보기" loading="lazy"></a><figcaption><span class="look-number">03</span><span><strong>The Check</strong><small>체크 수트</small></span><span aria-hidden="true">↗</span></figcaption></figure>
+      <figure><a class="photo" href="./collection.html?item=burgundy"><img src="../assets/113a37a22d63f71ed14e5f6e53f64b0cd9664d71.webp" alt="버건디 수트 상세 보기" loading="lazy"></a><figcaption><span class="look-number">04</span><span><strong>Burgundy</strong><small>버건디 수트</small></span><span aria-hidden="true">↗</span></figcaption></figure>
+    </div>
+    <a class="button outline collection-all" href="./collection.html">전체 컬렉션 살펴보기 &nbsp; →</a>
   </section>
   <section class="section moments" id="moments" aria-labelledby="moments-title">
-    <div class="section-heading"><p class="eyebrow">REAL MOMENTS</p><h2 class="serif" id="moments-title">Heritz Moments</h2><p class="description">헤리츠와 함께한 스튜디오 촬영과 결혼식.</p></div>
+    <div class="section-heading"><p class="eyebrow">02 / WORN IN REAL LIFE</p><h2 class="serif" id="moments-title">Made for<br><em>real moments.</em></h2><p class="description">사진 속 한 벌이, 당신의 순간으로.<br>헤리츠와 함께한 촬영과 결혼식의 기록.</p></div>
     <div class="photo-grid moment-grid">
       <figure><button class="photo" data-enlarge aria-label="스튜디오 촬영 사진 1 크게 보기"><img src="../assets/313c07380af0caabebf13b450566250b3f88f149.webp" alt="헤리츠 수트와 함께한 스튜디오 촬영" loading="lazy"></button><figcaption>STUDIO SHOOT</figcaption></figure>
       <figure><button class="photo" data-enlarge aria-label="결혼식 사진 1 크게 보기"><img src="../assets/48b9ad1906810df44d3448354445fc232b531f4d.webp" alt="헤리츠와 함께한 결혼식" loading="lazy"></button><figcaption>WEDDING DAY</figcaption></figure>
@@ -35,38 +53,22 @@
     </div>
     <div class="section-bottom"><p>스튜디오 촬영 · 결혼식 본식</p><a class="button" href="./moments.html">고객 착용사진 전체 보기 &nbsp; →</a></div>
   </section>
-  <section class="rental-scale" aria-label="렌탈센터 소개">
-    <div><p class="serif">1,000+</p><h2>대여복 1,000벌 이상</h2><p>선택의 폭이 다른 렌탈 컬렉션</p></div>
-    <div><p class="serif">Small—Big</p><h2>다양한 체형을 위한 사이즈</h2><p>나에게 맞는 핏은 직접 입어보고</p></div>
-    <div><p class="serif">B1 · 청담</p><h2>헤리츠테일러 렌탈센터</h2><p>맞춤센터와 구분된 전용 공간</p></div>
-  </section>
-  <section class="section collection" id="collection" aria-labelledby="collection-title">
-    <h2 class="serif" id="collection-title">Find your silhouette</h2><p class="description">분위기와 스타일을 비교하고, 나에게 맞는 수트를 골라보세요.</p>
-    <div class="grades" aria-label="렌탈 등급 안내"><button class="button outline" data-grade="Standard">Standard</button><button class="button outline" data-grade="Premium">Premium</button><button class="button outline" data-grade="Luxury">Luxury</button></div>
-    <div class="photo-grid suit-grid">
-      <figure><a class="photo" href="./collection.html?item=black"><img src="../assets/d3de3e589982b1e5ccf2ebcb0805fbb77098cc74.webp" alt="블랙 수트 상세 보기" loading="lazy"></a><figcaption>블랙 수트</figcaption></figure>
-      <figure><a class="photo blue-gray" href="./collection.html?item=blue-gray"><img src="../assets/54935bed96ed4558e53f724a0b84f08ceb30510a.webp" alt="블루 그레이 수트 상세 보기" loading="lazy"></a><figcaption>블루 그레이 수트</figcaption></figure>
-      <figure><a class="photo" href="./collection.html?item=check"><img src="../assets/a84462cc22d711df29b998123e443d88c0749d75.webp" alt="체크 수트 상세 보기" loading="lazy"></a><figcaption>체크 수트</figcaption></figure>
-      <figure><a class="photo" href="./collection.html?item=burgundy"><img src="../assets/113a37a22d63f71ed14e5f6e53f64b0cd9664d71.webp" alt="버건디 수트 상세 보기" loading="lazy"></a><figcaption>버건디 수트</figcaption></figure>
-    </div>
-    <a class="button outline collection-all" href="./collection.html">전체 컬렉션 살펴보기 &nbsp; →</a>
-  </section>
-  <section class="size-section dark" aria-labelledby="size-title"><div class="copy-stack"><p class="eyebrow">YOUR FIT, YOUR CHOICE</p><h2 id="size-title">작은 사이즈부터<br>여유 있는 사이즈까지.</h2><p class="description">마음에 드는 스타일과 편안한 핏.<br>방문 전 필요한 사이즈를 상담해 주세요.</p><button class="button light" data-dialog="size-dialog">사이즈·피팅 안내 &nbsp; →</button></div><img class="space-photo" src="../assets/f8e137ebbd9d90316fc9b3ad13b04cbf5b7bccad.webp" alt="다양한 의상이 준비된 렌탈센터 행거" loading="lazy"></section>
-  <section class="section guide" id="guide" aria-labelledby="guide-title"><p class="eyebrow">RENTAL GUIDE</p><h2 id="guide-title">고르는 순간부터,<br>돌려주는 순간까지.</h2><ol class="steps-grid">
+  <section class="size-section dark" aria-labelledby="size-title"><div class="fit-mark" aria-hidden="true">Your fit.<br><em>Your story.</em></div><div class="copy-stack"><p class="eyebrow">A GOOD FIT CHANGES EVERYTHING</p><h2 id="size-title">작은 사이즈부터<br>여유 있는 사이즈까지.</h2><p class="description">마음에 드는 스타일과 편안한 핏.<br>방문 전 필요한 사이즈를 상담해 주세요.</p><button class="button light" data-dialog="size-dialog">사이즈·피팅 안내 &nbsp; →</button></div></section>
+  <section class="section guide" id="guide" aria-labelledby="guide-title"><p class="eyebrow">03 / THE RENTAL GUIDE</p><h2 id="guide-title">당신의 일정에 맞춰,<br>차근차근.</h2><ol class="steps-grid">
     <li><span>01</span><h3>상담·방문 예약</h3><p>사용 일정과 필요한 의상을<br>상담에서 확인합니다.</p></li>
     <li><span>02</span><h3>피팅·스타일 선택</h3><p>직접 입어보고 원하는<br>핏과 스타일을 고릅니다.</p></li>
     <li><span>03</span><h3>구성 확인·수령</h3><p>확정한 의상 구성과<br>수령 방법을 확인합니다.</p></li>
     <li><span>04</span><h3>이용 후 반납</h3><p>안내받은 일정과 방법에<br>맞춰 반납합니다.</p></li>
   </ol></section>
-  <section class="event-section" aria-labelledby="event-title"><div><p class="eyebrow">HERITZ EVENT</p><h2 id="event-title">지금 만나볼 수 있는 렌탈 혜택</h2></div><a class="button" href="/event/">이벤트 확인하기 &nbsp; →</a></section>
   <section class="faq" id="faq" aria-labelledby="faq-title"><h2 id="faq-title">방문 전, 궁금한 점</h2><div>
     <details open><summary>어떤 사이즈를 입어볼 수 있나요?</summary><p>Small부터 Big까지 다양한 사이즈를 준비했습니다.<br>희망하는 스타일과 사이즈는 방문 전 상담에서 확인해 주세요.</p></details>
     <details><summary>대여 구성과 금액은 어떻게 확인하나요?</summary><p>희망 의상·사용 일정과 함께 상담해 주세요. 구성과 금액은 매장 확인 후 안내합니다.</p></details>
     <details><summary>의상 수령과 반납은 어떻게 하나요?</summary><p>수령·반납 일정과 방법은 예약 상담에서 확인합니다. 확정 운영 기준은 정식 오픈 전에 반영합니다.</p></details>
     <details><summary>맞춤 제작과 대여는 무엇이 다른가요?</summary><p>맞춤은 고객의 체형에 맞춰 새로 제작하는 서비스이고, 렌탈은 준비된 의상 중에서 선택해 이용하는 서비스입니다.</p></details>
   </div></section>
-  <section class="section store" id="store" aria-labelledby="store-title"><img class="space-photo" src="../assets/f8e137ebbd9d90316fc9b3ad13b04cbf5b7bccad.webp" alt="청담 헤리츠 렌탈센터 지하 1층 공간" loading="lazy"><div class="copy-stack"><p class="eyebrow">HERITZ RENTAL CENTER · B1</p><h2 id="store-title">직접 입어보고<br>선택하는 공간.</h2><p class="description">서울 강남구 압구정로72길 21<br>지하 1층 렌탈센터</p><a class="button outline" href="https://map.naver.com/p/entry/place/36523919" target="_blank" rel="noopener">위치 확인하기 &nbsp; ↗</a></div></section>
-  <section class="site-bridge dark" aria-labelledby="bridge-title"><p class="eyebrow">BESPOKE BY HERITZ</p><h2 id="bridge-title">나만을 위한 한 벌이 필요하다면.</h2><a class="button light" href="/">맞춤 홈페이지 둘러보기 &nbsp; ↗</a></section>
+  <section class="section store" id="store" aria-labelledby="store-title"><img class="space-photo" src="../assets/f8e137ebbd9d90316fc9b3ad13b04cbf5b7bccad.webp" alt="청담 헤리츠 렌탈센터 지하 1층 공간" loading="lazy"><div class="copy-stack"><p class="eyebrow">04 / VISIT CHEONGDAM · B1</p><h2 id="store-title">Meet your suit.<br><span>직접 입어보는 순간.</span></h2><p class="description">서울 강남구 압구정로72길 21<br>지하 1층 렌탈센터</p><div class="visit-links"><a class="button" href="https://naver.me/G7ZOAG1j" target="_blank" rel="noopener">피팅 방문 예약하기 ↗</a><a class="text-link" href="https://map.naver.com/p/entry/place/36523919" target="_blank" rel="noopener">위치 확인하기 ↗</a></div></div></section>
+  <section class="event-section" aria-labelledby="event-title"><div><p class="eyebrow">HERITZ EVENT</p><h2 id="event-title">지금 만나볼 수 있는 렌탈 혜택</h2></div><a class="button" href="/event/">이벤트 확인하기 &nbsp; →</a></section>
+  <section class="site-bridge dark" aria-labelledby="bridge-title"><p class="eyebrow">BESPOKE BY HERITZ</p><h2 id="bridge-title">A suit, made only for you.</h2><p class="bridge-description">나만을 위한 한 벌이 필요하다면, 헤리츠 맞춤센터.</p><a class="text-link" href="/">맞춤 홈페이지 둘러보기 &nbsp; ↗</a></section>
 </main>
 <footer class="rental-footer"><strong>HERITZ TAILOR &nbsp;/&nbsp; RENTAL</strong><a href="/">맞춤 홈페이지 &nbsp; ↗</a><p>한국어 · KO</p></footer>
 <nav class="contact-dock" aria-label="예약 및 상담"><a class="contact booking" href="https://naver.me/G7ZOAG1j" target="_blank" rel="noopener"><span class="naver-icon" aria-hidden="true">N</span><span><small>네이버</small><strong>예약하기</strong></span></a><button class="contact talk" data-dialog="talk-dialog"><img src="./assets/07fbe.svg" alt=""><span><small>네이버 톡톡</small><strong>상담하기</strong></span></button><a class="contact kakao" href="https://pf.kakao.com/_ljgUxj/chat" target="_blank" rel="noopener"><img src="./assets/18807.svg" alt=""><strong>상담하기</strong></a></nav>
