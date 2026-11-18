@@ -1,64 +1,70 @@
 @font-face{font-family:AboutPretendard;src:url('../tailoring/assets/fonts/PretendardVariable.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
 
-/* The main site's typography and editorial rhythm, with light rental surfaces. */
-:root{--surface:#fff;--ink:#191919;--muted:#66645f;--line:#deddd8;--serif:ivybodoni,Georgia,serif;--sans:AboutPretendard,Arial,sans-serif;--gutter:max(6vw,calc((100vw - 1280px)/2))}
+/* Palette matches Store / Rental Center: warm white and deep brown. */
+:root{--surface:#f7f6f5;--ink:#110a06;--muted:#655d57;--line:#d9d4d0;--rental-soft:#eeebe8;--serif:ivybodoni,Georgia,serif;--sans:AboutPretendard,Arial,sans-serif;--gutter:max(6vw,calc((100vw - 1280px)/2))}
 body{background:var(--surface);-webkit-font-smoothing:antialiased}
-.site-switch{background:#f3f2ef;color:var(--ink);border-bottom:1px solid var(--line)}
+.site-switch{background:var(--rental-soft);color:var(--ink);border-bottom:1px solid var(--line)}
 .site-switch a,.site-switch>p{color:var(--muted)}
-.rental-header{background:#fff;border-bottom:1px solid var(--line)}
+.rental-header{background:var(--surface);border-bottom:1px solid var(--line)}
 .rental-brand strong{font-weight:600;letter-spacing:.04em}
 .desktop-nav{font-size:11px;letter-spacing:.07em}
 .desktop-nav a:hover{text-decoration:underline;text-underline-offset:6px}
 .eyebrow{font-size:10px;letter-spacing:.16em}
 .description,.hero-description{line-height:1.8;word-break:keep-all}
-.hero-copy{background:#f7f6f2;color:var(--ink);gap:28px}
+.hero-copy{background:var(--surface);color:var(--ink);gap:28px}
 .hero-copy .eyebrow,.hero-description{color:var(--muted)}
 .hero-copy h1{font:500 clamp(54px,5.8vw,88px)/1.02 var(--serif);letter-spacing:-.045em}
 .hero-photos{gap:1px;background:var(--line)}
-.hero-copy .button.light{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hero-copy .button.light{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .section{padding-top:112px;padding-bottom:112px;gap:36px}
 .section-heading{gap:20px}
 .section h2.serif,.catalog-content h1,.detail-heading h1{font-family:var(--serif);font-weight:500;letter-spacing:-.045em}
 .section h2.serif{font-size:clamp(44px,5.2vw,72px);line-height:1.08}
-.button{border-radius:0;box-shadow:none;font-size:12px;letter-spacing:.025em}
-.button.outline{border-color:var(--line)}
+.button{border-radius:0;box-shadow:none;font-size:12px;letter-spacing:.025em;background:var(--ink);color:var(--surface)}
+.button.outline{background:transparent;color:var(--ink);border-color:var(--line)}
 .button.light{background:transparent;color:var(--ink);border:1px solid #aaa79f}
 .photo,.space-photo,.catalog-photo,.detail-photo{border-radius:0}
 .moment-grid figcaption,.suit-grid figcaption,.catalog-caption,.moments-content figcaption{padding-top:4px;font-weight:400}
 .section-bottom{padding-top:24px;border-top:1px solid var(--line)}
-.rental-scale{background:#f7f6f2;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.rental-scale{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .rental-scale>div+div{border-left:1px solid var(--line);padding-left:32px}
 .rental-scale .serif{font-weight:500;letter-spacing:-.035em}
-.dark{background:#f7f6f2;color:var(--ink)}
+.dark{background:var(--surface);color:var(--ink)}
 .dark .eyebrow,.dark .description{color:var(--muted)}
 .size-section,.store{padding-top:96px;padding-bottom:96px}
 .size-section h2,.guide h2,.store h2,.site-bridge h2,.faq h2{letter-spacing:-.045em;font-weight:500}
-.guide{background:#fff}
+.guide{background:var(--surface)}
 .steps-grid{gap:28px}
 .steps-grid li{background:transparent;border-top:1px solid #a6a39c;border-radius:0;padding:24px 0;min-height:190px}
 .steps-grid span{font-family:var(--serif);font-size:28px}
 .steps-grid h3{font-weight:500}
-.event-section{background:#f7f6f2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);gap:28px}
+.event-section{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);gap:28px}
 .faq{gap:0;padding-top:96px;padding-bottom:96px}
 .faq h2{margin-bottom:32px}
 .faq details{border-color:var(--line)}
-.store{background:#fff}
-.site-bridge{background:#f3f2ee;border-top:1px solid var(--line);padding-top:80px;padding-bottom:80px}
-.rental-footer{background:#fff;flex-wrap:wrap;padding-top:56px}
+.store{background:var(--surface)}
+.site-bridge{background:var(--rental-soft);border-top:1px solid var(--line);padding-top:80px;padding-bottom:80px}
+.rental-footer{background:var(--surface);flex-wrap:wrap;padding-top:56px}
 .rental-footer strong{flex-basis:100%;padding-bottom:28px;margin-bottom:4px;border-bottom:1px solid var(--line);font:500 clamp(30px,5.4vw,76px)/1.1 var(--serif);letter-spacing:-.05em}
+.rental-footer{padding-bottom:120px}
 .contact{box-shadow:none;border:1px solid #deddd8;border-radius:12px}
 .contact.booking,.contact.kakao{border-color:transparent}
-dialog{border-radius:0}
+dialog{border-radius:0;background:var(--surface);color:var(--ink)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline-color:currentColor}
+.detail-tabs button[aria-pressed=true],#collection-viewer{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.detail-thumbs button[aria-pressed=true]{border-color:var(--ink)}
+.detail-photo,.viewer-stage .garment-pending{background:var(--rental-soft)}
+.garment-pending strong{color:var(--ink)}
 .dialog-menu a{border-color:var(--line)}
 .catalog-content{padding-top:88px;padding-bottom:96px}
 .catalog-content h1{font-size:clamp(48px,6vw,84px);line-height:1.05}
 .catalog-description{line-height:1.8}
-.detail-content{background:#fff}
-.detail-footer{background:#f3f2ee;color:var(--ink);border-top:1px solid var(--line)}
+.detail-content{background:var(--surface)}
+.detail-footer{background:var(--rental-soft);color:var(--ink);border-top:1px solid var(--line)}
 .detail-info hr{border-color:var(--line)}
-.garment-pending{background:#f0efeb}
-.garment-pending>div{background:#fff;border:1px solid var(--line);border-radius:0}
-.detail-thumbs .thumb-pending{background:#efeee9}
+.garment-pending{background:var(--rental-soft)}
+.garment-pending>div{background:var(--surface);border:1px solid var(--line);border-radius:0}
+.detail-thumbs .thumb-pending{background:var(--rental-soft)}
 @media(max-width:1100px){:root{--gutter:40px}.hero-copy h1{font-size:54px}.rental-scale>div+div{padding-left:20px}}
 @media(max-width:799px){:root{--gutter:24px}.hero-copy{padding:56px 24px 48px;gap:24px}.hero-copy h1{font-size:55px;line-height:1.04}.section{padding-top:72px;padding-bottom:72px;gap:28px}.section h2.serif{font-size:46px}.rental-scale>div+div{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}.size-section,.store,.faq{padding-top:64px;padding-bottom:64px}.steps-grid{gap:24px 20px}.steps-grid li{padding:20px 0;min-height:180px}.steps-grid h3{font-size:15px}.event-section{gap:24px}.site-bridge{padding-top:64px;padding-bottom:64px}.rental-footer{gap:16px;padding-top:40px}.rental-footer strong{font-size:30px;flex-basis:auto;width:100%}.catalog-content{padding-top:56px;padding-bottom:64px}.catalog-content h1{font-size:48px}.contact{border-radius:10px}.detail-content{padding-bottom:150px}}
 @media(max-width:374px){.hero-copy h1{font-size:47px}.section h2.serif,.catalog-content h1{font-size:40px}}

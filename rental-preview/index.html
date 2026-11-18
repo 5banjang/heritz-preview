@@ -4,14 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#f7f6f5">
   <title>HERITZ RENTAL CENTER — 임시 페이지</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://use.typekit.net/cdv8dhm.css">
   <link rel="stylesheet" href="./main.css">
-  <link rel="stylesheet" href="./editorial.css?v=bright-20261116">
-  <link rel="stylesheet" href="./landing.css?v=editorial-20261117">
+  <link rel="stylesheet" href="./editorial.css?v=rental-no-legal-20261118">
+  <link rel="stylesheet" href="./landing.css?v=rental-scale-invert-20261118">
   <script src="./main.js" defer></script>
+  <script src="./hero.js?v=20261118-grow" defer></script>
+  <script src="./moments-slideshow.js?v=20261118" defer></script>
 </head>
 <body class="rental-home">
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -24,7 +26,7 @@
 <main id="main">
   <section class="rental-hero" aria-labelledby="hero-title">
     <div class="hero-copy"><p class="eyebrow">HERITZ RENTAL CENTER · CHEONGDAM</p><h1 id="hero-title">A suit for<br><em>your moment.</em></h1><p class="hero-description">한 번의 특별한 날,<br>오래 기억될 당신의 모습.</p><div class="hero-bottom"><p>촬영 · 본식 · 혼주<br>청담 헤리츠 정장대여</p><a class="text-link" href="./collection.html">컬렉션 살펴보기 <span aria-hidden="true">↗</span></a></div></div>
-    <div class="hero-photos"><figure class="cover-main"><img src="../assets/d3de3e589982b1e5ccf2ebcb0805fbb77098cc74.webp" alt="블랙 수트 착용 화보" fetchpriority="high"><figcaption>01 / THE BLACK SUIT</figcaption></figure><figure class="cover-side"><img src="../assets/113a37a22d63f71ed14e5f6e53f64b0cd9664d71.webp" alt="버건디 수트 착용 화보" fetchpriority="high"><figcaption>02 / A DIFFERENT MOOD</figcaption></figure></div>
+    <div class="hero-photos" role="region" aria-roledescription="슬라이드" aria-label="렌탈 컬렉션 화보"><figure class="cover-main"><img src="../assets/d3de3e589982b1e5ccf2ebcb0805fbb77098cc74.webp" alt="블랙 수트 착용 화보" fetchpriority="high"><figcaption>01 / THE BLACK SUIT</figcaption></figure><figure class="cover-side"><img src="../assets/113a37a22d63f71ed14e5f6e53f64b0cd9664d71.webp" alt="버건디 수트 착용 화보" fetchpriority="high"><figcaption>04 / BURGUNDY</figcaption></figure><div class="hero-controls" hidden><button type="button" data-hero-step="-1" aria-label="이전 사진">←</button><button type="button" data-hero-toggle>일시정지</button><button type="button" data-hero-step="1" aria-label="다음 사진">→</button></div></div>
   </section>
   <nav class="chapter-index" aria-label="페이지 챕터"><span>THE RENTAL EDIT</span><a href="#collection">01 &nbsp; Collection</a><a href="#moments">02 &nbsp; Moments</a><a href="#guide">03 &nbsp; Guide</a><a href="#store">04 &nbsp; Visit</a></nav>
   <section class="rental-scale" aria-label="렌탈센터 소개">
@@ -44,13 +46,14 @@
     <a class="button outline collection-all" href="./collection.html">전체 컬렉션 살펴보기 &nbsp; →</a>
   </section>
   <section class="section moments" id="moments" aria-labelledby="moments-title">
-    <div class="section-heading"><p class="eyebrow">02 / WORN IN REAL LIFE</p><h2 class="serif" id="moments-title">Made for<br><em>real moments.</em></h2><p class="description">사진 속 한 벌이, 당신의 순간으로.<br>헤리츠와 함께한 촬영과 결혼식의 기록.</p></div>
+    <div class="section-heading"><p class="eyebrow">02 / WORN IN REAL LIFE</p><h2 class="serif" id="moments-title">Heritz<br><em>in studio</em></h2><p class="description">사진 속 한 벌이, 당신의 순간으로.<br>헤리츠와 함께한 촬영과 결혼식의 기록.</p></div>
     <div class="photo-grid moment-grid">
       <figure><button class="photo" data-enlarge aria-label="스튜디오 촬영 사진 1 크게 보기"><img src="../assets/313c07380af0caabebf13b450566250b3f88f149.webp" alt="헤리츠 수트와 함께한 스튜디오 촬영" loading="lazy"></button><figcaption>STUDIO SHOOT</figcaption></figure>
       <figure><button class="photo" data-enlarge aria-label="결혼식 사진 1 크게 보기"><img src="../assets/48b9ad1906810df44d3448354445fc232b531f4d.webp" alt="헤리츠와 함께한 결혼식" loading="lazy"></button><figcaption>WEDDING DAY</figcaption></figure>
       <figure><button class="photo" data-enlarge aria-label="스튜디오 촬영 사진 2 크게 보기"><img src="../assets/a35b49a0ca21004763a6bf8687e72cffd3295332.webp" alt="웨딩 스튜디오 고객 착용사진" loading="lazy"></button><figcaption>STUDIO SHOOT</figcaption></figure>
       <figure><button class="photo" data-enlarge aria-label="결혼식 사진 2 크게 보기"><img src="../assets/d2467f51a4ebf59c6b54c7c632db2655e325f8c5.webp" alt="야외 결혼식 고객 착용사진" loading="lazy"></button><figcaption>WEDDING DAY</figcaption></figure>
     </div>
+    <div class="hero-controls" hidden aria-label="스튜디오 사진 슬라이드"><button type="button" data-moments-step="-1" aria-label="이전 사진">←</button><button type="button" data-moments-toggle>일시정지</button><button type="button" data-moments-step="1" aria-label="다음 사진">→</button></div>
     <div class="section-bottom"><p>스튜디오 촬영 · 결혼식 본식</p><a class="button" href="./moments.html">고객 착용사진 전체 보기 &nbsp; →</a></div>
   </section>
   <section class="size-section dark" aria-labelledby="size-title"><div class="fit-mark" aria-hidden="true">Your fit.<br><em>Your story.</em></div><div class="copy-stack"><p class="eyebrow">A GOOD FIT CHANGES EVERYTHING</p><h2 id="size-title">작은 사이즈부터<br>여유 있는 사이즈까지.</h2><p class="description">마음에 드는 스타일과 편안한 핏.<br>방문 전 필요한 사이즈를 상담해 주세요.</p><button class="button light" data-dialog="size-dialog">사이즈·피팅 안내 &nbsp; →</button></div></section>
@@ -69,8 +72,8 @@
   <section class="section store" id="store" aria-labelledby="store-title"><img class="space-photo" src="../assets/f8e137ebbd9d90316fc9b3ad13b04cbf5b7bccad.webp" alt="청담 헤리츠 렌탈센터 지하 1층 공간" loading="lazy"><div class="copy-stack"><p class="eyebrow">04 / VISIT CHEONGDAM · B1</p><h2 id="store-title">Meet your suit.<br><span>직접 입어보는 순간.</span></h2><p class="description">서울 강남구 압구정로72길 21<br>지하 1층 렌탈센터</p><div class="visit-links"><a class="button" href="https://naver.me/G7ZOAG1j" target="_blank" rel="noopener">피팅 방문 예약하기 ↗</a><a class="text-link" href="https://map.naver.com/p/entry/place/36523919" target="_blank" rel="noopener">위치 확인하기 ↗</a></div></div></section>
   <section class="event-section" aria-labelledby="event-title"><div><p class="eyebrow">HERITZ EVENT</p><h2 id="event-title">지금 만나볼 수 있는 렌탈 혜택</h2></div><a class="button" href="/event/">이벤트 확인하기 &nbsp; →</a></section>
   <section class="site-bridge dark" aria-labelledby="bridge-title"><p class="eyebrow">BESPOKE BY HERITZ</p><h2 id="bridge-title">A suit, made only for you.</h2><p class="bridge-description">나만을 위한 한 벌이 필요하다면, 헤리츠 맞춤센터.</p><a class="text-link" href="/">맞춤 홈페이지 둘러보기 &nbsp; ↗</a></section>
-</main>
-<footer class="rental-footer"><strong>HERITZ TAILOR &nbsp;/&nbsp; RENTAL</strong><a href="/">맞춤 홈페이지 &nbsp; ↗</a><p>한국어 · KO</p></footer>
+</main><footer class="rental-footer"><strong>HERITZ TAILOR &nbsp;/&nbsp; RENTAL</strong><a href="/">맞춤 홈페이지 &nbsp; ↗</a><p>한국어 · KO</p></footer>
+
 <nav class="contact-dock" aria-label="예약 및 상담"><a class="contact booking" href="https://naver.me/G7ZOAG1j" target="_blank" rel="noopener"><span class="naver-icon" aria-hidden="true">N</span><span><small>네이버</small><strong>예약하기</strong></span></a><button class="contact talk" data-dialog="talk-dialog"><img src="./assets/07fbe.svg" alt=""><span><small>네이버 톡톡</small><strong>상담하기</strong></span></button><a class="contact kakao" href="https://pf.kakao.com/_ljgUxj/chat" target="_blank" rel="noopener"><img src="./assets/18807.svg" alt=""><strong>상담하기</strong></a></nav>
 <dialog id="menu-dialog" aria-labelledby="menu-title"><div class="dialog-head"><h2 id="menu-title">HERITZ RENTAL</h2><button data-close aria-label="전체 메뉴 닫기">×</button></div><nav class="dialog-menu" aria-label="전체 메뉴"><a href="./collection.html">COLLECTION</a><a href="./moments.html">MOMENTS</a><a href="#guide">GUIDE</a><a href="/event/">EVENT</a><a href="#store">STORE</a><a href="/">맞춤 홈페이지 ↗</a></nav></dialog>
 <dialog id="photo-dialog" class="photo-dialog" aria-labelledby="photo-title"><div class="dialog-head"><h2 id="photo-title">Heritz Moments</h2><button data-close aria-label="사진 닫기">×</button></div><img id="enlarged-photo" alt=""></dialog>
