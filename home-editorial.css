@@ -70,6 +70,15 @@
 .home-main+.legal-footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;gap:24px 48px;align-items:start;font-size:12px;line-height:1.9}
 .legal-company strong{display:block;margin-bottom:16px;font-size:16pt;line-height:1.5;word-break:keep-all}
 .legal-footer a:hover{text-decoration:underline}
+.home-main .home-directions{display:grid;grid-template-columns:1fr 1.5fr;gap:48px;background:#f7f6f5;color:#110a06;border-top:1px solid #d9d4d0}
+.home-directions h2{margin-top:24px;font-size:clamp(32px,4vw,56px);font-weight:400}
+.directions-details{display:flex;flex-direction:column;align-items:start;gap:14px;font-size:14px;line-height:1.8}
+.directions-address{font-size:clamp(22px,2.5vw,32px);word-break:keep-all}
+.directions-details>a{display:inline-flex;align-items:center;min-height:44px}
+.directions-links{display:flex;flex-wrap:wrap;gap:16px 32px;margin-top:12px}
+.home-main .directions-links a[href="https://map.naver.com/p/entry/place/36523919"]{background:#03c75a;border-color:#03c75a;color:#062b16}
+.home-main .directions-links a[href="https://maps.app.goo.gl/frs2GyR48vmG7unc6"]{background:#1967d2;border-color:#1967d2;color:#fff}
+@media(max-width:799px){.home-main .home-directions{grid-template-columns:1fr;gap:28px}}
 @media(max-width:799px){.home-main+.legal-footer{grid-template-columns:minmax(0,1fr);gap:20px}}
 :is(.home-main,.about-main)~.floating-contact{width:auto;right:24px;bottom:20px;flex-direction:row;gap:0;background:#fff;color:#000;border:1px solid #000;box-shadow:none}
 :is(.home-main,.about-main)~.floating-contact .contact-button{min-height:44px;min-width:0;padding:12px 18px;background:#fff;color:#000;border:0;border-radius:0;box-shadow:none}
