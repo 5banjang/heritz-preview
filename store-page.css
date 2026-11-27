@@ -20,6 +20,7 @@
 .store-location-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:28px 32px;margin-bottom:40px}
 .store-location-heading>.store-eyebrow{grid-column:1/-1}
 .store-location-heading h2{font:500 clamp(56px,8vw,112px)/1 ivybodoni,Georgia,serif;letter-spacing:-.045em;overflow-wrap:normal}
+.store-editorial[data-store="cheongdam"] .store-location-heading h2,.store-editorial[data-store="suwon"] .store-location-heading h2,.store-editorial[data-store="hapjeong"] .store-location-heading h2,.store-editorial[data-store="ilsan"] .store-location-heading h2{color:var(--store-dark)}
 .store-location-label{padding-bottom:8px;font-size:16px;letter-spacing:-.03em;white-space:nowrap}
 .store-track{display:flex;width:100%;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--store-muted) var(--store-frame)}
 .store-slide{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;background:var(--store-frame);aspect-ratio:3/2}
